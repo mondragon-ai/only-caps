@@ -1,9 +1,9 @@
 # Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
 client_id = "e062b2afbda40feef1c957b971c7b292"
-name = "only-caps"
+name = "Only Caps"
 handle = "only-caps"
-application_url = "https://hydrocodone-family-criticism-year.trycloudflare.com"
+application_url = "https://pierre-permanent-ps-naturals.trycloudflare.com"
 embedded = true
 
 [build]
@@ -17,9 +17,9 @@ scopes = "write_products"
 
 [auth]
 redirect_urls = [
-  "https://hydrocodone-family-criticism-year.trycloudflare.com/auth/callback",
-  "https://hydrocodone-family-criticism-year.trycloudflare.com/auth/shopify/callback",
-  "https://hydrocodone-family-criticism-year.trycloudflare.com/api/auth/callback"
+  "https://pierre-permanent-ps-naturals.trycloudflare.com/auth/callback",
+  "https://pierre-permanent-ps-naturals.trycloudflare.com/auth/shopify/callback",
+  "https://pierre-permanent-ps-naturals.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]

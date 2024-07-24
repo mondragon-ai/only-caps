@@ -23,97 +23,109 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   return null;
 };
 
-export const action = async ({ request }: ActionFunctionArgs) => {
-  const { admin } = await authenticate.admin(request);
-  const color = ["Red", "Orange", "Yellow", "Green"][
-    Math.floor(Math.random() * 4)
-  ];
-  const response = await admin.graphql(
-    `#graphql
-      mutation populateProduct($input: ProductInput!) {
-        productCreate(input: $input) {
-          product {
-            id
-            title
-            handle
-            status
-            variants(first: 10) {
-              edges {
-                node {
-                  id
-                  price
-                  barcode
-                  createdAt
-                }
-              }
-            }
-          }
-        }
-      }`,
-    {
-      variables: {
-        input: {
-          title: `${color} Snowboard`,
-        },
-      },
-    },
-  );
-  const responseJson = await response.json();
+// export const action = async ({ request }: ActionFunctionArgs) => {
+//   const { admin } = await authenticate.admin(request);
+//   const color = ["Red", "Orange", "Yellow", "Green"][
+//     Math.floor(Math.random() * 4)
+//   ];
+//   const response = await admin.graphql(
+//     `#graphql
+//       mutation populateProduct($input: ProductInput!) {
+//         productCreate(input: $input) {
+//           product {
+//             id
+//             title
+//             handle
+//             status
+//             variants(first: 10) {
+//               edges {
+//                 node {
+//                   id
+//                   price
+//                   barcode
+//                   createdAt
+//                 }
+//               }
+//             }
+//           }
+//         }
+//       }`,
+//     {
+//       variables: {
+//         input: {
+//           title: `${color} Snowboard`,
+//         },
+//       },
+//     },
+//   );
+//   const responseJson = await response.json();
 
-  const variantId =
-    responseJson.data!.productCreate!.product!.variants.edges[0]!.node!.id!;
-  const variantResponse = await admin.graphql(
-    `#graphql
-      mutation shopifyRemixTemplateUpdateVariant($input: ProductVariantInput!) {
-        productVariantUpdate(input: $input) {
-          productVariant {
-            id
-            price
-            barcode
-            createdAt
-          }
-        }
-      }`,
-    {
-      variables: {
-        input: {
-          id: variantId,
-          price: Math.random() * 100,
-        },
-      },
-    },
-  );
+//   const variantId =
+//     responseJson.data!.productCreate!.product!.variants.edges[0]!.node!.id!;
+//   const variantResponse = await admin.graphql(
+//     `#graphql
+//       mutation shopifyRemixTemplateUpdateVariant($input: ProductVariantInput!) {
+//         productVariantUpdate(input: $input) {
+//           productVariant {
+//             id
+//             price
+//             barcode
+//             createdAt
+//           }
+//         }
+//       }`,
+//     {
+//       variables: {
+//         input: {
+//           id: variantId,
+//           price: Math.random() * 100,
+//         },
+//       },
+//     },
+//   );
 
-  const variantResponseJson = await variantResponse.json();
+//   const variantResponseJson = await variantResponse.json();
 
-  return json({
-    product: responseJson!.data!.productCreate!.product,
-    variant: variantResponseJson!.data!.productVariantUpdate!.productVariant,
-  });
-};
+//   return json({
+//     product: responseJson!.data!.productCreate!.product,
+//     variant: variantResponseJson!.data!.productVariantUpdate!.productVariant,
+//   });
+// };
 
 export default function Index() {
-  const fetcher = useFetcher<typeof action>();
+  // const fetcher = useFetcher();
+  const createProductFetcher = useFetcher<any>();
+  // const fetchProductsFetcher = useFetcher();
 
-  const shopify = useAppBridge();
-  const isLoading =
-    ["loading", "submitting"].includes(fetcher.state) &&
-    fetcher.formMethod === "POST";
-  const productId = fetcher.data?.product?.id.replace(
+  // const shopify = useAppBridge();
+  const isLoading = createProductFetcher.state === "loading";
+  const productId = createProductFetcher.data?.product?.id.replace(
     "gid://shopify/Product/",
     "",
   );
-
   useEffect(() => {
-    if (productId) {
+    if (createProductFetcher.data?.product) {
       shopify.toast.show("Product created");
     }
-  }, [productId, shopify]);
-  const generateProduct = () => fetcher.submit({}, { method: "POST" });
+  }, [createProductFetcher.data, shopify]);
+  // );
+
+  // useEffect(() => {
+  //   if (productId) {
+  //     shopify.toast.show("Product created");
+  //   }
+  // }, [productId, shopify]);
+  // const generateProduct = () =>
+  //   fetcher.submit({}, { method: "post", action: "./home/product" });
+  // const generateProduct = () => fetcher.submit({}, { method: "POST" });
+
+  const generateProduct = () => {
+    createProductFetcher.submit({}, { method: "post", action: "/product" });
+  };
 
   return (
     <Page>
-      <TitleBar title="Remix app template">
+      <TitleBar title="Home Page">
         <button variant="primary" onClick={generateProduct}>
           Generate a product
         </button>
@@ -173,7 +185,7 @@ export default function Index() {
                   <Button loading={isLoading} onClick={generateProduct}>
                     Generate a product
                   </Button>
-                  {fetcher.data?.product && (
+                  {createProductFetcher.data?.product && (
                     <Button
                       url={`shopify:admin/products/${productId}`}
                       target="_blank"
@@ -183,7 +195,7 @@ export default function Index() {
                     </Button>
                   )}
                 </InlineStack>
-                {fetcher.data?.product && (
+                {/* {fetcher.data?.product && (
                   <>
                     <Text as="h3" variant="headingMd">
                       {" "}
@@ -222,7 +234,7 @@ export default function Index() {
                       </pre>
                     </Box>
                   </>
-                )}
+                )} */}
               </BlockStack>
             </Card>
           </Layout.Section>
