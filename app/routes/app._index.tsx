@@ -97,17 +97,23 @@ export default function Index() {
   const createProductFetcher = useFetcher<any>();
   // const fetchProductsFetcher = useFetcher();
 
-  // const shopify = useAppBridge();
-  const isLoading = createProductFetcher.state === "loading";
   const productId = createProductFetcher.data?.product?.id.replace(
     "gid://shopify/Product/",
     "",
   );
+
+  const shopify = useAppBridge();
+  const isLoading = createProductFetcher.state === "loading";
+
   useEffect(() => {
     if (createProductFetcher.data?.product) {
       shopify.toast.show("Product created");
     }
   }, [createProductFetcher.data, shopify]);
+
+  const generateProduct = () => {
+    createProductFetcher.submit({}, { method: "post", action: "/product" });
+  };
   // );
 
   // useEffect(() => {
@@ -118,10 +124,6 @@ export default function Index() {
   // const generateProduct = () =>
   //   fetcher.submit({}, { method: "post", action: "./home/product" });
   // const generateProduct = () => fetcher.submit({}, { method: "POST" });
-
-  const generateProduct = () => {
-    createProductFetcher.submit({}, { method: "post", action: "/product" });
-  };
 
   return (
     <Page>
