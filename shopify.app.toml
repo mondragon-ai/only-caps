@@ -3,7 +3,7 @@
 client_id = "e062b2afbda40feef1c957b971c7b292"
 name = "Only Caps"
 handle = "only-caps"
-application_url = "https://pierre-permanent-ps-naturals.trycloudflare.com"
+application_url = "https://ultra-success-delete-exercises.trycloudflare.com"
 embedded = true
 
 [build]
@@ -17,9 +17,9 @@ scopes = "write_products"
 
 [auth]
 redirect_urls = [
-  "https://pierre-permanent-ps-naturals.trycloudflare.com/auth/callback",
-  "https://pierre-permanent-ps-naturals.trycloudflare.com/auth/shopify/callback",
-  "https://pierre-permanent-ps-naturals.trycloudflare.com/api/auth/callback"
+  "https://ultra-success-delete-exercises.trycloudflare.com/auth/callback",
+  "https://ultra-success-delete-exercises.trycloudflare.com/auth/shopify/callback",
+  "https://ultra-success-delete-exercises.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]

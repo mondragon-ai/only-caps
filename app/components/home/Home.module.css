@@ -1,0 +1,56 @@
+/* ============================================================ */
+/* 1. Order Summary                                             */
+/* ============================================================ */
+.orderGrid {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+.orderGridItem {
+  flex: 1 1 calc(33.3333% - 16px); /* 3 items per row with some gap */
+  margin: 8px;
+}
+@media (max-width: 768px) {
+  .orderGrid {
+    flex-direction: column;
+  }
+  .orderGridItem {
+    flex: 1 1 100%; /* Full width on mobile */
+    margin: 8px 0;
+  }
+}
+
+/* ============================================================ */
+/* 2. Highlight Stats                                           */
+/* ============================================================ */
+.highlightGrid {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+.highlightGridItem {
+  display: flex;
+  flex-direction: row;
+}
+.highlightGridItem .icon {
+  width: 50px;
+  height: 50px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  border-radius: 25px;
+  background-color: rgb(246, 246, 246);
+}
+.highlightGridItem .statsText {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-left: 20px;
+}
+@media (max-width: 768px) {
+  .highlightGrid {
+    flex-direction: column;
+  }
+}
