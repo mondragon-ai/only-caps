@@ -9,8 +9,10 @@ import {
 import { CartIcon, MoneyIcon } from "@shopify/polaris-icons";
 import styles from "./Home.module.css";
 import { formatNumber } from "~/lib/formatters/numbers";
+import { useWidth } from "~/hooks/util";
 
 export const HighlightStats = () => {
+  const innerWidth = useWidth();
   return (
     <Card>
       <BlockStack gap="500">
@@ -26,7 +28,7 @@ export const HighlightStats = () => {
             borderWidth="025"
             borderRadius="100"
             padding="400"
-            width={"48%"}
+            width={innerWidth < 720 ? "100" : "48%"}
           >
             <div className={styles.highlightGridItem}>
               <div className={styles.icon}>
@@ -47,7 +49,7 @@ export const HighlightStats = () => {
             borderWidth="025"
             borderRadius="100"
             padding="400"
-            width={"48%"}
+            width={innerWidth < 720 ? "100" : "48%"}
           >
             <div className={styles.highlightGridItem}>
               <div className={styles.icon}>
