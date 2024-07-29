@@ -10,23 +10,25 @@ import {
 } from "@shopify/polaris";
 import styles from "./Home.module.css";
 
-export const OrderSummary = () => {
+export const OrderSummary = ({ orders }: { orders: boolean }) => {
   return (
     <Card>
       <BlockStack gap="800">
         <InlineGrid columns="1fr auto">
           <Text as="h2" variant="headingSm">
-            Recent Orders
+            {!orders ? "Recent Orders" : "Quick Overview"}
           </Text>
-          <ButtonGroup>
-            <Button
-              variant="plain"
-              onClick={() => {}}
-              accessibilityLabel="Preview"
-            >
-              View All
-            </Button>
-          </ButtonGroup>
+          {!orders && (
+            <ButtonGroup>
+              <Button
+                variant="plain"
+                onClick={() => {}}
+                accessibilityLabel="Preview"
+              >
+                View All
+              </Button>
+            </ButtonGroup>
+          )}
         </InlineGrid>
 
         <div className={styles.orderGrid}>

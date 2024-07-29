@@ -1,9 +1,8 @@
 import { useEffect } from "react";
-import type { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
-import { json } from "@remix-run/node";
+import type { LoaderFunctionArgs } from "@remix-run/node";
 import { useFetcher } from "@remix-run/react";
-import { Page, Layout, FooterHelp, Link } from "@shopify/polaris";
-import { TitleBar, useAppBridge } from "@shopify/app-bridge-react";
+import { Page, Layout } from "@shopify/polaris";
+import { useAppBridge } from "@shopify/app-bridge-react";
 import { authenticate } from "../shopify.server";
 import { OrderSummary } from "~/components/home/OrderSummary";
 import { HighlightStats } from "~/components/home/HighlightStats";
@@ -12,6 +11,7 @@ import { FeaturedProducts } from "~/components/home/FeaturedProducts";
 import { HowTo } from "~/components/home/HowTo";
 import { ProFroma } from "~/components/home/ProFroma";
 import { RecommendedApps } from "~/components/home/RecommendedApps";
+import { Footer } from "~/components/layout/Footer";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   await authenticate.admin(request);
@@ -20,7 +20,6 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 };
 
 export default function Index() {
-  const currentYear = new Date().getFullYear();
   const createProductFetcher = useFetcher<any>();
 
   const productId = createProductFetcher.data?.product?.id.replace(
@@ -49,7 +48,7 @@ export default function Index() {
     >
       <Layout>
         <Layout.Section>
-          <OrderSummary />
+          <OrderSummary orders={false} />
         </Layout.Section>
         <Layout.Section>
           <HighlightStats />
@@ -70,10 +69,7 @@ export default function Index() {
           <RecommendedApps />
         </Layout.Section>
         <Layout.Section>
-          <FooterHelp align="center">
-            © 2022 - {currentYear} Bigly fueled by{" "}
-            <Link url="#">imPowered</Link>
-          </FooterHelp>
+          <Footer />
         </Layout.Section>
       </Layout>
     </Page>
