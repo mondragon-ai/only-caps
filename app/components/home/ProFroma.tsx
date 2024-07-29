@@ -19,7 +19,7 @@ export const ProFroma = () => {
     qty: 5,
   });
   return (
-    <Card>
+    <Card padding="800">
       <InlineGrid
         gap="400"
         alignItems="center"
@@ -35,16 +35,14 @@ export const ProFroma = () => {
           <Text as="h4" variant="headingMd" alignment="start">
             Expected Revenue to Generate{" "}
           </Text>
-          <Divider borderColor="transparent" />
-          <Divider borderColor="transparent" />
-          <Divider borderColor="transparent" />
+          <Divider borderColor="transparent" borderWidth="100" />
           <Text as="p" variant="bodyMd">
             Your cost for the hat starts at{" "}
             <Text
               as="strong"
               variant="bodyMd"
               fontWeight="semibold"
-              tone="magic-subdued"
+              tone="magic"
             >
               $30.00{" "}
             </Text>
@@ -54,12 +52,7 @@ export const ProFroma = () => {
           <Text as="p" variant="bodyMd">
             Approximate annual revenue{" "}
           </Text>
-          <Text
-            as="h2"
-            variant="headingLg"
-            tone="magic-subdued"
-            fontWeight="semibold"
-          >
+          <Text as="h2" variant="heading2xl" tone="magic" fontWeight="bold">
             {`$${formatToMoney(Number(form.price * form.qty * 365))}`}
           </Text>
         </div>
@@ -92,12 +85,12 @@ const SellFor = ({ setForm, form }: FormProps) => {
   );
 
   return (
-    <div className={styles.sellForWrapper}>
+    <div className={styles.sellForWrapper} style={{ marginTop: "2.5rem" }}>
       <div className={styles.txt}>
         <Text as="p" variant="bodyMd">
           You sell for
         </Text>
-        <Text as="p" variant="bodyXs" tone="magic-subdued">
+        <Text as="p" variant="bodyXs" tone="magic">
           Recommended Price
         </Text>
       </div>
@@ -130,7 +123,7 @@ const DailyQuantity = ({ setForm, form }: FormProps) => {
   );
 
   return (
-    <div className={styles.sellForWrapper}>
+    <div className={styles.sellForWrapper} style={{ marginBottom: "2.5rem" }}>
       <div className={styles.txt}>
         <Text as="p" variant="bodyMd">
           Sales per Day

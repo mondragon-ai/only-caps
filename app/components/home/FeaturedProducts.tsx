@@ -1,4 +1,11 @@
-import { Badge, BlockStack, Card, InlineGrid, Text } from "@shopify/polaris";
+import {
+  Badge,
+  BlockStack,
+  Card,
+  InlineGrid,
+  Link,
+  Text,
+} from "@shopify/polaris";
 import styles from "./Home.module.css";
 
 export const FeaturedProducts = () => {
@@ -9,10 +16,18 @@ export const FeaturedProducts = () => {
           Featured Products
         </Text>
         <InlineGrid gap="400" columns={{ xs: 1, sm: 2, md: 3, lg: 4, xl: 4 }}>
-          <ProductCard type="dad" bestSeller />
-          <ProductCard type="trucker" />
-          <ProductCard type="5pannel" />
-          <ProductCard type="snapback" bestSeller />
+          <Link url="#" removeUnderline={true} monochrome={true}>
+            <ProductCard type="dad" bestSeller />
+          </Link>
+          <Link url="#" removeUnderline={true} monochrome={true}>
+            <ProductCard type="trucker" />
+          </Link>
+          <Link url="#" removeUnderline={true} monochrome={true}>
+            <ProductCard type="5pannel" />
+          </Link>
+          <Link url="#" removeUnderline={true} monochrome={true}>
+            <ProductCard type="snapback" bestSeller />
+          </Link>
         </InlineGrid>
       </BlockStack>
     </Card>
