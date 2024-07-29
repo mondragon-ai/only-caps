@@ -9,6 +9,8 @@ import { OrderSummary } from "~/components/home/OrderSummary";
 import { HighlightStats } from "~/components/home/HighlightStats";
 import { VideoCard } from "~/components/home/VideoCard";
 import { FeaturedProducts } from "~/components/home/FeaturedProducts";
+import { HowTo } from "~/components/home/HowTo";
+import { ProFroma } from "~/components/home/ProFroma";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   await authenticate.admin(request);
@@ -39,8 +41,8 @@ export default function Index() {
 
   return (
     <Page
-      title="Add payment method"
-      subtitle="Test"
+      title="Welcome Back, Hodge Twins"
+      subtitle="Dashboard"
       primaryAction={{ content: "Create Mockup", disabled: false }}
     >
       <Layout>
@@ -51,10 +53,16 @@ export default function Index() {
           <HighlightStats />
         </Layout.Section>
         <Layout.Section>
-          <VideoCard />
+          <FeaturedProducts />
         </Layout.Section>
         <Layout.Section>
-          <FeaturedProducts />
+          <HowTo />
+        </Layout.Section>
+        <Layout.Section>
+          <ProFroma />
+        </Layout.Section>
+        <Layout.Section>
+          <VideoCard />
         </Layout.Section>
       </Layout>
     </Page>

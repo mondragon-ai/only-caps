@@ -3,7 +3,7 @@
 client_id = "e062b2afbda40feef1c957b971c7b292"
 name = "Only Caps"
 handle = "only-caps"
-application_url = "https://ri-phys-gr-soldier.trycloudflare.com"
+application_url = "https://funeral-minutes-earrings-paperback.trycloudflare.com"
 embedded = true
 
 [build]
@@ -17,9 +17,9 @@ scopes = "write_products"
 
 [auth]
 redirect_urls = [
-  "https://ri-phys-gr-soldier.trycloudflare.com/auth/callback",
-  "https://ri-phys-gr-soldier.trycloudflare.com/auth/shopify/callback",
-  "https://ri-phys-gr-soldier.trycloudflare.com/api/auth/callback"
+  "https://funeral-minutes-earrings-paperback.trycloudflare.com/auth/callback",
+  "https://funeral-minutes-earrings-paperback.trycloudflare.com/auth/shopify/callback",
+  "https://funeral-minutes-earrings-paperback.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]
