@@ -1,17 +1,6 @@
-import {
-  Badge,
-  BlockStack,
-  Box,
-  Card,
-  InlineGrid,
-  Link,
-  Text,
-} from "@shopify/polaris";
+import { BlockStack, Card, Link, Text } from "@shopify/polaris";
 import styles from "./Orders.module.css";
-import { MoneyFilledIcon } from "@shopify/polaris-icons";
-import { formatToMoney } from "~/lib/formatters/numbers";
 import { OrderProps } from "~/lib/types/orders";
-import { useCallback, useState } from "react";
 import { useAppBridge } from "@shopify/app-bridge-react";
 
 export const Customer = ({ order }: { order: OrderProps }) => {

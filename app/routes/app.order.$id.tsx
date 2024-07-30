@@ -12,6 +12,7 @@ import { DeleteIcon, ProductAddIcon } from "@shopify/polaris-icons";
 import { Order } from "~/components/orders/Order";
 import { Price } from "~/components/orders/Price";
 import { Customer } from "~/components/orders/Customer";
+import { OrderDetail } from "~/components/orders/OrderDetail";
 
 const line_items = [
   {
@@ -103,6 +104,7 @@ const order = {
 export default function OrdersPage() {
   return (
     <Page
+      backAction={{ content: "Order", url: "/app/orders" }}
       title={`#${String(order.order_name)}`}
       subtitle={order.date}
       secondaryActions={[
@@ -124,7 +126,10 @@ export default function OrdersPage() {
         </Layout.Section>
 
         <Layout.Section variant="oneThird">
-          <Customer order={order} />
+          <BlockStack gap={"500"}>
+            <Customer order={order} />
+            <OrderDetail order={order} />
+          </BlockStack>
         </Layout.Section>
       </Layout>
       <Layout>
