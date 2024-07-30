@@ -1,16 +1,4 @@
-import {
-  Box,
-  Card,
-  Layout,
-  Link,
-  List,
-  Page,
-  Text,
-  BlockStack,
-  FooterHelp,
-  EmptyState,
-} from "@shopify/polaris";
-import { TitleBar } from "@shopify/app-bridge-react";
+import { Box, Layout, Page, EmptyState } from "@shopify/polaris";
 import { OrderSummary } from "~/components/home/OrderSummary";
 import { Footer } from "~/components/layout/Footer";
 import { OrderList } from "~/components/orders/OrderList";

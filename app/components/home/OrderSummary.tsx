@@ -6,7 +6,6 @@ import {
   InlineGrid,
   Text,
   Badge,
-  Grid,
 } from "@shopify/polaris";
 import styles from "./Home.module.css";
 

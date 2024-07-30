@@ -3,7 +3,7 @@
 client_id = "e062b2afbda40feef1c957b971c7b292"
 name = "Only Caps"
 handle = "only-caps"
-application_url = "https://gore-further-burlington-summary.trycloudflare.com"
+application_url = "https://slide-xl-disciplinary-occurs.trycloudflare.com"
 embedded = true
 
 [build]
@@ -17,9 +17,9 @@ scopes = "write_products"
 
 [auth]
 redirect_urls = [
-  "https://gore-further-burlington-summary.trycloudflare.com/auth/callback",
-  "https://gore-further-burlington-summary.trycloudflare.com/auth/shopify/callback",
-  "https://gore-further-burlington-summary.trycloudflare.com/api/auth/callback"
+  "https://slide-xl-disciplinary-occurs.trycloudflare.com/auth/callback",
+  "https://slide-xl-disciplinary-occurs.trycloudflare.com/auth/shopify/callback",
+  "https://slide-xl-disciplinary-occurs.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]
