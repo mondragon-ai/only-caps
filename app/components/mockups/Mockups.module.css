@@ -75,7 +75,7 @@
   align-items: center;
   width: 100%;
   height: auto;
-  max-width: 300px;
+  max-height: 200px;
   object-fit: cover;
   border-radius: 10px;
   border: 1px solid rgb(197, 197, 197);

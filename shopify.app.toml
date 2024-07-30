@@ -3,7 +3,7 @@
 client_id = "e062b2afbda40feef1c957b971c7b292"
 name = "Only Caps"
 handle = "only-caps"
-application_url = "https://slide-xl-disciplinary-occurs.trycloudflare.com"
+application_url = "https://mod-spirituality-enhancing-nav.trycloudflare.com"
 embedded = true
 
 [build]
@@ -17,9 +17,9 @@ scopes = "write_products"
 
 [auth]
 redirect_urls = [
-  "https://slide-xl-disciplinary-occurs.trycloudflare.com/auth/callback",
-  "https://slide-xl-disciplinary-occurs.trycloudflare.com/auth/shopify/callback",
-  "https://slide-xl-disciplinary-occurs.trycloudflare.com/api/auth/callback"
+  "https://mod-spirituality-enhancing-nav.trycloudflare.com/auth/callback",
+  "https://mod-spirituality-enhancing-nav.trycloudflare.com/auth/shopify/callback",
+  "https://mod-spirituality-enhancing-nav.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]
