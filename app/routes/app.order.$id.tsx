@@ -1,12 +1,4 @@
-import {
-  BlockStack,
-  Card,
-  Layout,
-  Link,
-  List,
-  Page,
-  Text,
-} from "@shopify/polaris";
+import { BlockStack, Layout, Page } from "@shopify/polaris";
 import { Footer } from "~/components/layout/Footer";
 import { DeleteIcon, ProductAddIcon } from "@shopify/polaris-icons";
 import { Order } from "~/components/orders/Order";

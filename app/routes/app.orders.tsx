@@ -58,7 +58,7 @@ export default function OrdersPage() {
         <Layout.Section>
           <OrderSummary orders={true} />
         </Layout.Section>
-        {orders && orders.length > 1 ? (
+        {orders && orders.length > 0 ? (
           <Layout.Section>
             <OrderList orders={orders} />
           </Layout.Section>

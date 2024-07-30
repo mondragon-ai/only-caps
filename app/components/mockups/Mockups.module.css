@@ -1,0 +1,117 @@
+/* ============================================================ */
+/* 1. Mockups                                                   */
+/* ============================================================ */
+.orderBadges {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.info {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.mainImg {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: auto;
+  max-width: 500px;
+  object-fit: cover;
+}
+
+.color {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  height: 40px;
+  width: 40px;
+  border-radius: 20px;
+  border: 1px solid rgb(138, 138, 138);
+  background-color: white;
+  margin-right: 1rem;
+}
+
+.color > div {
+  height: 36px;
+  width: 36px;
+  border-radius: 18px;
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.color:last-child {
+  margin-right: 0rem;
+}
+
+.colorGrid {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.designImg {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: auto;
+  max-width: 300px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid rgb(197, 197, 197);
+  padding: 10px;
+}
+
+.sizeWrapper {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.sizeWrapper > div {
+  width: 48%;
+}
+
+.txtField {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid grey;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.txtField > div {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background-color: aliceblue;
+  border-radius: 5px;
+}
