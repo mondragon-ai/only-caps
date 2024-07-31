@@ -28,6 +28,7 @@ export default function App() {
         {/* <Link to="/app/settings">Settings</Link> */}
         <Link to="/app/orders">Orders</Link>
         <Link to="/app/mockups">Mockups</Link>
+        <Link to="/app/generator">Mockup Generator</Link>
       </NavMenu>
       <Outlet />
     </AppProvider>

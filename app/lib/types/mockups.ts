@@ -6,7 +6,7 @@ export type MockupProps = {
   cost: number;
   created: string;
   name: string;
-  colors: ("red" | "green" | "black")[];
+  colors: string[];
   design: string;
   location: {
     top: number;
@@ -21,4 +21,25 @@ export type MockupProps = {
   mockups: string[];
 };
 
-export type MockupTypes = "dad" | "trucker" | "5panel" | "snapback";
+export type MockupTypes =
+  | "dad"
+  | "trucker"
+  | "retro_trucker"
+  | "snapback"
+  | "mid_profile"
+  | "high_profile"
+  | "low_profile"
+  | "foam_trucker"
+  | "flat_bill"
+  | "structured"
+  | "relaxed";
+
+export type HatDetail = {
+  name: string;
+  type: MockupTypes;
+  colors: string[];
+};
+
+export type HatDataType = {
+  [key in MockupTypes]: HatDetail;
+};
