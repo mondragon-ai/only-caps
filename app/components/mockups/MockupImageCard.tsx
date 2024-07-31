@@ -1,12 +1,8 @@
 import { Card } from "@shopify/polaris";
 import { MockupProps } from "~/lib/types/mockups";
 import styles from "./Mockups.module.css";
-import Draggable, {
-  DraggableBounds,
-  DraggableData,
-  DraggableEvent,
-} from "react-draggable";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { Rnd } from "react-rnd";
 
 export const MockupImageCard = ({ mockup }: { mockup: MockupProps }) => {
   return (
@@ -20,39 +16,33 @@ export const MockupImageCard = ({ mockup }: { mockup: MockupProps }) => {
     </Card>
   );
 };
-
 export const GenoratorMockupImageCard = ({
   mockup,
+  setMockup,
 }: {
   mockup: MockupProps;
+  setMockup: React.Dispatch<React.SetStateAction<MockupProps>>;
 }) => {
   const cardRef = useRef<HTMLDivElement>(null);
-  const [bounds, setBounds] = useState<DraggableBounds | string>("parent");
-
-  const onStart = useCallback((e: DraggableEvent, data: DraggableData) => {
-    // console.log("Event: ", e);
-    // console.log("Data: ", data);
-  }, []);
-
-  const onStop = useCallback((e: DraggableEvent, data: DraggableData) => {
-    // console.log("Event: ", e);
-    // console.log("Data: ", data);
-  }, []);
+  const [state, setState] = useState({
+    x: 0,
+    y: 0,
+    width: mockup.resized_dimensions.width,
+    height: mockup.resized_dimensions.height,
+  });
 
   useEffect(() => {
-    if (cardRef.current) {
-      // const rect = cardRef.current.getBoundingClientRect();
-      console.log("\n\n\n");
-      console.log({ resize_w: mockup.resized_dimensions.width });
-      console.log({ resize_h: mockup.resized_dimensions.height });
-      setBounds({
-        left: 0,
-        top: 0,
-        right: 400 - mockup.resized_dimensions.width,
-        bottom: 200 - mockup.resized_dimensions.height,
-      });
-    }
-  }, [cardRef]);
+    setState({
+      ...state,
+      width: mockup.resized_dimensions.width,
+      height: mockup.resized_dimensions.height,
+    });
+  }, [mockup]);
+
+  console.log("\n\n\n");
+  console.log("state", state);
+  console.log("resized_dimensions", mockup.resized_dimensions);
+  console.log("location", mockup.location);
 
   return (
     <Card padding={"200"}>
@@ -77,6 +67,7 @@ export const GenoratorMockupImageCard = ({
         />
         <div
           style={{
+            position: "relative",
             height: "200px",
             width: "400px",
             border: "1px dotted red",
@@ -84,9 +75,52 @@ export const GenoratorMockupImageCard = ({
           }}
           ref={cardRef}
         >
-          <Draggable bounds={bounds} onStart={onStart} onStop={onStop}>
-            <img src={mockup.resized_design} alt="" style={{ float: "left" }} />
-          </Draggable>
+          <Rnd
+            bounds="parent"
+            size={{
+              width: state.width,
+              height: state.height,
+            }}
+            position={{ x: state.x, y: state.y }}
+            lockAspectRatio
+            onDragStop={(e, d) => {
+              setState({ ...state, x: d.x, y: d.y });
+
+              setMockup((prevMockup) => ({
+                ...prevMockup,
+                location: {
+                  top: d.y,
+                  left: d.x,
+                },
+              }));
+            }}
+            onResize={(e, direction, ref, delta, position) => {
+              setState({
+                ...state,
+                width: ref.offsetWidth,
+                height: ref.offsetHeight,
+                ...position,
+              });
+
+              setMockup((prevMockup) => ({
+                ...prevMockup,
+                resized_dimensions: {
+                  height: ref.offsetHeight,
+                  width: ref.offsetWidth,
+                },
+                location: {
+                  top: position.y,
+                  left: position.x,
+                },
+              }));
+            }}
+          >
+            <img
+              src={mockup.resized_design}
+              alt=""
+              style={{ width: state.width, height: state.height }}
+            />
+          </Rnd>
         </div>
       </div>
     </Card>

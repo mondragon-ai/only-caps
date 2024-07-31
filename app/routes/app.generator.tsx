@@ -60,7 +60,7 @@ export default function GeneratorPage() {
       <Layout>
         <Layout.Section>
           <BlockStack gap={"500"}>
-            <GenoratorMockupImageCard mockup={mockup} />
+            <GenoratorMockupImageCard mockup={mockup} setMockup={setMockup} />
             <MockupInfo mockup={mockup} />
           </BlockStack>
         </Layout.Section>

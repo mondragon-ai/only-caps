@@ -25,14 +25,26 @@ export const GeneratorDimensions = ({
 }) => {
   const handleWidthChange = useCallback(
     (value: string) => {
-      setMockup({ ...mockup, size: { ...mockup.size, width: Number(value) } });
+      setMockup({
+        ...mockup,
+        resized_dimensions: {
+          ...mockup.resized_dimensions,
+          width: Number(value),
+        },
+      });
     },
     [mockup],
   );
 
   const handleHeightChange = useCallback(
     (value: string) => {
-      setMockup({ ...mockup, size: { ...mockup.size, height: Number(value) } });
+      setMockup({
+        ...mockup,
+        resized_dimensions: {
+          ...mockup.resized_dimensions,
+          height: Number(value),
+        },
+      });
     },
     [mockup],
   );
@@ -83,7 +95,7 @@ export const GeneratorDimensions = ({
               Width
             </Text>
             <TextField
-              value={String(mockup.size.width)}
+              value={String(mockup.resized_dimensions.width)}
               onChange={handleWidthChange}
               label=""
               type="number"
@@ -96,7 +108,7 @@ export const GeneratorDimensions = ({
               Height
             </Text>
             <TextField
-              value={String(mockup.size.height)}
+              value={String(mockup.resized_dimensions.height)}
               onChange={handleHeightChange}
               label=""
               type="number"

@@ -3,7 +3,7 @@
 client_id = "e062b2afbda40feef1c957b971c7b292"
 name = "Only Caps"
 handle = "only-caps"
-application_url = "https://defining-steps-figured-selection.trycloudflare.com"
+application_url = "https://pens-warrant-nl-chassis.trycloudflare.com"
 embedded = true
 
 [build]
@@ -17,9 +17,9 @@ scopes = "write_products"
 
 [auth]
 redirect_urls = [
-  "https://defining-steps-figured-selection.trycloudflare.com/auth/callback",
-  "https://defining-steps-figured-selection.trycloudflare.com/auth/shopify/callback",
-  "https://defining-steps-figured-selection.trycloudflare.com/api/auth/callback"
+  "https://pens-warrant-nl-chassis.trycloudflare.com/auth/callback",
+  "https://pens-warrant-nl-chassis.trycloudflare.com/auth/shopify/callback",
+  "https://pens-warrant-nl-chassis.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]
