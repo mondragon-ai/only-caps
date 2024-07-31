@@ -3,7 +3,7 @@
 client_id = "e062b2afbda40feef1c957b971c7b292"
 name = "Only Caps"
 handle = "only-caps"
-application_url = "https://picks-ceiling-consciousness-thing.trycloudflare.com"
+application_url = "https://proved-asked-course-novelty.trycloudflare.com"
 embedded = true
 
 [build]
@@ -17,9 +17,9 @@ scopes = "write_products"
 
 [auth]
 redirect_urls = [
-  "https://picks-ceiling-consciousness-thing.trycloudflare.com/auth/callback",
-  "https://picks-ceiling-consciousness-thing.trycloudflare.com/auth/shopify/callback",
-  "https://picks-ceiling-consciousness-thing.trycloudflare.com/api/auth/callback"
+  "https://proved-asked-course-novelty.trycloudflare.com/auth/callback",
+  "https://proved-asked-course-novelty.trycloudflare.com/auth/shopify/callback",
+  "https://proved-asked-course-novelty.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]
