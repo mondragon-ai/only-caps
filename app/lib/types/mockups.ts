@@ -7,7 +7,7 @@ export type MockupProps = {
   created: string;
   name: string;
   colors: string[];
-  design: string;
+  design: string | undefined;
   location: {
     top: number;
     left: number;
@@ -19,6 +19,15 @@ export type MockupProps = {
   SKU: string;
   product_id: string;
   mockups: string[];
+  design_dimensions: {
+    height: number;
+    width: number;
+  };
+  resized_design: string;
+  resized_dimensions: {
+    height: number;
+    width: number;
+  };
 };
 
 export type MockupTypes =

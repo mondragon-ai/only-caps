@@ -1,17 +1,14 @@
-import { Badge, BlockStack, Layout, Page } from "@shopify/polaris";
+import { BlockStack, Layout, Page } from "@shopify/polaris";
 import { Footer } from "~/components/layout/Footer";
 import { ProductAddIcon } from "@shopify/polaris-icons";
-import { MockupImageCard } from "~/components/mockups/MockupImageCard";
+import { GenoratorMockupImageCard } from "~/components/mockups/MockupImageCard";
 import { MockupProps, MockupTypes } from "~/lib/types/mockups";
-import { Colors, GeneratorColors } from "~/components/mockups/Colors";
-import {
-  GeneratorMockupImage,
-  MockupImage,
-} from "~/components/mockups/MockupImage";
+import { GeneratorColors } from "~/components/mockups/Colors";
+import { GeneratorMockupImage } from "~/components/mockups/MockupImage";
 import { GeneratorDimensions } from "~/components/mockups/Dimensions";
-import { MockupDetail } from "~/components/mockups/MockupDetail";
-import { WholeSale } from "~/components/mockups/WholeSale";
+import { GeneratorMockupDetail } from "~/components/mockups/MockupDetail";
 import { useState } from "react";
+import { MockupInfo } from "~/components/mockups/MockupInfo";
 
 const mockup_dummy = {
   id: "",
@@ -35,6 +32,15 @@ const mockup_dummy = {
   SKU: "POD-TRCK-",
   product_id: "",
   mockups: [""],
+  design_dimensions: {
+    height: 0,
+    width: 0,
+  },
+  resized_design: "",
+  resized_dimensions: {
+    height: 0,
+    width: 0,
+  },
 } as MockupProps;
 
 export default function GeneratorPage() {
@@ -54,22 +60,18 @@ export default function GeneratorPage() {
       <Layout>
         <Layout.Section>
           <BlockStack gap={"500"}>
-            <MockupImageCard mockup={mockup} />
+            <GenoratorMockupImageCard mockup={mockup} />
+            <MockupInfo mockup={mockup} />
           </BlockStack>
         </Layout.Section>
 
         <Layout.Section variant="oneThird">
           <BlockStack gap={"500"}>
             <GeneratorColors mockup={mockup} setMockup={setMockup} />
-            <GeneratorMockupImage mockup={mockup} />
+            <GeneratorMockupImage mockup={mockup} setMockup={setMockup} />
             <GeneratorDimensions mockup={mockup} setMockup={setMockup} />
-            <MockupDetail mockup={mockup} />
+            <GeneratorMockupDetail mockup={mockup} setMockup={setMockup} />
           </BlockStack>
-        </Layout.Section>
-      </Layout>
-      <Layout>
-        <Layout.Section>
-          <Footer />
         </Layout.Section>
       </Layout>
       <Layout>

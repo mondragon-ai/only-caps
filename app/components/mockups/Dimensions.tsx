@@ -23,41 +23,53 @@ export const GeneratorDimensions = ({
   mockup: MockupProps;
   setMockup: React.Dispatch<React.SetStateAction<MockupProps>>;
 }) => {
-  const handleWidthChange = useCallback((value: string) => {
-    setMockup({ ...mockup, size: { ...mockup.size, width: Number(value) } });
-  }, []);
+  const handleWidthChange = useCallback(
+    (value: string) => {
+      setMockup({ ...mockup, size: { ...mockup.size, width: Number(value) } });
+    },
+    [mockup],
+  );
 
-  const handleHeightChange = useCallback((value: string) => {
-    setMockup({ ...mockup, size: { ...mockup.size, width: Number(value) } });
-  }, []);
+  const handleHeightChange = useCallback(
+    (value: string) => {
+      setMockup({ ...mockup, size: { ...mockup.size, height: Number(value) } });
+    },
+    [mockup],
+  );
 
-  const handleTopChange = useCallback((value: string) => {
-    setMockup({
-      ...mockup,
-      location: { ...mockup.location, top: Number(value) },
-    });
-  }, []);
+  const handleTopChange = useCallback(
+    (value: string) => {
+      setMockup({
+        ...mockup,
+        location: { ...mockup.location, top: Number(value) },
+      });
+    },
+    [mockup],
+  );
 
-  const handleLeftChange = useCallback((value: string) => {
-    setMockup({
-      ...mockup,
-      location: { ...mockup.location, left: Number(value) },
-    });
-  }, []);
+  const handleLeftChange = useCallback(
+    (value: string) => {
+      setMockup({
+        ...mockup,
+        location: { ...mockup.location, left: Number(value) },
+      });
+    },
+    [mockup],
+  );
 
   const alignLeft = useCallback(() => {
     setMockup({
       ...mockup,
       location: { ...mockup.location, left: Number(0) },
     });
-  }, []);
+  }, [mockup]);
 
   const alignTop = useCallback(() => {
     setMockup({
       ...mockup,
       location: { ...mockup.location, top: Number(0) },
     });
-  }, []);
+  }, [mockup]);
 
   return (
     <Card>
@@ -97,7 +109,7 @@ export const GeneratorDimensions = ({
         <div className={styles.sizeWrapper}>
           <div>
             <Text as="p" variant="bodyXs" tone="disabled">
-              Width
+              Top
             </Text>
             <TextField
               value={String(mockup.location.top)}
@@ -110,7 +122,7 @@ export const GeneratorDimensions = ({
           </div>
           <div>
             <Text as="p" variant="bodyXs" tone="disabled">
-              Height
+              Left
             </Text>
             <TextField
               value={String(mockup.location.left)}
