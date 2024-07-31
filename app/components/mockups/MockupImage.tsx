@@ -60,6 +60,7 @@ export const GeneratorMockupImage = ({
                   design_dimensions: { width: 0, height: 0 },
                   resized_design: "",
                   resized_dimensions: { width: 0, height: 0 },
+                  location: { top: 0, left: 0 },
                 })
               }
             />

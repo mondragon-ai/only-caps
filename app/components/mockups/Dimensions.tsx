@@ -83,6 +83,46 @@ export const GeneratorDimensions = ({
     });
   }, [mockup]);
 
+  const alignBottom = useCallback(() => {
+    setMockup({
+      ...mockup,
+      location: {
+        ...mockup.location,
+        top: 200 - Number(mockup.resized_dimensions.height),
+      },
+    });
+  }, [mockup]);
+
+  const alignRight = useCallback(() => {
+    setMockup({
+      ...mockup,
+      location: {
+        ...mockup.location,
+        left: 400 - mockup.resized_dimensions.width,
+      },
+    });
+  }, [mockup]);
+
+  const alignMiddleHorizontal = useCallback(() => {
+    setMockup({
+      ...mockup,
+      location: {
+        ...mockup.location,
+        left: Math.round((400 - mockup.resized_dimensions.width) / 2),
+      },
+    });
+  }, [mockup]);
+
+  const alignMiddleVertical = useCallback(() => {
+    setMockup({
+      ...mockup,
+      location: {
+        ...mockup.location,
+        top: Math.round((200 - mockup.resized_dimensions.height) / 2),
+      },
+    });
+  }, [mockup]);
+
   return (
     <Card>
       <BlockStack gap={"400"}>
@@ -152,6 +192,7 @@ export const GeneratorDimensions = ({
             <ButtonGroup variant="segmented" fullWidth>
               <Button icon={ArrowUpIcon} onClick={alignTop}></Button>
               <Button
+                onClick={alignMiddleVertical}
                 icon={
                   <svg
                     fill="#000000"
@@ -172,13 +213,14 @@ export const GeneratorDimensions = ({
                   </svg>
                 }
               ></Button>
-              <Button icon={ArrowDownIcon}></Button>
+              <Button icon={ArrowDownIcon} onClick={alignBottom}></Button>
             </ButtonGroup>
           </div>
           <div>
             <ButtonGroup variant="segmented" fullWidth>
               <Button icon={ArrowLeftIcon} onClick={alignLeft}></Button>
               <Button
+                onClick={alignMiddleHorizontal}
                 icon={
                   <svg
                     fill="#000000"
@@ -200,7 +242,7 @@ export const GeneratorDimensions = ({
                   </svg>
                 }
               ></Button>
-              <Button icon={ArrowRightIcon}></Button>
+              <Button icon={ArrowRightIcon} onClick={alignRight}></Button>
             </ButtonGroup>
           </div>
         </div>

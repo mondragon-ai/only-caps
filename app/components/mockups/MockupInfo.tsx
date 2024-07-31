@@ -1,4 +1,5 @@
-import { DescriptionList } from "@shopify/polaris";
+import { DescriptionList, Text } from "@shopify/polaris";
+import { HatData } from "~/lib/data/mockups";
 import { MockupProps } from "~/lib/types/mockups";
 
 export const MockupInfo = ({ mockup }: { mockup: MockupProps }) => {
@@ -7,19 +8,20 @@ export const MockupInfo = ({ mockup }: { mockup: MockupProps }) => {
       gap="tight"
       items={[
         {
-          term: "Logistics",
-          description:
-            "The management of products or other resources as they travel between a point of origin and a destination.",
+          term: "Details",
+          description: HatData[mockup.type].details,
         },
         {
-          term: "Sole proprietorship",
-          description:
-            "A business structure where a single individual both owns and runs the company.",
+          term: "Features",
+          description: (
+            <Text as="p" variant="bodyMd">
+              {HatData[mockup.type].features}
+            </Text>
+          ),
         },
         {
-          term: "Discount code",
-          description:
-            "A series of numbers and/or letters that an online shopper may enter at checkout to get a discount or special offer.",
+          term: "Materials",
+          description: HatData[mockup.type].material,
         },
       ]}
     />

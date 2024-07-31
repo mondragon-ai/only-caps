@@ -47,6 +47,10 @@ export type HatDetail = {
   name: string;
   type: MockupTypes;
   colors: string[];
+  details: string[];
+  features: string;
+  material: string;
+  image: string;
 };
 
 export type HatDataType = {
