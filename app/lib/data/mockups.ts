@@ -9,6 +9,8 @@ export const HatData: HatDataType = {
     material: `The structure does not hold shape when off. \n Breathable: perfect for sports`,
     features: `Premium quality materials. Branded by well known USA supplier. Compliments an athletic lifestyle`,
     image:
+      "https://cdn.shopify.com/s/files/1/0783/4802/6165/files/RetroTruckerCap.webp?v=1722090003",
+    sample:
       "https://theparkwholesale.com/cdn/shop/products/211-BLK_2_90193956-3eb8-4f7b-86a8-5cfd9fa608b5_1200x1200.png?v=1681785666",
   },
   retro_trucker: {
@@ -20,8 +22,8 @@ export const HatData: HatDataType = {
       "Olive",
       "Red",
       "Royal",
-      "Grey/Blk",
-      "Blk/Wht",
+      "Grey/Black",
+      "Blk/White",
       "Khaki/Brown",
     ],
     details: [
@@ -33,6 +35,8 @@ export const HatData: HatDataType = {
     material: `Cotton front and polyester mesh back \n Provides ventilation and comfort`,
     features: `Timeless retro look \n Adjustable fit for all sizes \n Durable and comfortable for all-day wear`,
     image:
+      "https://cdn.shopify.com/s/files/1/0783/4802/6165/files/5panel.webp?v=1722090003",
+    sample:
       "https://theparkwholesale.com/cdn/shop/products/211-BLK_2_90193956-3eb8-4f7b-86a8-5cfd9fa608b5_1200x1200.png?v=1681785666",
   },
   flat_bill: {
@@ -58,6 +62,8 @@ export const HatData: HatDataType = {
     material: `100% Cotton \n Soft and sturdy \n Rope detail for added style`,
     features: `Stylish and modern design \n Adjustable for a custom fit \n Perfect for casual and trendy looks`,
     image:
+      "https://cdn.shopify.com/s/files/1/0783/4802/6165/files/5PanelFlatBillHatSnapback.webp?v=1722090003",
+    sample:
       "https://theparkwholesale.com/cdn/shop/products/211-BLK_2_90193956-3eb8-4f7b-86a8-5cfd9fa608b5_1200x1200.png?v=1681785666",
   },
   high_profile: {
@@ -73,6 +79,8 @@ export const HatData: HatDataType = {
     material: `Blend of cotton and polyester \n Structured to hold shape \n High crown for a bold look`,
     features: `Modern and trendy style \n Premium materials for durability \n Ideal for custom embroidery`,
     image:
+      "https://cdn.shopify.com/s/files/1/0783/4802/6165/files/HighProfileStructuredCottonBlend_ruckerHat.webp?v=1722090003",
+    sample:
       "https://theparkwholesale.com/cdn/shop/products/211-BLK_2_90193956-3eb8-4f7b-86a8-5cfd9fa608b5_1200x1200.png?v=1681785666",
   },
   low_profile: {
@@ -88,6 +96,8 @@ export const HatData: HatDataType = {
     material: `100% Cotton \n Soft and comfortable \n Relaxed fit for a casual look`,
     features: `Classic dad hat style \n Adjustable strap for a perfect fit \n Comfortable for all-day wear`,
     image:
+      "https://cdn.shopify.com/s/files/1/0783/4802/6165/files/CottonDadHat.png?v=1722090003",
+    sample:
       "https://theparkwholesale.com/cdn/shop/products/211-BLK_2_90193956-3eb8-4f7b-86a8-5cfd9fa608b5_1200x1200.png?v=1681785666",
   },
   mid_profile: {
@@ -103,12 +113,14 @@ export const HatData: HatDataType = {
     material: `100% Polyester \n Structured for a perfect fit \n Mid crown for a balanced look`,
     features: `Versatile style suitable for various occasions \n Durable and lightweight \n Perfect for custom prints`,
     image:
+      "https://cdn.shopify.com/s/files/1/0783/4802/6165/files/MidStructuredPolyesterCap.webp?v=1722090003",
+    sample:
       "https://theparkwholesale.com/cdn/shop/products/211-BLK_2_90193956-3eb8-4f7b-86a8-5cfd9fa608b5_1200x1200.png?v=1681785666",
   },
   structured: {
     name: "Bigly Performance Hats",
     type: "structured",
-    colors: ["Black", "White", "Gray", "Navy", "Black Multicam"],
+    colors: ["Black", "White", "Gray", "Navy", "Black/Green"],
     details: [
       "High-Quality Construction",
       "Firm Structure",
@@ -118,6 +130,8 @@ export const HatData: HatDataType = {
     material: `Blend of premium fabrics \n Structured to hold shape \n Available in multiple colors`,
     features: `Durable and long-lasting \n Perfect for professional use \n Adjustable for a comfortable fit`,
     image:
+      "https://theparkwholesale.com/cdn/shop/products/211-BLK_2_90193956-3eb8-4f7b-86a8-5cfd9fa608b5_1200x1200.png?v=1681785666",
+    sample:
       "https://theparkwholesale.com/cdn/shop/products/211-BLK_2_90193956-3eb8-4f7b-86a8-5cfd9fa608b5_1200x1200.png?v=1681785666",
   },
   dad: {
@@ -134,6 +148,8 @@ export const HatData: HatDataType = {
     features: `Classic dad hat style \n Adjustable strap for a perfect fit \n Comfortable for all-day wear`,
     image:
       "https://theparkwholesale.com/cdn/shop/products/211-BLK_2_90193956-3eb8-4f7b-86a8-5cfd9fa608b5_1200x1200.png?v=1681785666",
+    sample:
+      "https://theparkwholesale.com/cdn/shop/products/211-BLK_2_90193956-3eb8-4f7b-86a8-5cfd9fa608b5_1200x1200.png?v=1681785666",
   },
   trucker: {
     name: "",
@@ -144,6 +160,8 @@ export const HatData: HatDataType = {
     features: `Classic trucker style \n Adjustable fit for all sizes \n Perfect for outdoor activities`,
     image:
       "https://theparkwholesale.com/cdn/shop/products/211-BLK_2_90193956-3eb8-4f7b-86a8-5cfd9fa608b5_1200x1200.png?v=1681785666",
+    sample:
+      "https://theparkwholesale.com/cdn/shop/products/211-BLK_2_90193956-3eb8-4f7b-86a8-5cfd9fa608b5_1200x1200.png?v=1681785666",
   },
   snapback: {
     name: "",
@@ -153,6 +171,8 @@ export const HatData: HatDataType = {
     material: `Blend of cotton and polyester \n Structured to hold shape \n Adjustable snapback closure`,
     features: `Trendy and stylish design \n Perfect for customization \n Comfortable fit for all-day wear`,
     image:
+      "https://cdn.shopify.com/s/files/1/0783/4802/6165/files/5PanelFlatBillHatSnapback.webp?v=1722090003",
+    sample:
       "https://theparkwholesale.com/cdn/shop/products/211-BLK_2_90193956-3eb8-4f7b-86a8-5cfd9fa608b5_1200x1200.png?v=1681785666",
   },
   relaxed: {
@@ -168,6 +188,17 @@ export const HatData: HatDataType = {
     material: `100% Cotton \n Soft and comfortable \n Relaxed fit for a casual look`,
     features: `Classic dad hat style \n Adjustable strap for a perfect fit \n Comfortable for all-day wear`,
     image:
+      "https://cdn.shopify.com/s/files/1/0783/4802/6165/files/CottonDadHat.png?v=1722090003",
+    sample:
       "https://theparkwholesale.com/cdn/shop/products/211-BLK_2_90193956-3eb8-4f7b-86a8-5cfd9fa608b5_1200x1200.png?v=1681785666",
   },
 };
+
+export const MockupTypeList = [
+  "mid_profile",
+  "high_profile",
+  "low_profile",
+  "foam_trucker",
+  "flat_bill",
+  "structured",
+];

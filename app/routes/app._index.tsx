@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import type { LoaderFunctionArgs } from "@remix-run/node";
-import { useFetcher } from "@remix-run/react";
+import { useFetcher, useNavigate } from "@remix-run/react";
 import { Page, Layout } from "@shopify/polaris";
 import { useAppBridge } from "@shopify/app-bridge-react";
 import { authenticate } from "../shopify.server";
@@ -21,6 +21,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
 export default function Index() {
   const createProductFetcher = useFetcher<any>();
+  const navigate = useNavigate();
 
   const productId = createProductFetcher.data?.product?.id.replace(
     "gid://shopify/Product/",
@@ -44,7 +45,11 @@ export default function Index() {
     <Page
       title="Welcome Back, Hodge Twins"
       subtitle="Dashboard"
-      primaryAction={{ content: "Create Mockup", disabled: false }}
+      primaryAction={{
+        content: "Create Mockup",
+        disabled: false,
+        onAction: () => navigate("/app/catalog"),
+      }}
     >
       <Layout>
         <Layout.Section>

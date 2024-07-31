@@ -16,16 +16,16 @@ export const FeaturedProducts = () => {
           Featured Products
         </Text>
         <InlineGrid gap="400" columns={{ xs: 1, sm: 2, md: 3, lg: 4, xl: 4 }}>
-          <Link url="#" removeUnderline={true} monochrome={true}>
+          <Link url="/app/catalog" removeUnderline={true} monochrome={true}>
             <ProductCard type="dad" bestSeller />
           </Link>
-          <Link url="#" removeUnderline={true} monochrome={true}>
+          <Link url="/app/catalog" removeUnderline={true} monochrome={true}>
             <ProductCard type="trucker" />
           </Link>
-          <Link url="#" removeUnderline={true} monochrome={true}>
+          <Link url="/app/catalog" removeUnderline={true} monochrome={true}>
             <ProductCard type="5pannel" />
           </Link>
-          <Link url="#" removeUnderline={true} monochrome={true}>
+          <Link url="/app/catalog" removeUnderline={true} monochrome={true}>
             <ProductCard type="snapback" bestSeller />
           </Link>
         </InlineGrid>

@@ -51,6 +51,7 @@ export type HatDetail = {
   features: string;
   material: string;
   image: string;
+  sample: string;
 };
 
 export type HatDataType = {

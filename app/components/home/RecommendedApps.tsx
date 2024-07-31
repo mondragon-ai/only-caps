@@ -59,7 +59,16 @@ export const AppCard = ({
           {info}
         </Text>
       </div>
-      <Link url="#" target="_blank">
+      <Link
+        url={
+          app == "sherpa"
+            ? "https://apps.shopify.com/sherpa-chatbot-production?st_source=autocomplete"
+            : app == "discount"
+              ? "https://apps.shopify.com/bigly-discount?st_source=autocomplete"
+              : "https://apps.shopify.com/bigly-pod?st_source=autocomplete"
+        }
+        target="_blank"
+      >
         Learn More
       </Link>
     </div>

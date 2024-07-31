@@ -8,8 +8,10 @@ import {
   Badge,
 } from "@shopify/polaris";
 import styles from "./Home.module.css";
+import { useNavigate } from "@remix-run/react";
 
 export const OrderSummary = ({ orders }: { orders: boolean }) => {
+  const navigate = useNavigate();
   return (
     <Card>
       <BlockStack gap="800">
@@ -21,7 +23,7 @@ export const OrderSummary = ({ orders }: { orders: boolean }) => {
             <ButtonGroup>
               <Button
                 variant="plain"
-                onClick={() => {}}
+                onClick={() => navigate("/app/orders")}
                 accessibilityLabel="Preview"
               >
                 View All

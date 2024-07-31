@@ -65,6 +65,45 @@ export const GeneratorColors = ({
         <div className={styles.colorGrid}>
           {HatData[mockup.type].colors &&
             HatData[mockup.type].colors.map((c) => {
+              if (c.includes("/")) {
+                return (
+                  <div
+                    onClick={() => handleColorChange(c)}
+                    className={styles.color}
+                    style={{
+                      height: "40px",
+                      width: "40px",
+                      borderRadius: "20px",
+                    }}
+                  >
+                    <div style={{ position: "absolute", zIndex: 10 }}>
+                      {mockup.colors.includes(c) ? (
+                        <Icon source={CheckIcon} tone="subdued" />
+                      ) : null}
+                    </div>
+                    <div
+                      style={{
+                        background: c.split("/")[0],
+                        height: "36px",
+                        width: "50%",
+                        borderRadius: 0,
+                        borderTopLeftRadius: "18px",
+                        borderBottomLeftRadius: "18px",
+                      }}
+                    ></div>
+                    <div
+                      style={{
+                        background: c.split("/")[1],
+                        height: "36px",
+                        width: "50%",
+                        borderRadius: 0,
+                        borderTopRightRadius: "18px",
+                        borderBottomRightRadius: "18px",
+                      }}
+                    ></div>
+                  </div>
+                );
+              }
               return (
                 <div
                   className={styles.color}

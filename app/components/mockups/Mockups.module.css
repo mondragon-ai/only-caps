@@ -41,6 +41,7 @@
   border: 1px solid rgb(138, 138, 138);
   background-color: white;
   margin-right: 1rem;
+  margin-bottom: 1rem;
 }
 
 .color > div {
@@ -114,4 +115,22 @@
   align-items: center;
   background-color: aliceblue;
   border-radius: 5px;
+}
+
+.catalogCardWrapper {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 0;
+  width: 100%;
+  height: auto;
+  cursor: pointer;
+}
+
+.catalogCardWrapper img {
+  background: rgb(237, 237, 237);
+  filter: grayscale(0.1) blur(1px);
+  margin-right: 1rem;
 }

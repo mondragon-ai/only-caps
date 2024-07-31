@@ -41,7 +41,7 @@ export const GenoratorMockupImageCard = ({
         }}
       >
         <img
-          src={HatData[mockup.type].image}
+          src={HatData[mockup.type].sample}
           alt={mockup.name}
           className={styles.mainImg}
           height="500"

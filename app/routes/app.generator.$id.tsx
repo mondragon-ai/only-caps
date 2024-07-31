@@ -9,6 +9,7 @@ import { GeneratorDimensions } from "~/components/mockups/Dimensions";
 import { GeneratorMockupDetail } from "~/components/mockups/MockupDetail";
 import { useState } from "react";
 import { MockupInfo } from "~/components/mockups/MockupInfo";
+import { useLocation } from "@remix-run/react";
 
 const mockup_dummy = {
   id: "",
@@ -44,11 +45,17 @@ const mockup_dummy = {
 } as MockupProps;
 
 export default function GeneratorPage() {
-  const [mockup, setMockup] = useState<MockupProps>(mockup_dummy);
+  const location = useLocation();
+  const pathSegments = location.pathname.split("/");
+  const slug = pathSegments[pathSegments.length - 1];
+  const [mockup, setMockup] = useState<MockupProps>({
+    ...mockup_dummy,
+    type: slug as MockupTypes,
+  });
 
   return (
     <Page
-      backAction={{ content: "Order", url: "/app/mockups" }}
+      backAction={{ content: "Order", url: "/app/catalog" }}
       title={`${String(mockup.name !== "" ? mockup.name : "Create Name")}`}
       subtitle={"Deisgn and Generate Your Mockup"}
       primaryAction={{
