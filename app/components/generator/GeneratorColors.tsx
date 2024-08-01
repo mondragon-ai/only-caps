@@ -5,25 +5,22 @@ import { CheckIcon } from "@shopify/polaris-icons";
 import { HatData } from "~/lib/data/mockups";
 import { useCallback } from "react";
 
-export const GeneratorColors = ({
-  mockup,
-  setMockup,
-}: {
+interface ColorsProps {
   mockup: MockupProps;
   setMockup: React.Dispatch<React.SetStateAction<MockupProps>>;
-}) => {
+}
+
+export const GeneratorColors = ({ mockup, setMockup }: ColorsProps) => {
   const handleColorChange = useCallback(
     (color: string) => {
-      if (mockup.colors.includes(color)) {
-        setMockup({
-          ...mockup,
-          colors: mockup.colors.filter((c) => c !== color),
-        });
-      } else {
-        setMockup({ ...mockup, colors: [...mockup.colors, color] });
-      }
+      setMockup((prevMockup) => ({
+        ...prevMockup,
+        colors: prevMockup.colors.includes(color)
+          ? prevMockup.colors.filter((c) => c !== color)
+          : [...prevMockup.colors, color],
+      }));
     },
-    [mockup, setMockup],
+    [setMockup],
   );
 
   return (
@@ -31,67 +28,67 @@ export const GeneratorColors = ({
       <BlockStack gap="500">
         <div className={styles.info}>
           <Text as="h2" variant="headingMd">
-            Select Colors
+            Colors
           </Text>
         </div>
-
         <div className={styles.colorGrid}>
           {HatData[mockup.type].colors &&
-            HatData[mockup.type].colors.map((c) => {
-              if (c.includes("/")) {
-                return (
-                  <div
-                    onClick={() => handleColorChange(c)}
-                    className={styles.color}
-                    style={{
-                      height: "40px",
-                      width: "40px",
-                      borderRadius: "20px",
-                    }}
-                  >
-                    <div style={{ position: "absolute", zIndex: 10 }}>
-                      {mockup.colors.includes(c) ? (
-                        <Icon source={CheckIcon} tone="subdued" />
-                      ) : null}
-                    </div>
-                    <div
-                      style={{
-                        background: c.split("/")[0],
-                        height: "36px",
-                        width: "50%",
-                        borderRadius: 0,
-                        borderTopLeftRadius: "18px",
-                        borderBottomLeftRadius: "18px",
-                      }}
-                    ></div>
-                    <div
-                      style={{
-                        background: c.split("/")[1],
-                        height: "36px",
-                        width: "50%",
-                        borderRadius: 0,
-                        borderTopRightRadius: "18px",
-                        borderBottomRightRadius: "18px",
-                      }}
-                    ></div>
-                  </div>
-                );
-              }
-              return (
-                <div
-                  className={styles.color}
-                  onClick={() => handleColorChange(c)}
-                >
-                  <div style={{ background: c }}>
-                    {mockup.colors.includes(c) ? (
-                      <Icon source={CheckIcon} tone="subdued" />
-                    ) : null}
-                  </div>
-                </div>
-              );
-            })}
+            HatData[mockup.type].colors.map((color) =>
+              color.includes("/")
+                ? renderDualColorSwatch(mockup, color, handleColorChange)
+                : renderSingleColorSwatch(mockup, color, handleColorChange),
+            )}
         </div>
       </BlockStack>
     </Card>
+  );
+};
+
+export const renderSingleColorSwatch = (
+  mockup: MockupProps,
+  color: string,
+  handleColorChange: (color: string) => void,
+) => (
+  <div
+    className={styles.color}
+    key={color}
+    onClick={() => handleColorChange(color)}
+  >
+    <div style={{ background: color }} className={styles.singleColorSwatch}>
+      {mockup.colors.includes(color) ? (
+        <Icon source={CheckIcon} tone="subdued" />
+      ) : null}
+    </div>
+  </div>
+);
+
+export const renderDualColorSwatch = (
+  mockup: MockupProps,
+  color: string,
+  handleColorChange: (color: string) => void,
+) => {
+  const [color1, color2] = color.split("/");
+  return (
+    <div
+      className={styles.color}
+      key={color}
+      onClick={() => handleColorChange(color)}
+    >
+      <div className={styles.dualColorSwatch}>
+        <div style={{ position: "absolute", zIndex: 10 }}>
+          {mockup.colors.includes(color) ? (
+            <Icon source={CheckIcon} tone="subdued" />
+          ) : null}
+        </div>
+        <div
+          style={{ background: color1 }}
+          className={styles.dualColorHalf}
+        ></div>
+        <div
+          style={{ background: color2 }}
+          className={styles.dualColorHalf}
+        ></div>
+      </div>
+    </div>
   );
 };

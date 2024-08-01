@@ -12,10 +12,11 @@ export const GeneratorMockupDetail = ({
 }) => {
   const handleTitleChange = useCallback(
     (value: string) => {
-      setMockup({ ...mockup, name: value });
+      setMockup((prevMockup) => ({ ...prevMockup, name: value }));
     },
-    [mockup],
+    [setMockup],
   );
+
   return (
     <Card>
       <BlockStack gap="300">
@@ -24,19 +25,35 @@ export const GeneratorMockupDetail = ({
             Mockup Detail
           </Text>
         </div>
-        <div>
-          <Text as="p" variant="bodyXs" tone="disabled">
-            Title
-          </Text>
-          <TextField
-            value={String(mockup.name)}
-            onChange={handleTitleChange}
-            label=""
-            type="text"
-            autoComplete="off"
-          />
-        </div>
+        <TextFieldInput
+          label="Title"
+          value={mockup.name}
+          onChange={handleTitleChange}
+        />
       </BlockStack>
     </Card>
   );
 };
+
+const TextFieldInput = ({
+  label,
+  value,
+  onChange,
+}: {
+  label: string;
+  value: string;
+  onChange: (value: string) => void;
+}) => (
+  <div>
+    <Text as="p" variant="bodyXs" tone="disabled">
+      {label}
+    </Text>
+    <TextField
+      value={value}
+      onChange={onChange}
+      label=""
+      type="text"
+      autoComplete="off"
+    />
+  </div>
+);

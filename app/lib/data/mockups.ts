@@ -286,3 +286,36 @@ export const mockup_dummy = {
   product_id: "",
   mockups: [""],
 } as MockupProps;
+
+export const mockup_init_state = {
+  id: "",
+  image:
+    "https://cdn.shopify.com/s/files/1/0783/4802/6165/files/RetroTruckerCap.webp?v=1722090003",
+  type: "foam_trucker" as MockupTypes,
+  status: "created",
+  cost: 0,
+  created: new Date().toLocaleString(),
+  name: "",
+  colors: [],
+  design: "",
+  location: {
+    top: 0,
+    left: 0,
+  },
+  size: {
+    width: 0,
+    height: 0,
+  },
+  SKU: "POD-",
+  product_id: "",
+  mockups: [""],
+  design_dimensions: {
+    height: 0,
+    width: 0,
+  },
+  resized_design: "",
+  resized_dimensions: {
+    height: 0,
+    width: 0,
+  },
+} as MockupProps;

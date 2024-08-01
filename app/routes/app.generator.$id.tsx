@@ -1,55 +1,23 @@
 import { BlockStack, Layout, Page } from "@shopify/polaris";
 import { Footer } from "~/components/layout/Footer";
 import { ProductAddIcon } from "@shopify/polaris-icons";
-import { GenoratorMockupImageCard } from "~/components/mockups/MockupImageCard";
 import { MockupProps, MockupTypes } from "~/lib/types/mockups";
-import { GeneratorColors } from "~/components/mockups/Colors";
-import { GeneratorMockupImage } from "~/components/mockups/MockupImage";
-import { GeneratorDimensions } from "~/components/mockups/Dimensions";
-import { GeneratorMockupDetail } from "~/components/mockups/MockupDetail";
 import { useState } from "react";
 import { MockupInfo } from "~/components/mockups/MockupInfo";
 import { useLocation } from "@remix-run/react";
-
-const mockup_dummy = {
-  id: "",
-  image:
-    "https://cdn.shopify.com/s/files/1/0783/4802/6165/files/RetroTruckerCap.webp?v=1722090003",
-  type: "foam_trucker" as MockupTypes,
-  status: "created",
-  cost: 0,
-  created: new Date().toLocaleString(),
-  name: "",
-  colors: [],
-  design: "",
-  location: {
-    top: 0,
-    left: 0,
-  },
-  size: {
-    width: 0,
-    height: 0,
-  },
-  SKU: "POD-TRCK-",
-  product_id: "",
-  mockups: [""],
-  design_dimensions: {
-    height: 0,
-    width: 0,
-  },
-  resized_design: "",
-  resized_dimensions: {
-    height: 0,
-    width: 0,
-  },
-} as MockupProps;
+import { GenoratorMockupImageCard } from "~/components/generator/GenoratorMockupImageCard";
+import { GeneratorColors } from "~/components/generator/GeneratorColors";
+import { GeneratorMockupImage } from "~/components/generator/GeneratorMockupImage";
+import { GeneratorDimensions } from "~/components/generator/GeneratorDimensions";
+import { GeneratorMockupDetail } from "~/components/generator/GeneratorMockupDetail";
+import { mockup_init_state } from "~/lib/data/mockups";
 
 export default function GeneratorPage() {
   const location = useLocation();
   const pathSegments = location.pathname.split("/");
   const slug = pathSegments[pathSegments.length - 1];
   const [mockup, setMockup] = useState<MockupProps>({
-    ...mockup_dummy,
+    ...mockup_init_state,
     type: slug as MockupTypes,
   });
 
