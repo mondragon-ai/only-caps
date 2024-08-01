@@ -68,6 +68,33 @@
   flex-wrap: wrap;
 }
 
+.singleColorSwatch {
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+}
+
+.dualColorSwatch {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+  overflow: hidden;
+  display: flex;
+}
+
+.dualColorHalf {
+  height: 36px;
+  width: 50%;
+  border-radius: 0;
+  border-top-left-radius: 18px;
+  border-bottom-left-radius: 18px;
+}
+.dualColorHalf:last-child {
+  border-top-right-radius: 18px;
+  border-bottom-right-radius: 18px;
+}
+
 .designImg {
   position: relative;
   display: flex;

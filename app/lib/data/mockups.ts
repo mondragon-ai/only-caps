@@ -1,4 +1,4 @@
-import { HatDataType } from "../types/mockups";
+import { HatDataType, MockupProps, MockupTypes } from "../types/mockups";
 
 export const HatData: HatDataType = {
   foam_trucker: {
@@ -235,3 +235,54 @@ export const MockupTypeList = [
   "flat_bill",
   "structured",
 ];
+
+export const mockup_list: any[] = [
+  {
+    id: "1",
+    image:
+      "https://cdn.shopify.com/s/files/1/0783/4802/6165/files/RetroTruckerCap.webp?v=1722090003",
+    type: "trucker",
+    status: "created",
+    cost: 0,
+    created: new Date().toLocaleString(),
+    name: "Hawk Tuah",
+    colors: ["red", "green", "black"],
+    design: "",
+    location: {
+      top: 0,
+      left: 0,
+    },
+    size: {
+      width: 0,
+      height: 0,
+    },
+    SKU: "",
+    product_id: "",
+    mockups: [""],
+  },
+];
+
+export const mockup_dummy = {
+  id: "1",
+  image:
+    "https://cdn.shopify.com/s/files/1/0783/4802/6165/files/RetroTruckerCap.webp?v=1722090003",
+  type: "trucker" as MockupTypes,
+  status: "created",
+  cost: 0,
+  created: new Date().toLocaleString(),
+  name: "Hawk Tuah",
+  colors: ["red", "green", "black"],
+  design:
+    "https://cdn.shopify.com/app-store/listing_images/58928b5d71d8f97ebd905e289c151269/icon/CKqbxsDgrP8CEAE=.png",
+  location: {
+    top: 0,
+    left: 0,
+  },
+  size: {
+    width: 0,
+    height: 0,
+  },
+  SKU: "POD-TRCK-",
+  product_id: "",
+  mockups: [""],
+} as MockupProps;

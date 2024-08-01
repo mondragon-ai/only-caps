@@ -2,43 +2,18 @@ import { Badge, BlockStack, Layout, Page } from "@shopify/polaris";
 import { Footer } from "~/components/layout/Footer";
 import { DeleteIcon, ProductAddIcon } from "@shopify/polaris-icons";
 import { MockupImageCard } from "~/components/mockups/MockupImageCard";
-import { MockupProps, MockupTypes } from "~/lib/types/mockups";
 import { Colors } from "~/components/mockups/Colors";
 import { MockupImage } from "~/components/mockups/MockupImage";
 import { Dimensions } from "~/components/mockups/Dimensions";
 import { MockupDetail } from "~/components/mockups/MockupDetail";
 import { WholeSale } from "~/components/mockups/WholeSale";
-
-const mockup = {
-  id: "1",
-  image:
-    "https://cdn.shopify.com/s/files/1/0783/4802/6165/files/RetroTruckerCap.webp?v=1722090003",
-  type: "trucker" as MockupTypes,
-  status: "created",
-  cost: 0,
-  created: new Date().toLocaleString(),
-  name: "Hawk Tuah",
-  colors: ["red", "green", "black"],
-  design:
-    "https://cdn.shopify.com/app-store/listing_images/58928b5d71d8f97ebd905e289c151269/icon/CKqbxsDgrP8CEAE=.png",
-  location: {
-    top: 0,
-    left: 0,
-  },
-  size: {
-    width: 0,
-    height: 0,
-  },
-  SKU: "POD-TRCK-",
-  product_id: "",
-  mockups: [""],
-} as MockupProps;
+import { mockup_dummy } from "~/lib/data/mockups";
 
 export default function MockupPage() {
   return (
     <Page
       titleMetadata={
-        mockup.product_id !== "" ? (
+        mockup_dummy.product_id !== "" ? (
           <Badge progress="complete" tone="success">
             Product Created
           </Badge>
@@ -49,8 +24,8 @@ export default function MockupPage() {
         )
       }
       backAction={{ content: "Order", url: "/app/mockups" }}
-      title={`${String(mockup.name)}`}
-      subtitle={mockup.created}
+      title={`${String(mockup_dummy.name)}`}
+      subtitle={mockup_dummy.created}
       secondaryActions={[
         {
           content: "Delete Mockup",
@@ -60,7 +35,7 @@ export default function MockupPage() {
         },
         {
           content: "Create Product",
-          disabled: mockup.product_id !== "",
+          disabled: mockup_dummy.product_id !== "",
           icon: ProductAddIcon,
         },
       ]}
@@ -68,17 +43,17 @@ export default function MockupPage() {
       <Layout>
         <Layout.Section>
           <BlockStack gap={"500"}>
-            <MockupImageCard mockup={mockup} />
-            <WholeSale mockup={mockup} />
+            <MockupImageCard mockup={mockup_dummy} />
+            <WholeSale mockup={mockup_dummy} />
           </BlockStack>
         </Layout.Section>
 
         <Layout.Section variant="oneThird">
           <BlockStack gap={"500"}>
-            <Colors mockup={mockup} />
-            <MockupImage mockup={mockup} />
-            <Dimensions mockup={mockup} />
-            <MockupDetail mockup={mockup} />
+            <Colors mockup={mockup_dummy} />
+            <MockupImage mockup={mockup_dummy} />
+            <Dimensions mockup={mockup_dummy} />
+            <MockupDetail mockup={mockup_dummy} />
           </BlockStack>
         </Layout.Section>
       </Layout>

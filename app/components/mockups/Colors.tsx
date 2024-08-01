@@ -1,11 +1,39 @@
 import { BlockStack, Card, Icon, Text } from "@shopify/polaris";
 import styles from "./Mockups.module.css";
 import { MockupProps } from "~/lib/types/mockups";
-import { CheckIcon } from "@shopify/polaris-icons";
-import { HatData } from "~/lib/data/mockups";
-import { useCallback } from "react";
 
-export const Colors = ({ mockup }: { mockup: MockupProps }) => {
+interface ColorsProps {
+  mockup: MockupProps;
+}
+
+export const renderSingleColorSwatch = (color: string) => (
+  <div className={styles.color} key={color}>
+    <div
+      style={{ background: color }}
+      className={styles.singleColorSwatch}
+    ></div>
+  </div>
+);
+
+export const renderDualColorSwatch = (color: string) => {
+  const [color1, color2] = color.split("/");
+  return (
+    <div className={styles.color} key={color}>
+      <div className={styles.dualColorSwatch}>
+        <div
+          style={{ background: color1 }}
+          className={styles.dualColorHalf}
+        ></div>
+        <div
+          style={{ background: color2 }}
+          className={styles.dualColorHalf}
+        ></div>
+      </div>
+    </div>
+  );
+};
+
+export const Colors = ({ mockup }: ColorsProps) => {
   return (
     <Card>
       <BlockStack gap="500">
@@ -14,109 +42,13 @@ export const Colors = ({ mockup }: { mockup: MockupProps }) => {
             Colors
           </Text>
         </div>
-
         <div className={styles.colorGrid}>
           {mockup.colors &&
-            mockup.colors.map((c) => {
-              return (
-                <div className={styles.color}>
-                  <div style={{ background: c }}>
-                    <Icon source={CheckIcon} tone="subdued" />
-                  </div>
-                </div>
-              );
-            })}
-        </div>
-      </BlockStack>
-    </Card>
-  );
-};
-
-export const GeneratorColors = ({
-  mockup,
-  setMockup,
-}: {
-  mockup: MockupProps;
-  setMockup: React.Dispatch<React.SetStateAction<MockupProps>>;
-}) => {
-  const handleColorChange = useCallback(
-    (color: string) => {
-      if (mockup.colors.includes(color)) {
-        setMockup({
-          ...mockup,
-          colors: mockup.colors.filter((c) => c !== color),
-        });
-      } else {
-        setMockup({ ...mockup, colors: [...mockup.colors, color] });
-      }
-    },
-    [mockup, setMockup],
-  );
-
-  return (
-    <Card>
-      <BlockStack gap="500">
-        <div className={styles.info}>
-          <Text as="h2" variant="headingMd">
-            Select Colors
-          </Text>
-        </div>
-
-        <div className={styles.colorGrid}>
-          {HatData[mockup.type].colors &&
-            HatData[mockup.type].colors.map((c) => {
-              if (c.includes("/")) {
-                return (
-                  <div
-                    onClick={() => handleColorChange(c)}
-                    className={styles.color}
-                    style={{
-                      height: "40px",
-                      width: "40px",
-                      borderRadius: "20px",
-                    }}
-                  >
-                    <div style={{ position: "absolute", zIndex: 10 }}>
-                      {mockup.colors.includes(c) ? (
-                        <Icon source={CheckIcon} tone="subdued" />
-                      ) : null}
-                    </div>
-                    <div
-                      style={{
-                        background: c.split("/")[0],
-                        height: "36px",
-                        width: "50%",
-                        borderRadius: 0,
-                        borderTopLeftRadius: "18px",
-                        borderBottomLeftRadius: "18px",
-                      }}
-                    ></div>
-                    <div
-                      style={{
-                        background: c.split("/")[1],
-                        height: "36px",
-                        width: "50%",
-                        borderRadius: 0,
-                        borderTopRightRadius: "18px",
-                        borderBottomRightRadius: "18px",
-                      }}
-                    ></div>
-                  </div>
-                );
-              }
-              return (
-                <div
-                  className={styles.color}
-                  onClick={() => handleColorChange(c)}
-                >
-                  <div style={{ background: c }}>
-                    {mockup.colors.includes(c) ? (
-                      <Icon source={CheckIcon} tone="subdued" />
-                    ) : null}
-                  </div>
-                </div>
-              );
-            })}
+            mockup.colors.map((color) =>
+              color.includes("/")
+                ? renderDualColorSwatch(color)
+                : renderSingleColorSwatch(color),
+            )}
         </div>
       </BlockStack>
     </Card>

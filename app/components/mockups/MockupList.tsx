@@ -22,8 +22,21 @@ export const MockupList = ({ mockups }: { mockups: MockupProps[] }) => {
   const { selectedResources, allResourcesSelected, handleSelectionChange } =
     useIndexResourceState(mockups);
 
-  const rowMarkup = mockups.map(
-    ({ id, name, created, type, cost, status, image }, index) => (
+  const renderStatusBadge = (status: string) => {
+    return status === "created" ? (
+      <Badge tone="magic" progress="complete">
+        Created
+      </Badge>
+    ) : (
+      <Badge tone="attention" progress="incomplete">
+        Not Created
+      </Badge>
+    );
+  };
+
+  const renderRow = (mockup: MockupProps, index: number) => {
+    const { id, name, created, type, cost, status, image } = mockup;
+    return (
       <IndexTable.Row
         id={id}
         key={id}
@@ -44,17 +57,7 @@ export const MockupList = ({ mockups }: { mockups: MockupProps[] }) => {
             {name}
           </Text>
         </IndexTable.Cell>
-        <IndexTable.Cell>
-          {status == "created" ? (
-            <Badge tone="magic" progress={"complete"}>
-              Created
-            </Badge>
-          ) : (
-            <Badge tone="attention" progress={"incomplete"}>
-              Not Created
-            </Badge>
-          )}
-        </IndexTable.Cell>
+        <IndexTable.Cell>{renderStatusBadge(status)}</IndexTable.Cell>
         <IndexTable.Cell>
           <Text as="span" alignment="end" numeric>
             {`$${formatToMoney(Number(cost))}`}
@@ -66,8 +69,8 @@ export const MockupList = ({ mockups }: { mockups: MockupProps[] }) => {
           </Text>
         </IndexTable.Cell>
       </IndexTable.Row>
-    ),
-  );
+    );
+  };
 
   const bulkActions = [
     {
@@ -79,7 +82,7 @@ export const MockupList = ({ mockups }: { mockups: MockupProps[] }) => {
   ];
 
   return (
-    <Card padding={"0"}>
+    <Card padding="0">
       <IndexTable
         condensed={useBreakpoints().smDown}
         resourceName={resourceName}
@@ -98,7 +101,7 @@ export const MockupList = ({ mockups }: { mockups: MockupProps[] }) => {
         ]}
         bulkActions={bulkActions}
       >
-        {rowMarkup}
+        {mockups.map(renderRow)}
       </IndexTable>
     </Card>
   );
