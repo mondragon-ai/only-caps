@@ -9,11 +9,32 @@ import {
 import styles from "./Orders.module.css";
 import { MoneyFilledIcon } from "@shopify/polaris-icons";
 import { formatToMoney } from "~/lib/formatters/numbers";
-import { OrderProps } from "~/lib/types/orders";
+import { LineItemProps, OrderProps } from "~/lib/types/orders";
+
+const calculateSubtotal = (lineItems: LineItemProps[]) => {
+  return lineItems.reduce((prev, li) => prev + li.cost, 0);
+};
+
+const renderPriceRow = (title: string, description: string, amount: number) => (
+  <InlineGrid columns={["oneThird", "twoThirds", "oneThird"]}>
+    <Text variant="bodyMd" fontWeight="bold" as="h3">
+      {title}
+    </Text>
+    <Text variant="bodyMd" as="h3" tone="subdued">
+      {description}
+    </Text>
+    <Text variant="bodyMd" as="h3" tone="subdued">
+      {`$${formatToMoney(amount)}`}
+    </Text>
+  </InlineGrid>
+);
 
 export const Price = ({ order }: { order: OrderProps }) => {
+  const subtotal = calculateSubtotal(order.line_items);
+  const total = subtotal + order.shipping;
+
   return (
-    <Card padding={"400"}>
+    <Card padding="400">
       <BlockStack gap="300">
         <div className={styles.orderBadges}>
           <div style={{ marginRight: "0.5rem" }}>
@@ -29,42 +50,16 @@ export const Price = ({ order }: { order: OrderProps }) => {
           borderColor="border"
           borderWidth="025"
           borderRadius="100"
-          padding={"400"}
+          padding="400"
         >
           <BlockStack gap="300">
-            <InlineGrid columns={["oneThird", "twoThirds", "oneThird"]}>
-              <Text variant="bodyMd" fontWeight="bold" as="h3">
-                Subtotal
-              </Text>
-              <Text variant="bodyMd" as="h3" tone="subdued">
-                {`${order.line_items.length == 0 || order.line_items.length > 1 ? order.line_items.length + " items" : " item"}`}
-              </Text>
-              <Text variant="bodyMd" as="h3" tone="subdued">
-                {`$${formatToMoney(order.line_items.reduce((prev, li) => prev + li.cost, 0))}`}
-              </Text>
-            </InlineGrid>
-            <InlineGrid columns={["oneThird", "twoThirds", "oneThird"]}>
-              <Text variant="bodyMd" fontWeight="bold" as="h3">
-                Shipping
-              </Text>
-              <Text variant="bodyMd" as="h3" tone="subdued">
-                Standard Shipping
-              </Text>
-              <Text variant="bodyMd" as="h3" tone="subdued">
-                {`$${formatToMoney(order.shipping)}`}
-              </Text>
-            </InlineGrid>
-            <InlineGrid columns={["oneThird", "twoThirds", "oneThird"]}>
-              <Text variant="bodyMd" fontWeight="bold" as="h3">
-                Total
-              </Text>
-              <Text variant="bodyMd" as="h3" tone="subdued">
-                -
-              </Text>
-              <Text variant="bodyMd" as="h3" tone="subdued">
-                {`$${formatToMoney(order.line_items.reduce((prev, li) => prev + li.cost, 0) + order.shipping)}`}
-              </Text>
-            </InlineGrid>
+            {renderPriceRow(
+              "Subtotal",
+              `${order.line_items.length} ${order.line_items.length === 1 ? "item" : "items"}`,
+              subtotal,
+            )}
+            {renderPriceRow("Shipping", "Standard Shipping", order.shipping)}
+            {renderPriceRow("Total", "-", total)}
           </BlockStack>
         </Box>
       </BlockStack>

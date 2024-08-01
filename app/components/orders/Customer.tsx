@@ -9,7 +9,7 @@ export const Customer = ({ order }: { order: OrderProps }) => {
   const handleEmailClick = async () => {
     try {
       await navigator.clipboard.writeText(order.customer.email);
-      shopify.toast.show("Email Saved");
+      shopify.toast.show("Email Copied");
     } catch (err) {
       console.error("Failed to copy email: ", err);
     }
@@ -18,44 +18,58 @@ export const Customer = ({ order }: { order: OrderProps }) => {
   return (
     <Card>
       <BlockStack gap="500">
-        <div className={styles.info}>
-          <Text as="h2" variant="headingMd">
-            Customer
-          </Text>
-          <div className={styles.info}>
-            <Text as="p" variant="bodyMd" tone="disabled">
-              {order.customer.name}
-            </Text>
-            <Link
-            //   url={`https://${shopify}/customers/${order.customer.id}`}
-            >
-              {order.customer.id}
-            </Link>
-          </div>
-        </div>
-        <div className={styles.info}>
-          <Text as="h2" variant="headingMd">
-            Contact Information
-          </Text>
-          <Link onClick={handleEmailClick}>{order.customer.email}</Link>
-        </div>
-        <div className={styles.info}>
-          <Text as="h2" variant="headingMd">
-            Shipping Address
-          </Text>
-          <div>
-            <Text as="p" variant="bodyMd" tone="disabled">
-              {order.customer.address.line1}
-            </Text>
-            <Text as="p" variant="bodyMd" tone="disabled">
-              {order.customer.address.city}
-            </Text>
-            <Text as="p" variant="bodyMd" tone="disabled">
-              {`${order.customer.address.country} ${order.customer.address.zip}`}
-            </Text>
-          </div>
-        </div>
+        <RenderCustomerInfo order={order} />
+        <RenderContactInfo order={order} copy={handleEmailClick} />
+        <RenderShippingAddress order={order} />
       </BlockStack>
     </Card>
   );
 };
+
+const RenderCustomerInfo = ({ order }: { order: OrderProps }) => (
+  <div className={styles.info}>
+    <Text as="h2" variant="headingMd">
+      Customer
+    </Text>
+    <div className={styles.info}>
+      <Text as="p" variant="bodyMd" tone="disabled">
+        {order.customer.name}
+      </Text>
+      <Link url={"#"}>{order.customer.id}</Link>
+    </div>
+  </div>
+);
+
+const RenderContactInfo = ({
+  order,
+  copy,
+}: {
+  order: OrderProps;
+  copy: () => Promise<void>;
+}) => (
+  <div className={styles.info}>
+    <Text as="h2" variant="headingMd">
+      Contact Information
+    </Text>
+    <Link onClick={copy}>{order.customer.email}</Link>
+  </div>
+);
+
+const RenderShippingAddress = ({ order }: { order: OrderProps }) => (
+  <div className={styles.info}>
+    <Text as="h2" variant="headingMd">
+      Shipping Address
+    </Text>
+    <div>
+      <Text as="p" variant="bodyMd" tone="disabled">
+        {order.customer.address.line1}
+      </Text>
+      <Text as="p" variant="bodyMd" tone="disabled">
+        {order.customer.address.city}
+      </Text>
+      <Text as="p" variant="bodyMd" tone="disabled">
+        {`${order.customer.address.country} ${order.customer.address.zip}`}
+      </Text>
+    </div>
+  </div>
+);
