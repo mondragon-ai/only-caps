@@ -143,7 +143,6 @@
   background-color: aliceblue;
   border-radius: 5px;
 }
-
 .catalogCardWrapper {
   position: relative;
   display: flex;
@@ -160,4 +159,64 @@
   background: rgb(237, 237, 237);
   filter: grayscale(0.1) blur(1px);
   margin-right: 1rem;
+}
+
+.cardContent {
+  height: 100%;
+  min-height: 200px;
+  padding-bottom: 1rem;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+}
+
+.colorGridCatalog {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.colorCatalog {
+  height: 20px;
+  width: 20px;
+  border-radius: 10px;
+  border: 0.5px solid grey;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.singleColorSwatchCatalog {
+  height: 17px;
+  width: 17px;
+  border-radius: 8.5px;
+}
+
+.dualColorSwatchCatalog {
+  display: flex;
+  height: 20px;
+  width: 20px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.dualColorHalfCatalog {
+  height: 17px;
+  width: 48%;
+}
+
+.dualColorHalfCatalog:first-child {
+  border-top-left-radius: 8.5px;
+  border-bottom-left-radius: 8.5px;
+}
+
+.dualColorHalfCatalog:last-child {
+  border-top-right-radius: 8.5px;
+  border-bottom-right-radius: 8.5px;
+}
+
+.catalogInfo {
+  padding: 1rem 0;
 }

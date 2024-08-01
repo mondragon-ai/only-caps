@@ -1,7 +1,7 @@
-import { Layout, Page, Text } from "@shopify/polaris";
+import { Layout, Page } from "@shopify/polaris";
 import { Footer } from "~/components/layout/Footer";
 import { CatalogCard } from "~/components/mockups/CatalogCard";
-import { HatData, MockupTypeList } from "~/lib/data/mockups";
+import { MockupTypeList } from "~/lib/data/mockups";
 import { MockupTypes } from "~/lib/types/mockups";
 
 export default function GeneratorPage() {

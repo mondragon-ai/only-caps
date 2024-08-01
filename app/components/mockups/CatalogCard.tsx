@@ -17,155 +17,118 @@ export const CatalogCard = ({
   type: MockupTypes;
 }) => {
   const navigate = useNavigate();
+  const hat = HatData[type as MockupTypes];
+
+  const renderColorSwatch = (color: string) => {
+    if (color.includes("/")) {
+      const [color1, color2] = color.split("/");
+      return (
+        <div className={styles.colorCatalog} key={color}>
+          <div className={styles.dualColorSwatchCatalog}>
+            <div
+              style={{ background: color1 }}
+              className={styles.dualColorHalfCatalog}
+            ></div>
+            <div
+              style={{ background: color2 }}
+              className={styles.dualColorHalfCatalog}
+            ></div>
+          </div>
+        </div>
+      );
+    }
+    return (
+      <div className={styles.colorCatalog} key={color}>
+        <div
+          className={styles.singleColorSwatchCatalog}
+          style={{ background: color }}
+        ></div>
+      </div>
+    );
+  };
+
   return (
-    <Card padding={"0"}>
+    <Card padding="0">
       <div
         className={styles.catalogCardWrapper}
         onClick={() => navigate(`/app/generator/${type}`)}
       >
-        <img
-          src={HatData[type as MockupTypes].image}
-          alt=""
-          height={200}
-          width={200}
-        />
-        <div
-          style={{
-            height: "100%",
-            minHeight: "200px",
-            paddingBottom: "1rem",
-            display: "flex",
-            justifyContent: "space-between",
-            flexDirection: "column",
-          }}
-        >
+        <img src={hat.image} alt={hat.name} height={200} width={200} />
+        <div className={styles.cardContent}>
           <InlineGrid
             gap="400"
             columns={{ xs: 2, sm: 2, md: 5, lg: 5, xl: 5 }}
             alignItems="start"
           >
-            <div style={{ padding: "1rem 0" }}>
-              <BlockStack gap={"400"}>
+            <CatalogInfo title="Price" content={hat.price} />
+            <CatalogInfo
+              title="Shipping"
+              content="From $3.99"
+              subContent="Depends on the shipping address price may vary"
+              magic
+            />
+            <CatalogInfo
+              title="Avg. Production Time"
+              content="🇺🇸 7 - 10 days"
+              subContent="🌎 10 - 18 days"
+            />
+            <CatalogInfo title="Sizes" content="One Size" />
+            <div
+              className={styles.catalogInfo}
+              style={{ paddingRight: "1rem" }}
+            >
+              <BlockStack gap="400">
                 <Text as="h6" variant="headingXs" tone="subdued">
-                  Price
+                  Colors - {hat.colors.length}
                 </Text>
-                <Text as="p" variant="bodyMd" tone="base">
-                  $30.00 - $35.00
-                </Text>
-              </BlockStack>
-            </div>
-            <div style={{ padding: "1rem 0" }}>
-              <BlockStack gap={"400"}>
-                <Text as="h6" variant="headingXs" tone="subdued">
-                  Shipping
-                </Text>
-                <Text as="p" variant="bodyMd" tone="base">
-                  From $3.99
-                  <Text as="p" variant="bodyXs" tone="magic-subdued">
-                    Depends on the shipping address price may vary
-                  </Text>
-                </Text>
-              </BlockStack>
-            </div>
-            <div style={{ padding: "1rem 0" }}>
-              <BlockStack gap={"400"}>
-                <Text as="h6" variant="headingXs" tone="subdued">
-                  Avg. Production Time
-                </Text>
-                <Text as="p" variant="bodyMd" tone="base">
-                  🇺🇸 7 - 10 days
-                  <Text as="p" variant="bodyMd" tone="base">
-                    🌎 10 - 18 days
-                  </Text>
-                </Text>
-              </BlockStack>
-            </div>
-            <div style={{ padding: "1rem 0" }}>
-              <BlockStack gap={"400"}>
-                <Text as="h6" variant="headingXs" tone="subdued">
-                  Sizes
-                </Text>
-                <Text as="p" variant="bodyMd" tone="base">
-                  One Size
-                </Text>
-              </BlockStack>
-            </div>
-            <div style={{ padding: "1rem 0" }}>
-              <BlockStack gap={"400"}>
-                <Text as="h6" variant="headingXs" tone="subdued">
-                  Colors - 10
-                </Text>
-                <div className={styles.colorGrid}>
-                  {HatData[type].colors &&
-                    HatData[type].colors.map((c) => {
-                      if (c.includes("/")) {
-                        return (
-                          <div
-                            className={styles.color}
-                            style={{
-                              height: "20px",
-                              width: "20px",
-                              borderRadius: "10px",
-                            }}
-                          >
-                            <div
-                              style={{
-                                background: c.split("/")[0],
-                                height: "17px",
-                                width: "50%",
-                                borderRadius: 0,
-                                borderTopLeftRadius: "8.5px",
-                                borderBottomLeftRadius: "8.5px",
-                              }}
-                            ></div>
-                            <div
-                              style={{
-                                background: c.split("/")[1],
-                                height: "17px",
-                                width: "50%",
-                                borderRadius: 0,
-                                borderTopRightRadius: "8.5px",
-                                borderBottomRightRadius: "8.5px",
-                              }}
-                            ></div>
-                          </div>
-                        );
-                      }
-                      return (
-                        <div
-                          className={styles.color}
-                          style={{
-                            height: "20px",
-                            width: "20px",
-                            borderRadius: "10px",
-                          }}
-                        >
-                          <div
-                            style={{
-                              background: c,
-                              height: "17px",
-                              width: "17px",
-                              borderRadius: "8.5px",
-                            }}
-                          ></div>
-                        </div>
-                      );
-                    })}
+                <div className={styles.colorGridCatalog}>
+                  {hat.colors.map(renderColorSwatch)}
                 </div>
               </BlockStack>
             </div>
           </InlineGrid>
-
           <Text
             as="h4"
             variant="headingXs"
             fontWeight="regular"
             tone="magic-subdued"
           >
-            {HatData[type as MockupTypes].name}
+            {hat.name}
           </Text>
         </div>
       </div>
     </Card>
   );
 };
+
+const CatalogInfo = ({
+  title,
+  content,
+  subContent,
+  magic,
+}: {
+  title: string;
+  content: string;
+  subContent?: string;
+  magic?: boolean;
+}) => (
+  <div className={styles.catalogInfo}>
+    <BlockStack gap="400">
+      <Text as="h6" variant="headingXs" tone="subdued">
+        {title}
+      </Text>
+      <Text as="p" variant="bodyMd" tone="base">
+        {content}
+        {subContent && (
+          <Text
+            as="p"
+            variant={magic ? "bodyXs" : "bodyMd"}
+            tone={magic ? "magic-subdued" : "base"}
+          >
+            {subContent}
+          </Text>
+        )}
+      </Text>
+    </BlockStack>
+  </div>
+);
