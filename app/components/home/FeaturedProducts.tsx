@@ -1,12 +1,8 @@
-import {
-  Badge,
-  BlockStack,
-  Card,
-  InlineGrid,
-  Link,
-  Text,
-} from "@shopify/polaris";
+import { Badge, BlockStack, Card, InlineGrid, Text } from "@shopify/polaris";
 import styles from "./Home.module.css";
+import { HatData } from "~/lib/data/mockups";
+import { MockupTypes } from "~/lib/types/mockups";
+import { useNavigate } from "@remix-run/react";
 
 export const FeaturedProducts = () => {
   return (
@@ -16,54 +12,45 @@ export const FeaturedProducts = () => {
           Featured Products
         </Text>
         <InlineGrid gap="400" columns={{ xs: 1, sm: 2, md: 3, lg: 4, xl: 4 }}>
-          <Link url="/app/catalog" removeUnderline={true} monochrome={true}>
-            <ProductCard type="dad" bestSeller />
-          </Link>
-          <Link url="/app/catalog" removeUnderline={true} monochrome={true}>
-            <ProductCard type="trucker" />
-          </Link>
-          <Link url="/app/catalog" removeUnderline={true} monochrome={true}>
-            <ProductCard type="5pannel" />
-          </Link>
-          <Link url="/app/catalog" removeUnderline={true} monochrome={true}>
-            <ProductCard type="snapback" bestSeller />
-          </Link>
+          <ProductCard type="foam_trucker" bestSeller />
+          <ProductCard type="mid_profile" />
+          <ProductCard type="flat_bill" />
+          <ProductCard type="snapback" bestSeller />
         </InlineGrid>
       </BlockStack>
     </Card>
   );
 };
 
-export const ProductCard = ({
-  type,
-  bestSeller,
-}: {
-  type: "trucker" | "dad" | "5pannel" | "snapback";
+interface ProductCardProps {
+  type: MockupTypes;
   bestSeller?: boolean;
-}) => {
-  const img =
-    type == "dad"
-      ? "https://cdn.shopify.com/s/files/1/0783/4802/6165/files/MidStructuredPolyesterCap.webp?v=1722090003"
-      : type == "trucker"
-        ? "https://cdn.shopify.com/s/files/1/0783/4802/6165/files/RetroTruckerCap.webp?v=1722090003"
-        : type == "5pannel"
-          ? "https://cdn.shopify.com/s/files/1/0783/4802/6165/files/5PanelFlatBillHatSnapback.webp?v=1722090003"
-          : "https://cdn.shopify.com/s/files/1/0783/4802/6165/files/5PanelFlatBillHatSnapback.webp?v=1722090003";
+}
+
+export const ProductCard = ({ type, bestSeller }: ProductCardProps) => {
+  const navigate = useNavigate();
+  const { image, title, delivery, price } = HatData[type];
+
   return (
-    <div className={styles.productCard}>
+    <div
+      onClick={() => navigate(`/app/genorator/${type}`)}
+      className={styles.productCard}
+    >
       <div className={styles.mediaContainer}>
-        <img src={img} alt="" />
+        <img src={image} alt={title} height={200} width={200} />
       </div>
       <div className={styles.textContainer}>
-        <Text as="h4" variant="headingSm">
-          Dad Hat
-        </Text>
-        <Text as="p" variant="bodyXs" tone="success">
-          🇺🇸 Estimated Delivery 7 - 10 days
-        </Text>
-        <Text as="p" variant="bodySm" tone="subdued">
-          $30.00 - $35.00
-        </Text>
+        <BlockStack gap={"200"}>
+          <Text as="h4" variant="headingSm">
+            {title}
+          </Text>
+          <Text as="p" variant="bodyXs" tone="success">
+            {delivery}
+          </Text>
+          <Text as="p" variant="bodySm" tone="subdued">
+            {price}
+          </Text>
+        </BlockStack>
       </div>
       {bestSeller && (
         <div className={styles.badgeContainer}>

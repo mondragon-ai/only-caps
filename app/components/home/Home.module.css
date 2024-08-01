@@ -89,6 +89,7 @@
   align-items: flex-start;
   border: 0.5px solid rgb(174, 174, 174);
   border-radius: 10px;
+  cursor: pointer;
 }
 
 .badgeContainer {
@@ -97,20 +98,23 @@
   left: 10px;
 }
 
-.mediaContainer {
+.productCard .mediaContainer {
   position: relative;
   width: 100%;
-  min-height: 150px;
-  max-height: 150px;
+  min-height: 200px;
+  max-height: 200px;
+  height: 200px;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
 }
 
-.mediaContainer img {
+.productCard .mediaContainer img {
   width: 100%;
   height: auto;
   position: relative;
   object-fit: cover;
+  min-height: 200px;
+  max-height: 200px;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
 }
@@ -134,8 +138,8 @@
     max-height: auto;
   }
   .mediaContainer {
-    min-height: 200px;
-    max-height: 200px;
+    width: 150px;
+    height: 150px;
   }
 
   .mediaContainer img {

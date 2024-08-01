@@ -3,6 +3,7 @@ import { HatDataType } from "../types/mockups";
 export const HatData: HatDataType = {
   foam_trucker: {
     name: "Decky 6025 Mid Profile, 5 Panel Foam Trucker Hat",
+    title: "Foam Trucker Hat",
     type: "foam_trucker",
     colors: ["Black"],
     details: ["Branded Bills", "Flat Bill", "Unstructured panel", "Breathable"],
@@ -12,9 +13,12 @@ export const HatData: HatDataType = {
       "https://cdn.shopify.com/s/files/1/0783/4802/6165/files/RetroTruckerCap.webp?v=1722090003",
     sample:
       "https://theparkwholesale.com/cdn/shop/products/211-BLK_2_90193956-3eb8-4f7b-86a8-5cfd9fa608b5_1200x1200.png?v=1681785666",
+    delivery: "🇺🇸 Estimated Delivery 7 - 10 days",
+    price: "$30.00 - $35.00",
   },
   retro_trucker: {
     name: "Decky 6030 - Classic, 5-Panel Retro Trucker Cap",
+    title: "Retro Trucker Hat",
     type: "retro_trucker",
     colors: [
       "Black",
@@ -38,9 +42,12 @@ export const HatData: HatDataType = {
       "https://cdn.shopify.com/s/files/1/0783/4802/6165/files/5panel.webp?v=1722090003",
     sample:
       "https://theparkwholesale.com/cdn/shop/products/211-BLK_2_90193956-3eb8-4f7b-86a8-5cfd9fa608b5_1200x1200.png?v=1681785666",
+    delivery: "🇺🇸 Estimated Delivery 7 - 10 days",
+    price: "$30.00 - $35.00",
   },
   flat_bill: {
     name: "Decky 6032 - Classic Rope Cap, 5 Panel Flat Bill Hat, Snapback",
+    title: "Flat Bill Snapback",
     type: "flat_bill",
     colors: [
       "Black",
@@ -65,9 +72,12 @@ export const HatData: HatDataType = {
       "https://cdn.shopify.com/s/files/1/0783/4802/6165/files/5PanelFlatBillHatSnapback.webp?v=1722090003",
     sample:
       "https://theparkwholesale.com/cdn/shop/products/211-BLK_2_90193956-3eb8-4f7b-86a8-5cfd9fa608b5_1200x1200.png?v=1681785666",
+    delivery: "🇺🇸 Estimated Delivery 7 - 10 days",
+    price: "$30.00 - $35.00",
   },
   high_profile: {
     name: "Decky 1133 7 Panel High Profile Structured Cotton Blend Trucker Hat",
+    title: "Structured Trucker Hat",
     type: "high_profile",
     colors: [],
     details: [
@@ -82,9 +92,12 @@ export const HatData: HatDataType = {
       "https://cdn.shopify.com/s/files/1/0783/4802/6165/files/HighProfileStructuredCottonBlend_ruckerHat.webp?v=1722090003",
     sample:
       "https://theparkwholesale.com/cdn/shop/products/211-BLK_2_90193956-3eb8-4f7b-86a8-5cfd9fa608b5_1200x1200.png?v=1681785666",
+    delivery: "🇺🇸 Estimated Delivery 7 - 10 days",
+    price: "$30.00 - $35.00",
   },
   low_profile: {
     name: "Decky 205 - Classic Low Profile, Relaxed Cotton Dad Hat",
+    title: "Classic Dad Hat",
     type: "low_profile",
     colors: [],
     details: [
@@ -99,9 +112,12 @@ export const HatData: HatDataType = {
       "https://cdn.shopify.com/s/files/1/0783/4802/6165/files/CottonDadHat.png?v=1722090003",
     sample:
       "https://theparkwholesale.com/cdn/shop/products/211-BLK_2_90193956-3eb8-4f7b-86a8-5cfd9fa608b5_1200x1200.png?v=1681785666",
+    delivery: "🇺🇸 Estimated Delivery 7 - 10 days",
+    price: "$30.00 - $35.00",
   },
   mid_profile: {
     name: "Decky 6038 5 Panel Mid Profile Structured Polyester Cap",
+    title: " Mid Profile Cap",
     type: "mid_profile",
     colors: [],
     details: [
@@ -116,9 +132,12 @@ export const HatData: HatDataType = {
       "https://cdn.shopify.com/s/files/1/0783/4802/6165/files/MidStructuredPolyesterCap.webp?v=1722090003",
     sample:
       "https://theparkwholesale.com/cdn/shop/products/211-BLK_2_90193956-3eb8-4f7b-86a8-5cfd9fa608b5_1200x1200.png?v=1681785666",
+    delivery: "🇺🇸 Estimated Delivery 7 - 10 days",
+    price: "$30.00 - $35.00",
   },
   structured: {
     name: "Bigly Performance Hats",
+    title: "Bigly Performance Hats",
     type: "structured",
     colors: ["Black", "White", "Gray", "Navy", "Black/Green"],
     details: [
@@ -133,10 +152,13 @@ export const HatData: HatDataType = {
       "https://theparkwholesale.com/cdn/shop/products/211-BLK_2_90193956-3eb8-4f7b-86a8-5cfd9fa608b5_1200x1200.png?v=1681785666",
     sample:
       "https://theparkwholesale.com/cdn/shop/products/211-BLK_2_90193956-3eb8-4f7b-86a8-5cfd9fa608b5_1200x1200.png?v=1681785666",
+    delivery: "🇺🇸 Estimated Delivery 7 - 10 days",
+    price: "$30.00 - $35.00",
   },
   dad: {
     name: "",
     type: "dad",
+    title: "Bigly Performance Hats",
     colors: [],
     details: [
       "Relaxed Fit",
@@ -150,10 +172,13 @@ export const HatData: HatDataType = {
       "https://theparkwholesale.com/cdn/shop/products/211-BLK_2_90193956-3eb8-4f7b-86a8-5cfd9fa608b5_1200x1200.png?v=1681785666",
     sample:
       "https://theparkwholesale.com/cdn/shop/products/211-BLK_2_90193956-3eb8-4f7b-86a8-5cfd9fa608b5_1200x1200.png?v=1681785666",
+    delivery: "🇺🇸 Estimated Delivery 7 - 10 days",
+    price: "$30.00 - $35.00",
   },
   trucker: {
     name: "",
     type: "dad",
+    title: "Bigly Performance Hats",
     colors: [],
     details: ["Mesh Back", "Adjustable Snapback", "High Crown", "Breathable"],
     material: `Cotton front and polyester mesh back \n Provides ventilation and comfort`,
@@ -162,10 +187,13 @@ export const HatData: HatDataType = {
       "https://theparkwholesale.com/cdn/shop/products/211-BLK_2_90193956-3eb8-4f7b-86a8-5cfd9fa608b5_1200x1200.png?v=1681785666",
     sample:
       "https://theparkwholesale.com/cdn/shop/products/211-BLK_2_90193956-3eb8-4f7b-86a8-5cfd9fa608b5_1200x1200.png?v=1681785666",
+    delivery: "🇺🇸 Estimated Delivery 7 - 10 days",
+    price: "$30.00 - $35.00",
   },
   snapback: {
     name: "",
     type: "dad",
+    title: "Bigly Performance Hats",
     colors: [],
     details: ["Flat Bill", "Adjustable Snapback", "High Crown", "Structured"],
     material: `Blend of cotton and polyester \n Structured to hold shape \n Adjustable snapback closure`,
@@ -174,10 +202,13 @@ export const HatData: HatDataType = {
       "https://cdn.shopify.com/s/files/1/0783/4802/6165/files/5PanelFlatBillHatSnapback.webp?v=1722090003",
     sample:
       "https://theparkwholesale.com/cdn/shop/products/211-BLK_2_90193956-3eb8-4f7b-86a8-5cfd9fa608b5_1200x1200.png?v=1681785666",
+    delivery: "🇺🇸 Estimated Delivery 7 - 10 days",
+    price: "$30.00 - $35.00",
   },
   relaxed: {
     name: "",
     type: "dad",
+    title: "Bigly Performance Hats",
     colors: [],
     details: [
       "Relaxed Fit",
@@ -191,6 +222,8 @@ export const HatData: HatDataType = {
       "https://cdn.shopify.com/s/files/1/0783/4802/6165/files/CottonDadHat.png?v=1722090003",
     sample:
       "https://theparkwholesale.com/cdn/shop/products/211-BLK_2_90193956-3eb8-4f7b-86a8-5cfd9fa608b5_1200x1200.png?v=1681785666",
+    delivery: "🇺🇸 Estimated Delivery 7 - 10 days",
+    price: "$30.00 - $35.00",
   },
 };
 

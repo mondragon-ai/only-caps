@@ -10,8 +10,21 @@ import {
 import styles from "./Home.module.css";
 import { useNavigate } from "@remix-run/react";
 
-export const OrderSummary = ({ orders }: { orders: boolean }) => {
+interface OrderSummaryProps {
+  orders: boolean;
+  awaiting: number;
+  fulfilled: number;
+  faield: number;
+}
+
+export const OrderSummary = ({
+  orders,
+  awaiting = 0,
+  fulfilled = 0,
+  faield = 0,
+}: OrderSummaryProps) => {
   const navigate = useNavigate();
+
   return (
     <Card>
       <BlockStack gap="800">
@@ -34,13 +47,17 @@ export const OrderSummary = ({ orders }: { orders: boolean }) => {
 
         <div className={styles.orderGrid}>
           <div className={styles.orderGridItem}>
-            <OrderItem type="attention" text="Awaiting Fulfillment" qty="3" />
+            <OrderItem
+              type="attention"
+              text="Awaiting Fulfillment"
+              qty={awaiting}
+            />
           </div>
           <div className={styles.orderGridItem}>
-            <OrderItem type="success" text="Fulfilled" qty="203" />
+            <OrderItem type="success" text="Fulfilled" qty={fulfilled} />
           </div>
           <div className={styles.orderGridItem}>
-            <OrderItem type="critical" text="Failed" qty="1" />
+            <OrderItem type="critical" text="Failed" qty={faield} />
           </div>
         </div>
       </BlockStack>
@@ -48,15 +65,15 @@ export const OrderSummary = ({ orders }: { orders: boolean }) => {
   );
 };
 
-const OrderItem = ({
-  type,
-  text,
-  qty,
-}: {
-  type: "success" | "attention" | "critical";
+export type OrderItemType = "success" | "attention" | "critical";
+
+interface OrderItemProps {
+  type: OrderItemType;
   text: string;
-  qty: string;
-}) => {
+  qty: number;
+}
+
+const OrderItem = ({ type, text, qty }: OrderItemProps) => {
   return (
     <div
       style={{
@@ -64,7 +81,7 @@ const OrderItem = ({
         height: "auto",
       }}
     >
-      <Badge tone={type}>{qty}</Badge>
+      <Badge tone={type}>{String(qty)}</Badge>
       <div
         style={{
           paddingLeft: "10px",

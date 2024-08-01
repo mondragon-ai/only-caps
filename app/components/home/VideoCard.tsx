@@ -4,10 +4,11 @@ import styles from "./Home.module.css";
 
 export const VideoCard = () => {
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
+
   return (
     <>
       {isVideoPlaying ? (
-        <div style={{ marginBottom: "1rem" }}>
+        <div className={styles.videoWrapper}>
           <VideoPlayer
             onClose={() => setIsVideoPlaying(false)}
             videoId="GL_6eXIEQx4?si=YXAxIbFAivmqXiXi"
@@ -33,13 +34,12 @@ export const VideoCard = () => {
   );
 };
 
-export const VideoPlayer = ({
-  videoId,
-  onClose,
-}: {
+interface VideoPlayerProps {
   videoId: string;
   onClose: () => void;
-}) => {
+}
+
+export const VideoPlayer = ({ videoId, onClose }: VideoPlayerProps) => {
   return (
     <Card>
       <Box paddingBlock="400" width="100%">

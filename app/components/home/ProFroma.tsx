@@ -16,6 +16,7 @@ export const ProFroma = () => {
     price: 60,
     qty: 5,
   });
+
   return (
     <Card padding="800">
       <InlineGrid
@@ -31,7 +32,7 @@ export const ProFroma = () => {
         </div>
         <div className={styles.proFormaContainer}>
           <Text as="h4" variant="headingMd" alignment="start">
-            Expected Revenue to Generate{" "}
+            Expected Revenue to Generate
           </Text>
           <Divider borderColor="transparent" borderWidth="100" />
           <Text as="p" variant="bodyMd">
@@ -42,13 +43,13 @@ export const ProFroma = () => {
               fontWeight="semibold"
               tone="magic"
             >
-              $30.00{" "}
+              $30.00
             </Text>
           </Text>
           <SellFor setForm={setForm} form={form} />
           <DailyQuantity setForm={setForm} form={form} />
           <Text as="p" variant="bodyMd">
-            Approximate annual revenue{" "}
+            Approximate annual revenue
           </Text>
           <Text as="h2" variant="heading2xl" tone="magic" fontWeight="bold">
             {`$${formatToMoney(Number(form.price * form.qty * 365))}`}
@@ -72,14 +73,15 @@ type FormProps = {
   };
 };
 
-const SellFor = ({ setForm, form }: FormProps) => {
+export const SellFor = ({ setForm, form }: FormProps) => {
   const handleSubmit = useCallback(() => {
     setForm({ ...form });
-  }, []);
+  }, [form, setForm]);
 
   const handlePriceChange = useCallback(
-    (value: string) => setForm({ ...form, price: Number(value) }),
-    [],
+    (value: string) =>
+      setForm((prevForm) => ({ ...prevForm, price: Number(value) })),
+    [setForm],
   );
 
   return (
@@ -92,7 +94,7 @@ const SellFor = ({ setForm, form }: FormProps) => {
           Recommended Price
         </Text>
       </div>
-      <div className={styles.proFromaForm}>
+      <div className={styles.proFormaForm}>
         <Form onSubmit={handleSubmit}>
           <FormLayout>
             <TextField
@@ -110,14 +112,15 @@ const SellFor = ({ setForm, form }: FormProps) => {
   );
 };
 
-const DailyQuantity = ({ setForm, form }: FormProps) => {
+export const DailyQuantity = ({ setForm, form }: FormProps) => {
   const handleSubmit = useCallback(() => {
     setForm({ ...form });
-  }, []);
+  }, [form, setForm]);
 
-  const handelQtyChange = useCallback(
-    (value: string) => setForm({ ...form, qty: Number(value) }),
-    [],
+  const handleQtyChange = useCallback(
+    (value: string) =>
+      setForm((prevForm) => ({ ...prevForm, qty: Number(value) })),
+    [setForm],
   );
 
   return (
@@ -127,12 +130,12 @@ const DailyQuantity = ({ setForm, form }: FormProps) => {
           Sales per Day
         </Text>
       </div>
-      <div className={styles.proFromaForm}>
+      <div className={styles.proFormaForm}>
         <Form onSubmit={handleSubmit}>
           <FormLayout>
             <TextField
               value={String(form.qty)}
-              onChange={handelQtyChange}
+              onChange={handleQtyChange}
               label=""
               type="number"
               autoComplete="off"
