@@ -1,3 +1,61 @@
 /* ============================================================ */
-/* 1. Mockups                                                   */
+/* 1. Top Bar                                                   */
 /* ============================================================ */
+.analyticsHeader {
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: baseline;
+}
+
+.chartContainer {
+  height: 250px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.topSeller {
+  width: 100%;
+}
+
+.sellerDetail {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: start;
+}
+
+.sellerBar {
+  margin-top: 5px;
+  margin-right: 5px;
+  height: 20px;
+  border-radius: 3px;
+  background: #48cae4;
+}
+
+.subValue {
+  margin-left: 2px;
+}
+
+.chartContainer {
+  height: 250px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.pieLabel {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.pieColor {
+  height: 10px;
+  width: 10px;
+  border-radius: 2px;
+}

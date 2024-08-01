@@ -14,8 +14,20 @@ import { Footer } from "~/components/layout/Footer";
 import { CheckSmallIcon } from "@shopify/polaris-icons";
 import { TopAnalytics } from "~/components/analytics/TopAnalytics";
 import { BottomAnalytics } from "~/components/analytics/BottomAnalytics";
+import {
+  fulfillment_data,
+  revenue,
+  shipping,
+  sold,
+  top_sellers,
+  type_data,
+} from "~/lib/data/analytics";
+import { calculateTotalValue } from "~/lib/formatters/numbers";
 
 export default function GeneratorPage() {
+  const total_sold = calculateTotalValue(sold);
+  const total_revenue = calculateTotalValue(revenue);
+
   return (
     <Page
       title={`Analytics`}
@@ -24,13 +36,25 @@ export default function GeneratorPage() {
     >
       <Layout>
         <Layout.Section>
-          <HighlightStats />
+          <HighlightStats
+            sold={total_sold}
+            revenue={total_revenue}
+            analytics={true}
+          />
         </Layout.Section>
         <Layout.Section>
-          <TopAnalytics />
+          <TopAnalytics
+            revenue={revenue}
+            sold={sold}
+            top_sellers={top_sellers}
+          />
         </Layout.Section>
         <Layout.Section>
-          <BottomAnalytics />
+          <BottomAnalytics
+            fulfillment={fulfillment_data}
+            types={type_data}
+            shipping={shipping}
+          />
         </Layout.Section>
         <Layout.Section>
           <Footer />

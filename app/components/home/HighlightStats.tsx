@@ -17,9 +17,11 @@ import { useNavigate } from "@remix-run/react";
 interface HighlightStatsProps {
   sold: number;
   revenue: number;
+  analytics: boolean;
 }
 
 export const HighlightStats = ({
+  analytics = false,
   sold = 114600,
   revenue = 2987,
 }: HighlightStatsProps) => {
@@ -32,18 +34,19 @@ export const HighlightStats = ({
       <BlockStack gap="500">
         <InlineGrid columns="1fr auto">
           <Text as="h2" variant="headingSm">
-            Highlight Performance - last 30 days
+            Highlight Performance {`${analytics ? "" : "- last 30 days"}`}
           </Text>
-
-          <ButtonGroup>
-            <Button
-              variant="plain"
-              onClick={() => navigate("/app/analytics")}
-              accessibilityLabel="Preview"
-            >
-              View Analytics
-            </Button>
-          </ButtonGroup>
+          {!analytics && (
+            <ButtonGroup>
+              <Button
+                variant="plain"
+                onClick={() => navigate("/app/analytics")}
+                accessibilityLabel="Preview"
+              >
+                View Analytics
+              </Button>
+            </ButtonGroup>
+          )}
         </InlineGrid>
 
         <div className={styles.highlightGrid}>

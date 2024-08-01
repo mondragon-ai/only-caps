@@ -56,7 +56,7 @@ export default function Index() {
           <OrderSummary orders={false} awaiting={0} fulfilled={0} faield={0} />
         </Layout.Section>
         <Layout.Section>
-          <HighlightStats sold={2389} revenue={115640} />
+          <HighlightStats sold={2389} revenue={115640} analytics={true} />
         </Layout.Section>
         <Layout.Section>
           <HowTo />

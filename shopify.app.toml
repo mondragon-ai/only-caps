@@ -3,7 +3,7 @@
 client_id = "e062b2afbda40feef1c957b971c7b292"
 name = "Only Caps"
 handle = "only-caps"
-application_url = "https://zimbabwe-entities-garden-thought.trycloudflare.com"
+application_url = "https://repository-reaction-added-acdbentity.trycloudflare.com"
 embedded = true
 
 [build]
@@ -17,9 +17,9 @@ scopes = "write_products"
 
 [auth]
 redirect_urls = [
-  "https://zimbabwe-entities-garden-thought.trycloudflare.com/auth/callback",
-  "https://zimbabwe-entities-garden-thought.trycloudflare.com/auth/shopify/callback",
-  "https://zimbabwe-entities-garden-thought.trycloudflare.com/api/auth/callback"
+  "https://repository-reaction-added-acdbentity.trycloudflare.com/auth/callback",
+  "https://repository-reaction-added-acdbentity.trycloudflare.com/auth/shopify/callback",
+  "https://repository-reaction-added-acdbentity.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]
