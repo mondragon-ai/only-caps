@@ -1,0 +1,47 @@
+export const ShopifyMerchantInit = {
+  analytics: {
+    orders_summary: {
+      awaiting: 0,
+      fulfilled: 0,
+      failed: 0,
+    },
+    recent_orders: [],
+    highlight_stats: {
+      revenue: 0,
+      sold: 0,
+    },
+    current_month: 0,
+  },
+  capped_usage: 0,
+  state: "",
+  created_at: "any",
+  updated_at: "any",
+  owner: {
+    email: "",
+    first_name: "",
+    last_name: "",
+    phone: "",
+  },
+  address: {
+    address1: "",
+    city: "",
+    province: "",
+    zip: "",
+    country: "",
+  },
+  fulfillment: {
+    id: 0,
+    location_id: 0,
+  },
+  installed: false,
+  status: "ACTIVE",
+  subscription_id: "",
+  usage: 0,
+  webhook_id: 0,
+  id: "",
+  timezone: "",
+  access_token: "",
+  shop_name: "",
+  shop_domain: "",
+  myshopify_domain: "",
+};

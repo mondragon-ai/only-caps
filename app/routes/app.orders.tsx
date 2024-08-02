@@ -18,7 +18,7 @@ export default function OrdersPage() {
     <Page title="Your Orders" subtitle="Orders with OnlyCaps items">
       <Layout>
         <Layout.Section>
-          <OrderSummary orders={true} awaiting={0} fulfilled={0} faield={0} />
+          <OrderSummary orders={true} awaiting={0} fulfilled={0} failed={0} />
         </Layout.Section>
         {order_list && order_list.length > 0 ? (
           <Layout.Section>

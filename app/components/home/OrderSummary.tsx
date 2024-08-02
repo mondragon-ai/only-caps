@@ -14,14 +14,14 @@ interface OrderSummaryProps {
   orders: boolean;
   awaiting: number;
   fulfilled: number;
-  faield: number;
+  failed: number;
 }
 
 export const OrderSummary = ({
   orders,
   awaiting = 0,
   fulfilled = 0,
-  faield = 0,
+  failed = 0,
 }: OrderSummaryProps) => {
   const navigate = useNavigate();
 
@@ -57,7 +57,7 @@ export const OrderSummary = ({
             <OrderItem type="success" text="Fulfilled" qty={fulfilled} />
           </div>
           <div className={styles.orderGridItem}>
-            <OrderItem type="critical" text="Failed" qty={faield} />
+            <OrderItem type="critical" text="Failed" qty={failed} />
           </div>
         </div>
       </BlockStack>

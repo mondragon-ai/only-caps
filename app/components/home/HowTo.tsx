@@ -5,7 +5,7 @@ export const HowTo = () => {
   return (
     <div className={styles.howToWrapper}>
       <BlockStack gap={"500"}>
-        <Text as="h4" variant="heading3xl" alignment="center">
+        <Text as="h4" variant="heading2xl" alignment="center">
           How Only Caps Works
         </Text>
         <InlineGrid
