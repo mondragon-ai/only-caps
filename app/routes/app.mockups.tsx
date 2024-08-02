@@ -1,7 +1,16 @@
+import { json, LoaderFunctionArgs } from "@remix-run/node";
 import { Box, Layout, Page, EmptyState } from "@shopify/polaris";
 import { Footer } from "~/components/layout/Footer";
 import { MockupList } from "~/components/mockups/MockupList";
 import { mockup_list } from "~/lib/data/mockups";
+import { authenticate } from "~/shopify.server";
+
+export async function loader({ request }: LoaderFunctionArgs) {
+  const admin = await authenticate.admin(request);
+  return json({
+    shop: admin.session.shop,
+  });
+}
 
 export default function MockupsPage() {
   return (

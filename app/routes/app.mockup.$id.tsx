@@ -8,8 +8,22 @@ import { Dimensions } from "~/components/mockups/Dimensions";
 import { MockupDetail } from "~/components/mockups/MockupDetail";
 import { WholeSale } from "~/components/mockups/WholeSale";
 import { mockup_dummy } from "~/lib/data/mockups";
+import { json, useLoaderData } from "@remix-run/react";
+import { authenticate } from "~/shopify.server";
+import { LoaderFunctionArgs } from "@remix-run/node";
+
+export async function loader({ request }: LoaderFunctionArgs) {
+  const admin = await authenticate.admin(request);
+  return json({
+    shop: admin.session.shop,
+  });
+}
 
 export default function MockupPage() {
+  const shop = useLoaderData<typeof loader>();
+
+  console.log({ shop });
+
   return (
     <Page
       titleMetadata={

@@ -6,8 +6,22 @@ import { Price } from "~/components/orders/Price";
 import { Customer } from "~/components/orders/Customer";
 import { OrderDetail } from "~/components/orders/OrderDetail";
 import { mock_order } from "~/lib/data/orders";
+import { json, LoaderFunctionArgs } from "@remix-run/node";
+import { authenticate } from "~/shopify.server";
+import { useLoaderData } from "@remix-run/react";
+
+export async function loader({ request, params }: LoaderFunctionArgs) {
+  const admin = await authenticate.admin(request);
+  return json({
+    shop: admin.session.shop,
+    params: params,
+  });
+}
 
 export default function OrdersPage() {
+  const data = useLoaderData<typeof loader>();
+  console.log({ data });
+
   return (
     <Page
       backAction={{ content: "Order", url: "/app/orders" }}

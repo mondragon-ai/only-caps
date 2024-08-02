@@ -9,6 +9,7 @@ import {
   Text,
 } from "@shopify/polaris";
 import { useCallback, useState } from "react";
+import { json, type LoaderFunctionArgs } from "@remix-run/node";
 import { HighlightStats } from "~/components/home/HighlightStats";
 import { Footer } from "~/components/layout/Footer";
 import { CheckSmallIcon } from "@shopify/polaris-icons";
@@ -23,10 +24,22 @@ import {
   type_data,
 } from "~/lib/data/analytics";
 import { calculateTotalValue } from "~/lib/formatters/numbers";
+import { authenticate } from "~/shopify.server";
+import { useLoaderData } from "@remix-run/react";
 
-export default function GeneratorPage() {
+export async function loader({ request }: LoaderFunctionArgs) {
+  const admin = await authenticate.admin(request);
+  return json({
+    shop: admin.session.shop,
+  });
+}
+
+export default function AnalyticsPage() {
+  const shop = useLoaderData<typeof loader>();
   const total_sold = calculateTotalValue(sold);
   const total_revenue = calculateTotalValue(revenue);
+
+  console.log({ shop });
 
   return (
     <Page
