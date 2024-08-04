@@ -71,3 +71,39 @@ export const COLORS = [
   "#ADE8F4",
   "#CAF0F8",
 ];
+
+export const AnalyitcsInit = {
+  id: new Date().getMilliseconds,
+  total_orders: 1890,
+  total_items: 2304,
+  total_revenue: 134000,
+  timezone: "chicago/america",
+  created_at: "",
+  updated_at: "",
+  orders: [
+    {
+      id: "1234",
+      time: 0,
+      total_items: 0,
+      total_price: 0,
+      fulilled_date: 0,
+      fulilled_time: 0,
+      shipping_cost: 0,
+    },
+    {
+      id: "1235",
+      time: 0,
+      total_items: 0,
+      total_price: 0,
+      fulilled_date: 0,
+      fulilled_time: 0,
+      shipping_cost: 0,
+    },
+  ],
+  top_sellers: {
+    ["hawk tuah"]: 1,
+  },
+  top_types: {
+    ["retro_trucker"]: 1,
+  },
+};

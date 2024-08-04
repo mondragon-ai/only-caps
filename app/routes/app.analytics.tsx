@@ -6,16 +6,20 @@ import {
   OptionList,
   Page,
   Popover,
+  SkeletonBodyText,
+  SkeletonDisplayText,
+  SkeletonPage,
   Text,
 } from "@shopify/polaris";
-import { useCallback, useState } from "react";
-import { json, type LoaderFunctionArgs } from "@remix-run/node";
+import { Suspense, useCallback, useState } from "react";
+import { defer, type LoaderFunctionArgs } from "@remix-run/node";
 import { HighlightStats } from "~/components/home/HighlightStats";
 import { Footer } from "~/components/layout/Footer";
 import { CheckSmallIcon } from "@shopify/polaris-icons";
 import { TopAnalytics } from "~/components/analytics/TopAnalytics";
 import { BottomAnalytics } from "~/components/analytics/BottomAnalytics";
 import {
+  AnalyitcsInit,
   fulfillment_data,
   revenue,
   shipping,
@@ -25,21 +29,23 @@ import {
 } from "~/lib/data/analytics";
 import { calculateTotalValue } from "~/lib/formatters/numbers";
 import { authenticate } from "~/shopify.server";
-import { useLoaderData } from "@remix-run/react";
+import { Await, useLoaderData } from "@remix-run/react";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const admin = await authenticate.admin(request);
-  return json({
+
+  return defer({
     shop: admin.session.shop,
+    analytics: AnalyitcsInit,
   });
 }
 
 export default function AnalyticsPage() {
-  const shop = useLoaderData<typeof loader>();
+  const data = useLoaderData<typeof loader>();
   const total_sold = calculateTotalValue(sold);
   const total_revenue = calculateTotalValue(revenue);
 
-  console.log({ shop });
+  console.log({ data });
 
   return (
     <Page
@@ -47,32 +53,38 @@ export default function AnalyticsPage() {
       subtitle={"View the performance of your designs"}
       secondaryActions={<TimeFrameOptions />}
     >
-      <Layout>
-        <Layout.Section>
-          <HighlightStats
-            sold={total_sold}
-            revenue={total_revenue}
-            analytics={true}
-          />
-        </Layout.Section>
-        <Layout.Section>
-          <TopAnalytics
-            revenue={revenue}
-            sold={sold}
-            top_sellers={top_sellers}
-          />
-        </Layout.Section>
-        <Layout.Section>
-          <BottomAnalytics
-            fulfillment={fulfillment_data}
-            types={type_data}
-            shipping={shipping}
-          />
-        </Layout.Section>
-        <Layout.Section>
-          <Footer />
-        </Layout.Section>
-      </Layout>
+      <Suspense fallback={<LoadingSkeleton />}>
+        <Await resolve={data}>
+          {(loadedData) => (
+            <Layout>
+              <Layout.Section>
+                <HighlightStats
+                  sold={total_sold}
+                  revenue={total_revenue}
+                  analytics={true}
+                />
+              </Layout.Section>
+              <Layout.Section>
+                <TopAnalytics
+                  revenue={revenue}
+                  sold={sold}
+                  top_sellers={top_sellers}
+                />
+              </Layout.Section>
+              <Layout.Section>
+                <BottomAnalytics
+                  fulfillment={fulfillment_data}
+                  types={type_data}
+                  shipping={shipping}
+                />
+              </Layout.Section>
+              <Layout.Section>
+                <Footer />
+              </Layout.Section>
+            </Layout>
+          )}
+        </Await>
+      </Suspense>
     </Page>
   );
 }
@@ -160,3 +172,24 @@ export type TimeFrameProps =
   | "thirty_days"
   | "ninety_days"
   | "twelve_months";
+
+function LoadingSkeleton() {
+  return (
+    <SkeletonPage primaryAction title="Welcome Back, loading">
+      <Layout>
+        <Layout.Section>
+          <SkeletonDisplayText size="small" />
+          <SkeletonBodyText />
+        </Layout.Section>
+        <Layout.Section>
+          <SkeletonDisplayText size="small" />
+          <SkeletonBodyText />
+        </Layout.Section>
+        <Layout.Section>
+          <SkeletonDisplayText size="small" />
+          <SkeletonBodyText />
+        </Layout.Section>
+      </Layout>
+    </SkeletonPage>
+  );
+}

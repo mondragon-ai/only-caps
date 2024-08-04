@@ -3,7 +3,7 @@
 client_id = "e062b2afbda40feef1c957b971c7b292"
 name = "Only Caps"
 handle = "only-caps"
-application_url = "https://auburn-drinking-suite-interactions.trycloudflare.com"
+application_url = "https://honda-created-unauthorized-evident.trycloudflare.com"
 embedded = true
 
 [build]
@@ -17,9 +17,9 @@ scopes = "write_products"
 
 [auth]
 redirect_urls = [
-  "https://auburn-drinking-suite-interactions.trycloudflare.com/auth/callback",
-  "https://auburn-drinking-suite-interactions.trycloudflare.com/auth/shopify/callback",
-  "https://auburn-drinking-suite-interactions.trycloudflare.com/api/auth/callback"
+  "https://honda-created-unauthorized-evident.trycloudflare.com/auth/callback",
+  "https://honda-created-unauthorized-evident.trycloudflare.com/auth/shopify/callback",
+  "https://honda-created-unauthorized-evident.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]

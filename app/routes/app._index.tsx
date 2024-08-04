@@ -1,12 +1,20 @@
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import {
+  Await,
   defer,
   json,
   useLoaderData,
   useNavigate,
   useNavigation,
 } from "@remix-run/react";
-import { Page, Layout } from "@shopify/polaris";
+import {
+  Page,
+  Layout,
+  Text,
+  SkeletonPage,
+  SkeletonDisplayText,
+  SkeletonBodyText,
+} from "@shopify/polaris";
 import { authenticate } from "../shopify.server";
 import {
   FeaturedProducts,
@@ -19,7 +27,7 @@ import {
 } from "~/components/home/index";
 import { Footer } from "~/components/layout/Footer";
 import { ShopifyMerchantInit } from "~/lib/data/merchant";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 
 // Function to add a delay
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -27,21 +35,10 @@ const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 export async function loader({ request }: LoaderFunctionArgs) {
   const admin = await authenticate.admin(request);
 
-  console.log("start");
   // Mock a delay of 3 seconds
   await delay(3000);
-  console.log("end");
 
-  // TODO: Fetch data from external API Route
-  // const merchant = await fetch()
-
-  // TODO: Check if the data was fetched successfully
-  // redirect to error page with status 400+
-  // if (merchant === null) {
-  //   throw json("Not Found", { status: 404 });
-  // }
-
-  // Else return the data
+  // Return deferred data
   return defer({
     shop: admin.session.shop,
     orders_summary: ShopifyMerchantInit.analytics.orders_summary,
@@ -64,31 +61,12 @@ interface MerchantData {
 
 export default function Index() {
   const data = useLoaderData<MerchantData>();
-  // const shopify = useAppBridge();
   const navigate = useNavigate();
   const navigation = useNavigation();
 
-  const isLoading = navigation.state === "loading";
-
-  const [merchant, setMerchant] = useState<MerchantData | null>(null);
-
-  useEffect(() => {
-    if (data) {
-      setMerchant(data);
-    }
-  }, [data]);
-
-  const orders_summary = merchant!.orders_summary;
-  const highlight_stats = merchant!.highlight_stats;
-
-  console.log({ merchant });
-  console.log({ state: navigation.state });
-  console.log({ isLoading });
-  console.log("\n\n");
-
   return (
     <Page
-      title={`Welcome Back, ${merchant ? merchant.shop : ""}`}
+      title={`Welcome Back, ${data.shop}`}
       subtitle="Dashboard"
       primaryAction={{
         content: "Create Mockup",
@@ -96,44 +74,69 @@ export default function Index() {
         onAction: () => navigate("/app/catalog"),
       }}
     >
-      {merchant == null ? null : (
-        <Layout>
-          <Layout.Section>
-            <OrderSummary
-              orders={false}
-              awaiting={orders_summary.awaiting}
-              fulfilled={orders_summary.fulfilled}
-              failed={orders_summary.failed}
-            />
-          </Layout.Section>
-          <Layout.Section>
-            <HighlightStats
-              sold={highlight_stats.sold}
-              revenue={highlight_stats.revenue}
-              analytics={false}
-            />
-          </Layout.Section>
-          <Layout.Section>
-            <HowTo />
-          </Layout.Section>
-          <Layout.Section>
-            <FeaturedProducts />
-          </Layout.Section>
-          <Layout.Section>
-            <ProFroma />
-          </Layout.Section>
-          <Layout.Section>
-            <VideoCard />
-          </Layout.Section>
-          <Layout.Section>
-            <RecommendedApps />
-          </Layout.Section>
-          <Layout.Section>
-            <Footer />
-          </Layout.Section>
-        </Layout>
-      )}
+      <Suspense fallback={<LoadingSkeleton />}>
+        <Await resolve={data}>
+          {(loadedData) => (
+            <Layout>
+              <Layout.Section>
+                <OrderSummary
+                  orders={false}
+                  awaiting={loadedData.orders_summary.awaiting}
+                  fulfilled={loadedData.orders_summary.fulfilled}
+                  failed={loadedData.orders_summary.failed}
+                />
+              </Layout.Section>
+              <Layout.Section>
+                <HighlightStats
+                  sold={loadedData.highlight_stats.sold}
+                  revenue={loadedData.highlight_stats.revenue}
+                  analytics={false}
+                />
+              </Layout.Section>
+              <Layout.Section>
+                <HowTo />
+              </Layout.Section>
+              <Layout.Section>
+                <FeaturedProducts />
+              </Layout.Section>
+              <Layout.Section>
+                <ProFroma />
+              </Layout.Section>
+              <Layout.Section>
+                <VideoCard />
+              </Layout.Section>
+              <Layout.Section>
+                <RecommendedApps />
+              </Layout.Section>
+              <Layout.Section>
+                <Footer />
+              </Layout.Section>
+            </Layout>
+          )}
+        </Await>
+      </Suspense>
     </Page>
+  );
+}
+
+function LoadingSkeleton() {
+  return (
+    <SkeletonPage primaryAction title="Welcome Back, loading">
+      <Layout>
+        <Layout.Section>
+          <SkeletonDisplayText size="small" />
+          <SkeletonBodyText />
+        </Layout.Section>
+        <Layout.Section>
+          <SkeletonDisplayText size="small" />
+          <SkeletonBodyText />
+        </Layout.Section>
+        <Layout.Section>
+          <SkeletonDisplayText size="small" />
+          <SkeletonBodyText />
+        </Layout.Section>
+      </Layout>
+    </SkeletonPage>
   );
 }
 
