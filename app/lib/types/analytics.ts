@@ -11,16 +11,16 @@ export type AnalyticsProps = {
   updated_at: any;
   orders: OrderAnalyticsProps[];
   top_sellers: TopSellersProps;
-  top_types: Record<MockupTypes, string>;
+  top_types: Record<string, number>;
 };
 
 export type OrderAnalyticsProps = {
   id: string | number;
-  time: number;
+  created_at: number;
   total_items: number;
   total_price: number;
-  fulilled_date: number;
-  fulilled_time: number;
+  fulfilled_date: number;
+  fulfilled_time: number;
   shipping_cost: number;
 };
 

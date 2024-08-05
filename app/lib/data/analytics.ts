@@ -72,38 +72,79 @@ export const COLORS = [
   "#CAF0F8",
 ];
 
-export const AnalyitcsInit = {
-  id: new Date().getMilliseconds,
-  total_orders: 1890,
-  total_items: 2304,
-  total_revenue: 134000,
-  timezone: "chicago/america",
-  created_at: "",
-  updated_at: "",
-  orders: [
-    {
-      id: "1234",
-      time: 0,
-      total_items: 0,
-      total_price: 0,
-      fulilled_date: 0,
-      fulilled_time: 0,
-      shipping_cost: 0,
+export const AnalyticsInit = [
+  {
+    id: 1717545600,
+    total_orders: 130,
+    total_items: 110,
+    total_revenue: 13400,
+    timezone: "chicago/america",
+    created_at: "",
+    updated_at: "",
+    orders: [
+      {
+        id: "1234",
+        created_at: 1717545600,
+        total_items: 0,
+        total_price: 0,
+        fulfilled_date: 1722816000,
+        fulfilled_time: 0,
+        shipping_cost: 5.09,
+      },
+      {
+        id: "1235",
+        created_at: 1717545600,
+        total_items: 0,
+        total_price: 0,
+        fulfilled_date: 1722816000,
+        fulfilled_time: 0,
+        shipping_cost: 4.99,
+      },
+    ],
+    top_sellers: {
+      "hawk tuah": 65,
+      don: 28,
+      mercaa: 11,
     },
-    {
-      id: "1235",
-      time: 0,
-      total_items: 0,
-      total_price: 0,
-      fulilled_date: 0,
-      fulilled_time: 0,
-      shipping_cost: 0,
+    top_types: {
+      retro_trucker: 1,
     },
-  ],
-  top_sellers: {
-    ["hawk tuah"]: 1,
   },
-  top_types: {
-    ["retro_trucker"]: 1,
+  {
+    id: 1722816000,
+    total_orders: 90,
+    total_items: 84,
+    total_revenue: 10300,
+    timezone: "chicago/america",
+    created_at: "",
+    updated_at: "",
+    orders: [
+      {
+        id: "1234",
+        created_at: 1717545600,
+        total_items: 0,
+        total_price: 0,
+        fulfilled_date: 1722816000,
+        fulfilled_time: 0,
+        shipping_cost: 3.99,
+      },
+      {
+        id: "1235",
+        created_at: 1717545600,
+        total_items: 0,
+        total_price: 0,
+        fulfilled_date: 1722816000,
+        fulfilled_time: 0,
+        shipping_cost: 7.01,
+      },
+    ],
+    top_sellers: {
+      "hawk tuah": 43,
+      don: 30,
+      mercaa: 14,
+    },
+    top_types: {
+      retro_trucker: 1,
+    },
   },
-};
+];

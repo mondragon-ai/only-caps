@@ -12,14 +12,14 @@ import {
 } from "recharts";
 import { calculateTotalValue, formatNumber } from "~/lib/formatters/numbers";
 import styles from "./Analytics.module.css";
-import { DataProps, TopSellerProps } from "~/lib/types/analytics";
 import { AnalyticsCard } from "./AnalyticsCard";
 import { BarChartStats, LineChartStats } from "./Charts";
+import { DataProps, TopSellersProps } from "~/lib/types/analytics";
 
 type TopAnalyticsProps = {
   revenue: DataProps[];
   sold: DataProps[];
-  top_sellers: TopSellerProps[];
+  top_sellers: TopSellersProps;
 };
 
 export const TopAnalytics = ({
@@ -27,7 +27,12 @@ export const TopAnalytics = ({
   sold,
   top_sellers,
 }: TopAnalyticsProps) => {
-  const total_sold = calculateTotalValue(top_sellers);
+  const total_sold = Object.values(top_sellers).reduce(
+    (prev, cur) => Number(prev) + Number(cur),
+    0,
+  );
+  console.log(top_sellers);
+  console.log(total_sold);
   const total_items = calculateTotalValue(sold);
   const total_revenue = calculateTotalValue(revenue);
 
@@ -48,12 +53,18 @@ export const TopAnalytics = ({
             Top Seller
           </Text>
           <BlockStack gap="600">
-            {top_sellers.map((ts) => {
+            {Object.keys(top_sellers).map((ts, i) => {
+              console.log(ts);
+              console.log(Number(top_sellers[ts as keyof TopSellersProps]));
               return (
                 <TopSeller
-                  title={ts.name}
-                  amount={ts.value}
-                  width={Math.round((ts.value / total_sold) * 200)}
+                  title={ts}
+                  amount={Number(top_sellers[ts as keyof TopSellersProps])}
+                  width={Math.round(
+                    (Number(top_sellers[ts as keyof TopSellersProps]) /
+                      Number(total_sold)) *
+                      200,
+                  )}
                 />
               );
             })}
