@@ -3,12 +3,17 @@
  * @param num - The number to convert.
  * @returns A string representation of the number with 'k' for thousands and 'M' for millions.
  */
-export const formatNumber = (num: number): string => {
+export const formatNumber = (num: number, trunc?: boolean): string => {
   if (num >= 1_000_000) {
-    return (num / 1_000_000).toFixed(2).replace(/\.00$/, "") + "M";
+    return trunc
+      ? String(Math.round(num / 1_000_000)).replace(/\.00$/, "") + "M"
+      : (num / 1_000_000).toFixed(2).replace(/\.00$/, "") + "M";
   } else if (num >= 1_000) {
-    return (num / 1_000).toFixed(2).replace(/\.00$/, "") + "k";
+    return trunc
+      ? String(Math.round(num / 1_000)).replace(/\.00$/, "") + "K"
+      : (num / 1_000).toFixed(2).replace(/\.00$/, "") + "k";
   }
+
   return num.toString();
 };
 
@@ -47,10 +52,30 @@ export const calculateTotalValue = <T extends { value: number }>(
  * console.log(formatDate(exampleEpoch)); // Output: "Jul 1"
  */
 export const formatDate = (epochMillis: number): string => {
-  const date = new Date(epochMillis);
+  const date = new Date(epochMillis * 1000);
   const options: Intl.DateTimeFormatOptions = {
     month: "short",
     day: "numeric",
   };
   return date.toLocaleDateString("en-US", options);
+};
+/**
+ * Calculates the difference between two dates in milliseconds and returns the difference in days.
+ *
+ * @param {number} startMillis - The epoch time in milliseconds representing the start date.
+ * @param {number} endMillis - The epoch time in milliseconds representing the end date.
+ * @returns {number} - The difference between the two dates in days.
+ *
+ * @example
+ * const startEpoch = 1625140800000; // Example epoch time for start date
+ * const endEpoch = 1625721600000; // Example epoch time for end date
+ * console.log(getDifferenceInDays(startEpoch, endEpoch)); // Output: 6
+ */
+export const getDifferenceInDays = (
+  startMillis: number,
+  endMillis: number,
+): number => {
+  const millisecondsInADay = 24 * 60 * 60;
+  const differenceInMillis = Math.abs(endMillis - startMillis);
+  return Math.floor(differenceInMillis / millisecondsInADay);
 };

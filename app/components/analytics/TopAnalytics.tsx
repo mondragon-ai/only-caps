@@ -31,8 +31,6 @@ export const TopAnalytics = ({
     (prev, cur) => Number(prev) + Number(cur),
     0,
   );
-  console.log(top_sellers);
-  console.log(total_sold);
   const total_items = calculateTotalValue(sold);
   const total_revenue = calculateTotalValue(revenue);
 
@@ -54,8 +52,6 @@ export const TopAnalytics = ({
           </Text>
           <BlockStack gap="600">
             {Object.keys(top_sellers).map((ts, i) => {
-              console.log(ts);
-              console.log(Number(top_sellers[ts as keyof TopSellersProps]));
               return (
                 <TopSeller
                   title={ts}

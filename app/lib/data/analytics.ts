@@ -72,79 +72,89 @@ export const COLORS = [
   "#CAF0F8",
 ];
 
-export const AnalyticsInit = [
-  {
-    id: 1717545600,
-    total_orders: 130,
-    total_items: 110,
-    total_revenue: 13400,
-    timezone: "chicago/america",
-    created_at: "",
-    updated_at: "",
-    orders: [
-      {
-        id: "1234",
-        created_at: 1717545600,
-        total_items: 0,
-        total_price: 0,
-        fulfilled_date: 1722816000,
-        fulfilled_time: 0,
-        shipping_cost: 5.09,
-      },
-      {
-        id: "1235",
-        created_at: 1717545600,
-        total_items: 0,
-        total_price: 0,
-        fulfilled_date: 1722816000,
-        fulfilled_time: 0,
-        shipping_cost: 4.99,
-      },
-    ],
-    top_sellers: {
-      "hawk tuah": 65,
-      don: 28,
-      mercaa: 11,
-    },
-    top_types: {
-      retro_trucker: 1,
-    },
-  },
-  {
-    id: 1722816000,
-    total_orders: 90,
-    total_items: 84,
-    total_revenue: 10300,
-    timezone: "chicago/america",
-    created_at: "",
-    updated_at: "",
-    orders: [
-      {
-        id: "1234",
-        created_at: 1717545600,
-        total_items: 0,
-        total_price: 0,
-        fulfilled_date: 1722816000,
-        fulfilled_time: 0,
-        shipping_cost: 3.99,
-      },
-      {
-        id: "1235",
-        created_at: 1717545600,
-        total_items: 0,
-        total_price: 0,
-        fulfilled_date: 1722816000,
-        fulfilled_time: 0,
-        shipping_cost: 7.01,
-      },
-    ],
-    top_sellers: {
-      "hawk tuah": 43,
-      don: 30,
-      mercaa: 14,
-    },
-    top_types: {
-      retro_trucker: 1,
-    },
-  },
-];
+// export const AnalyticsInit = [
+//   {
+//     id: 1717545600,
+//     total_orders: 2,
+//     total_items: 110,
+//     total_revenue: 13400,
+//     timezone: "chicago/america",
+//     created_at: 1717545600,
+//     updated_at: 1717545600,
+//     orders: [
+//       {
+//         id: "order1",
+//         created_at: 1717545600,
+//         total_items: 55,
+//         total_price: 6700,
+//         fulfilled_date: 1722816000,
+//         fulfilled_time: 0,
+//         shipping_cost: 5.09,
+//       },
+//       {
+//         id: "order2",
+//         created_at: 1717545600,
+//         total_items: 55,
+//         total_price: 6700,
+//         fulfilled_date: 1722816000,
+//         fulfilled_time: 0,
+//         shipping_cost: 4.99,
+//       },
+//     ],
+//     top_sellers: {
+//       "hawk tuah": 65,
+//       don: 28,
+//       mercaa: 11,
+//     },
+//     top_types: {
+//       retro_trucker: 3,
+//       mid_profile: 3,
+//       high_profile: 14,
+//       structured: 5,
+//       snapback: 10,
+//     },
+//   },
+//   {
+//     id: 1722816000,
+//     total_orders: 2,
+//     total_items: 84,
+//     total_revenue: 10300,
+//     timezone: "chicago/america",
+//     created_at: 1717545600,
+//     updated_at: 1717545600,
+//     orders: [
+//       {
+//         id: "order3",
+//         created_at: 1717545600,
+//         total_items: 42,
+//         total_price: 5150,
+//         fulfilled_date: 1722816000,
+//         fulfilled_time: 0,
+//         shipping_cost: 3.99,
+//       },
+//       {
+//         id: "order4",
+//         created_at: 1717545600,
+//         total_items: 42,
+//         total_price: 5150,
+//         fulfilled_date: 1722816000,
+//         fulfilled_time: 0,
+//         shipping_cost: 7.01,
+//       },
+//     ],
+//     top_sellers: {
+//       "hawk tuah": 43,
+//       don: 30,
+//       mercaa: 14,
+//     },
+//     top_types: {
+//       retro_trucker: 8,
+//       mid_profile: 32,
+//       high_profile: 20,
+//       structured: 15,
+//       snapback: 19,
+//     },
+//   },
+// ];
+
+export const AnalyticsInit = [];

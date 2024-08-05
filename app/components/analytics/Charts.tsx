@@ -15,7 +15,22 @@ import {
   YAxis,
 } from "recharts";
 import { COLORS } from "~/lib/data/analytics";
+import { formatNumber } from "~/lib/formatters/numbers";
 import { DataProps, TopSellerProps } from "~/lib/types/analytics";
+
+type CustomToolTipPrps = {
+  date: string;
+  value: string;
+};
+
+export function CustomTooltip({ date, value }: CustomToolTipPrps) {
+  return (
+    <div className="custom-tooltip">
+      <p className="label">{`Date: ${date}`}</p>
+      <p className="intro">{`Amount: ${value}}`}</p>
+    </div>
+  );
+}
 
 export const LineChartStats = ({ data }: { data: DataProps[] }) => {
   return (
@@ -37,8 +52,14 @@ export const LineChartStats = ({ data }: { data: DataProps[] }) => {
           padding={{ left: 10, right: 10 }}
           axisLine={false}
           tickSize={0}
+          angle={30}
         />
-        <YAxis axisLine={false} padding={{ top: 0, bottom: 10 }} tickSize={0} />
+        <YAxis
+          axisLine={false}
+          padding={{ top: 0, bottom: 10 }}
+          tickSize={0}
+          tickFormatter={(time) => `$${formatNumber(time, true)}`}
+        />
         <Tooltip />
         <Area
           type="monotone"
