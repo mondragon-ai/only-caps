@@ -64,7 +64,7 @@ export type OrderDocument = {
   };
   merchant_order: {
     order_id: string | number;
-    line_items: ShopifyLineItemProps[];
+    line_items: lineItemsShoppifyab[];
     order_number: string;
   };
   shopify_order_payload: {
@@ -88,6 +88,15 @@ export type OrderDocument = {
   fulfillment_id: string;
   created_at?: any;
   updated_at?: any;
+};
+
+type lineItemsShoppifyab = {
+  id: number;
+  variant_id: number;
+  title: string;
+  quantity: number;
+  price: string;
+  total_discount: string;
 };
 
 export type Address = {

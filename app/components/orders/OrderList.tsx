@@ -8,11 +8,11 @@ import {
   useIndexResourceState,
 } from "@shopify/polaris";
 import { DeleteIcon, ShippingLabelIcon } from "@shopify/polaris-icons";
-import { formatToMoney } from "~/lib/formatters/numbers";
-import { OrderProps } from "~/lib/types/orders";
+import { formatDateLong, formatToMoney } from "~/lib/formatters/numbers";
+import { OrderDocument, OrderProps } from "~/lib/types/orders";
 
 type OrderListProps = {
-  orders: OrderProps[];
+  orders: OrderDocument[];
 };
 export const OrderList = ({ orders }: OrderListProps) => {
   const navigate = useNavigate();
@@ -26,7 +26,7 @@ export const OrderList = ({ orders }: OrderListProps) => {
 
   const renderBadge = (status: string, delivery: string) => {
     const statusBadge =
-      status === "failed" ? (
+      status === "ACTIVE" ? (
         <Badge tone="success" progress="complete">
           Complete
         </Badge>
@@ -51,8 +51,21 @@ export const OrderList = ({ orders }: OrderListProps) => {
   };
 
   const rowMarkup = orders.map(
-    ({ id, order_name, date, name, total, status, delivery }, index) => {
-      const { statusBadge, deliveryBadge } = renderBadge(status, delivery);
+    (
+      {
+        id,
+        merchant_order,
+        created_at,
+        shopify_order_payload,
+        tracking_number,
+        fulfillment_status,
+      },
+      index,
+    ) => {
+      const { statusBadge, deliveryBadge } = renderBadge(
+        fulfillment_status,
+        tracking_number,
+      );
       return (
         <IndexTable.Row
           id={id}
@@ -63,24 +76,24 @@ export const OrderList = ({ orders }: OrderListProps) => {
         >
           <IndexTable.Cell>
             <Text variant="bodyMd" fontWeight="bold" as="span">
-              #{order_name}
+              #{merchant_order.order_number}
             </Text>
           </IndexTable.Cell>
           <IndexTable.Cell>
             <Text variant="bodyMd" as="span">
-              {name}
+              {shopify_order_payload.shipping_address.first_name}
             </Text>
           </IndexTable.Cell>
           <IndexTable.Cell>{statusBadge}</IndexTable.Cell>
           <IndexTable.Cell>
             <Text as="span" alignment="end" numeric>
-              {`$${formatToMoney(Number(total))}`}
+              {`$${formatToMoney(merchant_order.line_items.reduce((prev, curr) => prev + Number(curr.price), 0))}`}
             </Text>
           </IndexTable.Cell>
           <IndexTable.Cell>{deliveryBadge}</IndexTable.Cell>
           <IndexTable.Cell>
             <Text variant="bodyMd" as="span">
-              {date}
+              {formatDateLong(created_at)}
             </Text>
           </IndexTable.Cell>
         </IndexTable.Row>

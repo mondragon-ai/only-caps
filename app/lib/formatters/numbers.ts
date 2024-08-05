@@ -59,6 +59,7 @@ export const formatDate = (epochMillis: number): string => {
   };
   return date.toLocaleDateString("en-US", options);
 };
+
 /**
  * Calculates the difference between two dates in milliseconds and returns the difference in days.
  *
@@ -78,4 +79,27 @@ export const getDifferenceInDays = (
   const millisecondsInADay = 24 * 60 * 60;
   const differenceInMillis = Math.abs(endMillis - startMillis);
   return Math.floor(differenceInMillis / millisecondsInADay);
+};
+
+/**
+ * Converts a time epoch in milliseconds to a string in the format of the first
+ * three letters of the month and the day of the month.
+ *
+ * @param {number} epochMillis - The epoch time in milliseconds.
+ * @returns {string} - The formatted date string in the format "MMM d".
+ *
+ * @example
+ * const exampleEpoch = 1625140800000;
+ * console.log(formatDate(exampleEpoch)); // Output: "Jul 1"
+ */
+export const formatDateLong = (epochMillis: number): string => {
+  const date = new Date(epochMillis * 1000);
+  const options: Intl.DateTimeFormatOptions = {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+  };
+  return date.toLocaleDateString("en-US", options);
 };

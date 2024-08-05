@@ -1,3 +1,5 @@
+import { OrderDocument } from "../types/orders";
+
 export const line_items = [
   {
     id: "100",
@@ -132,3 +134,160 @@ export const order_list: any[] = [
     date: new Date().toLocaleDateString(),
   },
 ];
+
+export const mockAddress = {
+  id: 0,
+  customer_id: 0,
+  first_name: "Collin",
+  last_name: "Sander",
+  company: "",
+  address1: "420 Bigly",
+  address2: "",
+  city: "Faye",
+  province: "AR",
+  country: "US",
+  zip: "41069",
+  phone: "",
+  province_code: "AR",
+  country_code: "US",
+  country_name: "",
+  default: true,
+};
+
+export const mockLineItem = {
+  id: 0,
+  variant_id: 0,
+  title: "",
+  quantity: 0,
+  price: "",
+  total_discount: "",
+};
+
+export const mockOrders: OrderDocument[] = [];
+// export const mockOrders: OrderDocument[] = [
+//   {
+//     id: "order1",
+//     pod_created: true,
+//     shipping_rate: 5.99,
+//     domain: "example.com",
+//     myshopify_domain: "example.myshopify.com",
+//     timezone: "America/Chicago",
+//     access_token: "abc123",
+//     location_id: "loc1",
+//     fulfillment_status: "ACTIVE",
+//     tracking_number: "track123",
+//     pod_line_items: [
+//       {
+//         variant_id: "variant123",
+//         quantity: 2,
+//         weight: 1.0,
+//         cost: 10.0,
+//       },
+//       {
+//         variant_id: "variant456",
+//         quantity: 1,
+//         weight: 0.5,
+//         cost: 15.0,
+//       },
+//     ],
+//     customer: {
+//       id: 1,
+//       email: "john.doe@example.com",
+//       shipping_address: mockAddress,
+//     },
+//     merchant_order: {
+//       order_id: "order1",
+//       line_items: [mockLineItem],
+//       order_number: "1001",
+//     },
+//     shopify_order_payload: {
+//       line_items: [
+//         {
+//           variant_id: "variant123",
+//           quantity: "2",
+//         },
+//       ],
+//       currency: "USD",
+//       financial_status: "paid",
+//       customer: {
+//         id: 1,
+//       },
+//       tags: "tag1, tag2",
+//       shipping_lines: [
+//         {
+//           custom: true,
+//           price: "5.99",
+//           title: "Standard Shipping",
+//         },
+//       ],
+//       shipping_address: mockAddress,
+//     },
+//     fulfillment_id: "fulfillment1",
+//     created_at: 1717545600,
+//     updated_at: 1717545600,
+//   },
+//   {
+//     id: "order2",
+//     pod_created: false,
+//     shipping_rate: 7.99,
+//     domain: "example2.com",
+//     myshopify_domain: "example2.myshopify.com",
+//     timezone: "America/Los_Angeles",
+//     access_token: "def456",
+//     location_id: "loc2",
+//     fulfillment_status: "DEACTIVE",
+//     tracking_number: "",
+//     pod_line_items: [
+//       {
+//         variant_id: "variant789",
+//         quantity: 3,
+//         weight: 2.0,
+//         cost: 20.0,
+//       },
+//     ],
+//     customer: {
+//       id: 2,
+//       email: "jane.doe@example.com",
+//       shipping_address: mockAddress,
+//     },
+//     merchant_order: {
+//       order_id: "order2",
+//       line_items: [
+//         {
+//           id: 2,
+//           variant_id: 1234,
+//           title: "Another Product",
+//           quantity: 3,
+//           price: "30.00",
+//           total_discount: "5.00",
+//         },
+//       ],
+//       order_number: "1002",
+//     },
+//     shopify_order_payload: {
+//       line_items: [
+//         {
+//           variant_id: "variant789",
+//           quantity: "3",
+//         },
+//       ],
+//       currency: "USD",
+//       financial_status: "paid",
+//       customer: {
+//         id: 2,
+//       },
+//       tags: "tag3, tag4",
+//       shipping_lines: [
+//         {
+//           custom: true,
+//           price: "7.99",
+//           title: "Standard Shipping",
+//         },
+//       ],
+//       shipping_address: mockAddress,
+//     },
+//     fulfillment_id: "fulfillment2",
+//     created_at: 1722816000,
+//     updated_at: 1722816000,
+//   },
+// ];

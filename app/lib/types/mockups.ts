@@ -60,3 +60,50 @@ export type HatDetail = {
 export type HatDataType = {
   [key in MockupTypes]: HatDetail;
 };
+
+export type DesignDocument = {
+  id: string;
+  domain: string;
+  access_token: string;
+  merchant_uuid: string;
+  status: "ACTIVE" | "DEACTIVE";
+  is_shirt: boolean;
+  base_sku: string;
+  title: string;
+  product_id: string | number;
+  front_mockup_urls: { url: string; alt: string }[];
+  back_mockup_urls: { url: string; alt: string }[];
+  size: "small" | "medium" | "large" | "whole";
+  design_position: "left" | "right" | "center";
+  has_inverted: boolean;
+  design_urls: {
+    front: string;
+    front_large: string;
+    back: string;
+    back_large: string;
+    sleeve: string;
+    front_dark: string;
+    front_large_dark: string;
+    back_dark: string;
+    back_large_dark: string;
+    sleeve_dark: string;
+  };
+  sizes: (
+    | "Small"
+    | "Medium"
+    | "Large"
+    | "XL"
+    | "2XL"
+    | "3XL"
+    | "4XL"
+    | "5XL"
+  )[];
+  sides: ("FRONT" | "BACK")[];
+  sleeve_side: "left" | "right";
+  colors: ("WHITE" | "BLACK" | "GREEN" | "BLUE" | "GRAY")[];
+  external?: "SHOPIFY" | null;
+  front_is_main: boolean;
+  url?: string;
+  updated_at: any;
+  created_at: any;
+};

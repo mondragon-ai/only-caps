@@ -22,6 +22,7 @@ import { authenticate } from "~/shopify.server";
 import { Await, useLoaderData } from "@remix-run/react";
 import { handleAnalytics } from "~/lib/util/analytics";
 import { AnalyticsProps } from "~/lib/types/analytics";
+import { LoadingSkeleton } from "~/components/skeleton";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const admin = await authenticate.admin(request);
@@ -198,24 +199,3 @@ export type TimeFrameProps =
   | "thirty_days"
   | "ninety_days"
   | "twelve_months";
-
-function LoadingSkeleton() {
-  return (
-    <SkeletonPage primaryAction title="Welcome Back, loading">
-      <Layout>
-        <Layout.Section>
-          <SkeletonDisplayText size="small" />
-          <SkeletonBodyText />
-        </Layout.Section>
-        <Layout.Section>
-          <SkeletonDisplayText size="small" />
-          <SkeletonBodyText />
-        </Layout.Section>
-        <Layout.Section>
-          <SkeletonDisplayText size="small" />
-          <SkeletonBodyText />
-        </Layout.Section>
-      </Layout>
-    </SkeletonPage>
-  );
-}
