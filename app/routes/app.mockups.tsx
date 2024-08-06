@@ -1,43 +1,59 @@
 import { json, LoaderFunctionArgs } from "@remix-run/node";
+import { Await, useLoaderData } from "@remix-run/react";
 import { Box, Layout, Page, EmptyState } from "@shopify/polaris";
+import { Suspense } from "react";
 import { Footer } from "~/components/layout/Footer";
 import { MockupList } from "~/components/mockups/MockupList";
-import { mockup_list } from "~/lib/data/mockups";
+import { LoadingSkeleton } from "~/components/skeleton";
+import { mockup_init_state } from "~/lib/data/mockups";
+import { MockupProps } from "~/lib/types/mockups";
 import { authenticate } from "~/shopify.server";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const admin = await authenticate.admin(request);
+  const mockups = mockup_init_state as MockupProps[];
+
   return json({
     shop: admin.session.shop,
+    mockups,
   });
 }
 
 export default function MockupsPage() {
+  const data = useLoaderData<typeof loader>();
   return (
     <Page title="Your Mockups" subtitle="Mockups Generated With OnlyCaps">
-      <Layout>
-        {mockup_list && mockup_list.length > 0 ? (
-          <Layout.Section>
-            <MockupList mockups={mockup_list} />
-          </Layout.Section>
-        ) : (
-          <Layout.Section>
-            <EmptyState
-              heading="No Mockups Found"
-              action={{
-                content: "Generate Mockup",
-                url: "/app/catalog",
-              }}
-              image="https://cdn.shopify.com/s/files/1/0262/4071/2726/files/emptystate-files.png"
-            >
-              <p>Create a product and start making money now.</p>
-            </EmptyState>
-          </Layout.Section>
-        )}
-        <Layout.Section>
-          <Footer />
-        </Layout.Section>
-      </Layout>
+      <Suspense fallback={<LoadingSkeleton />}>
+        <Await resolve={data}>
+          {(loadedData) => {
+            return (
+              <Layout>
+                {loadedData.mockups && loadedData.mockups.length > 0 ? (
+                  <Layout.Section>
+                    <MockupList mockups={loadedData.mockups as MockupProps[]} />
+                  </Layout.Section>
+                ) : (
+                  <Layout.Section>
+                    <EmptyState
+                      heading="No Mockups Found"
+                      action={{
+                        content: "Generate Mockup",
+                        url: "/app/catalog",
+                      }}
+                      image="https://cdn.shopify.com/s/files/1/0262/4071/2726/files/emptystate-files.png"
+                    >
+                      <p>Create a product and start making money now.</p>
+                    </EmptyState>
+                  </Layout.Section>
+                )}
+                <Layout.Section>
+                  <Footer />
+                </Layout.Section>
+              </Layout>
+            );
+          }}
+        </Await>
+      </Suspense>
     </Page>
   );
 }
