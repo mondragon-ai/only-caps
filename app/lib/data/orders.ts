@@ -1,5 +1,24 @@
 import { OrderDocument } from "../types/orders";
 
+export const mockAddress = {
+  id: 0,
+  customer_id: 0,
+  first_name: "Collin",
+  last_name: "Sander",
+  company: "",
+  address1: "420 Bigly",
+  address2: "",
+  city: "Faye",
+  province: "AR",
+  country: "US",
+  zip: "41069",
+  phone: "",
+  province_code: "AR",
+  country_code: "US",
+  country_name: "",
+  default: true,
+};
+
 export const line_items = [
   {
     id: "100",
@@ -72,20 +91,71 @@ export const mock_order = {
   line_items: line_items,
   shipping: 5.99,
   customer: {
-    id: 0,
-    name: "Collin Sander",
-    first_name: "Collin",
-    last_name: "Sander",
-    address: {
-      line1: "420 Bigly",
-      city: "Fay",
-      state: "AR",
-      country: "USA",
-      zip: "72704",
-    },
-    email: "Colling@gobigly.com",
+    id: 2,
+    email: "jane.doe@example.com",
+    shipping_address: mockAddress,
   },
-};
+  pod_created: false,
+  shipping_rate: 7.99,
+  domain: "example2.com",
+  myshopify_domain: "example2.myshopify.com",
+  timezone: "America/Los_Angeles",
+  access_token: "def456",
+  location_id: "loc2",
+  fulfillment_status: "DEACTIVE",
+  tracking_number: "",
+  pod_line_items: [
+    {
+      variant_id: "variant789",
+      quantity: 3,
+      weight: 2.0,
+      image: "",
+      merchant_variants_id: "",
+      cost: 20.0,
+    },
+  ],
+  merchant_order: {
+    order_id: "order2",
+    line_items: [
+      {
+        id: 2,
+        variant_id: 1234,
+        title: "Another Product",
+        quantity: 1,
+        price: "30.00",
+        total_discount: "5.00",
+        sku: "",
+        variant_title: "",
+      },
+    ],
+    order_number: "1002",
+  },
+  shopify_order_payload: {
+    line_items: [
+      {
+        variant_id: "variant789",
+        quantity: "3",
+      },
+    ],
+    currency: "USD",
+    financial_status: "paid",
+    customer: {
+      id: 2,
+    },
+    tags: "tag3, tag4",
+    shipping_lines: [
+      {
+        custom: true,
+        price: "7.99",
+        title: "Standard Shipping",
+      },
+    ],
+    shipping_address: mockAddress,
+  },
+  fulfillment_id: "fulfillment2",
+  created_at: 1722816000,
+  updated_at: 1722816000,
+} as OrderDocument;
 
 export const order_list: any[] = [
   {
@@ -134,25 +204,6 @@ export const order_list: any[] = [
     date: new Date().toLocaleDateString(),
   },
 ];
-
-export const mockAddress = {
-  id: 0,
-  customer_id: 0,
-  first_name: "Collin",
-  last_name: "Sander",
-  company: "",
-  address1: "420 Bigly",
-  address2: "",
-  city: "Faye",
-  province: "AR",
-  country: "US",
-  zip: "41069",
-  phone: "",
-  province_code: "AR",
-  country_code: "US",
-  country_name: "",
-  default: true,
-};
 
 export const mockLineItem = {
   id: 0,

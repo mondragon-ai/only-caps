@@ -51,12 +51,7 @@ export type OrderDocument = {
   location_id: number | string;
   fulfillment_status: "ACTIVE" | "DEACTIVE";
   tracking_number: string;
-  pod_line_items: {
-    variant_id: string;
-    quantity: number;
-    weight: number;
-    cost: number;
-  }[];
+  pod_line_items: PODLineItemsProps[];
   customer: {
     id: number;
     email: string;
@@ -90,13 +85,24 @@ export type OrderDocument = {
   updated_at?: any;
 };
 
-type lineItemsShoppifyab = {
+export type lineItemsShoppifyab = {
   id: number;
   variant_id: number;
   title: string;
   quantity: number;
   price: string;
   total_discount: string;
+  sku: string;
+  variant_title: "";
+};
+
+export type PODLineItemsProps = {
+  variant_id: string;
+  quantity: number;
+  weight: number;
+  cost: number;
+  image: string;
+  merchant_variants_id: string | number;
 };
 
 export type Address = {

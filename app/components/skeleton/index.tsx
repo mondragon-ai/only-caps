@@ -1,4 +1,5 @@
 import {
+  Card,
   Layout,
   SkeletonBodyText,
   SkeletonDisplayText,
@@ -7,19 +8,31 @@ import {
 
 export function LoadingSkeleton() {
   return (
-    <SkeletonPage primaryAction title="Welcome Back, loading">
+    <SkeletonPage title="Loading mockup details...">
       <Layout>
         <Layout.Section>
-          <SkeletonDisplayText size="small" />
-          <SkeletonBodyText />
+          <Card>
+            <SkeletonDisplayText size="large" />
+            <SkeletonBodyText />
+          </Card>
+          <Card>
+            <SkeletonDisplayText size="large" />
+            <SkeletonBodyText />
+          </Card>
         </Layout.Section>
-        <Layout.Section>
-          <SkeletonDisplayText size="small" />
-          <SkeletonBodyText />
-        </Layout.Section>
-        <Layout.Section>
-          <SkeletonDisplayText size="small" />
-          <SkeletonBodyText />
+        <Layout.Section variant="oneThird">
+          <Card>
+            <SkeletonDisplayText size="large" />
+            <SkeletonBodyText />
+          </Card>
+          <Card>
+            <SkeletonDisplayText size="large" />
+            <SkeletonBodyText />
+          </Card>
+          <Card>
+            <SkeletonDisplayText size="large" />
+            <SkeletonBodyText />
+          </Card>
         </Layout.Section>
       </Layout>
     </SkeletonPage>

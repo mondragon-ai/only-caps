@@ -1,5 +1,4 @@
 import {
-  Avatar,
   Badge,
   BlockStack,
   Box,
@@ -13,9 +12,16 @@ import {
 import styles from "./Orders.module.css";
 import { OrderFulfilledIcon, ShippingLabelIcon } from "@shopify/polaris-icons";
 import { formatToMoney } from "~/lib/formatters/numbers";
-import { LineItemProps, OrderProps } from "~/lib/types/orders";
+import {
+  LineItemProps,
+  lineItemsShoppifyab,
+  OrderDocument,
+  PODLineItemsProps,
+} from "~/lib/types/orders";
+import { ShopifyLineItemProps } from "~/lib/types/shopify";
+import { PRODUCT_PLACEHODLER } from "~/lib/contants";
 
-export const Order = ({ order }: { order: OrderProps }) => {
+export const Order = ({ order }: { order: OrderDocument }) => {
   return (
     <Card padding="400">
       <BlockStack gap="300">
@@ -42,8 +48,10 @@ export const Order = ({ order }: { order: OrderProps }) => {
         <Box borderColor="border" borderWidth="025" borderRadius="100">
           <ResourceList
             resourceName={{ singular: "Line Item", plural: "Line Items" }}
-            items={order.line_items}
-            renderItem={renderLineItem}
+            items={order.merchant_order.line_items}
+            renderItem={(items, id, i) =>
+              renderLineItem(items, order.pod_line_items, i)
+            }
           />
         </Box>
       </BlockStack>
@@ -51,15 +59,26 @@ export const Order = ({ order }: { order: OrderProps }) => {
   );
 };
 
-const renderLineItem = (item: LineItemProps) => {
-  const { id, url, quantity, img, title, variants, cost, price, sku } = item;
-  const media = <Thumbnail source={img || ""} alt={sku} />;
-  const vars = variants.map((v) => v).join(" / ");
+const renderLineItem = (
+  item: lineItemsShoppifyab,
+  pod_li: PODLineItemsProps[],
+  i: number,
+) => {
+  const { title, id, sku, variant_title, price, quantity } = item;
+  const media = (
+    <Thumbnail
+      source={
+        pod_li[i] && pod_li[i].image ? pod_li[i].image : PRODUCT_PLACEHODLER
+      }
+      alt={`${sku}`}
+    />
+  );
+  // const vars = variants.map((v) => v).join(" / ");
 
   return (
     <ResourceItem
-      id={id}
-      url={url}
+      id={String(id)}
+      url={"#"}
       media={media}
       accessibilityLabel={`View details for ${title}`}
     >
@@ -69,7 +88,7 @@ const renderLineItem = (item: LineItemProps) => {
             {title}
           </Text>
           <Text variant="bodySm" as="h4" tone="subdued">
-            {vars}
+            {variant_title}
           </Text>
           <Text variant="bodySm" as="h4" tone="subdued">
             {sku}
@@ -77,7 +96,7 @@ const renderLineItem = (item: LineItemProps) => {
         </div>
         <div>
           <Text variant="bodyMd" fontWeight="bold" as="h3">
-            {`$${formatToMoney(cost)}`}
+            {`$${formatToMoney(Number(pod_li[i] && pod_li[i].cost))}`}
           </Text>
         </div>
         <div>
@@ -87,7 +106,7 @@ const renderLineItem = (item: LineItemProps) => {
         </div>
         <div>
           <Text variant="bodyMd" fontWeight="bold" as="h3">
-            {`$${formatToMoney(price)}`}
+            {`$${formatToMoney(Number(price))}`}
           </Text>
         </div>
       </InlineGrid>

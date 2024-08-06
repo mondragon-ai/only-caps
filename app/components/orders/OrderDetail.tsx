@@ -1,8 +1,9 @@
 import { BlockStack, Card, Text } from "@shopify/polaris";
 import styles from "./Orders.module.css";
-import { OrderProps } from "~/lib/types/orders";
+import { OrderDocument } from "~/lib/types/orders";
+import { formatDateLong } from "~/lib/formatters/numbers";
 
-export const OrderDetail = ({ order }: { order: OrderProps }) => {
+export const OrderDetail = ({ order }: { order: OrderDocument }) => {
   return (
     <Card>
       <BlockStack gap="500">
@@ -15,7 +16,7 @@ export const OrderDetail = ({ order }: { order: OrderProps }) => {
               {order.id}
             </Text>
             <Text as="p" variant="bodyMd" tone="disabled">
-              {order.date}
+              {formatDateLong(order.created_at)}
             </Text>
           </div>
         </div>

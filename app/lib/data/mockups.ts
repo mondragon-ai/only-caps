@@ -285,6 +285,16 @@ export const mockup_dummy = {
   SKU: "POD-TRCK-",
   product_id: "",
   mockups: [""],
+
+  design_dimensions: {
+    height: 0,
+    width: 0,
+  },
+  resized_design: "",
+  resized_dimensions: {
+    height: 0,
+    width: 0,
+  },
 } as MockupProps;
 
 export const mockup_init_state = [];

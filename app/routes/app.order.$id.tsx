@@ -8,13 +8,19 @@ import { OrderDetail } from "~/components/orders/OrderDetail";
 import { mock_order } from "~/lib/data/orders";
 import { json, LoaderFunctionArgs } from "@remix-run/node";
 import { authenticate } from "~/shopify.server";
-import { useLoaderData } from "@remix-run/react";
+import { Await, useLoaderData } from "@remix-run/react";
+import { Suspense } from "react";
+import { LoadingSkeleton } from "~/components/skeleton";
+import { OrderDocument } from "~/lib/types/orders";
+import { formatDateLong } from "~/lib/formatters/numbers";
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
   const admin = await authenticate.admin(request);
+  const order = mock_order as OrderDocument;
   return json({
     shop: admin.session.shop,
     params: params,
+    order,
   });
 }
 
@@ -23,40 +29,53 @@ export default function OrdersPage() {
   console.log({ data });
 
   return (
-    <Page
-      backAction={{ content: "Order", url: "/app/orders" }}
-      title={`#${String(mock_order.order_name)}`}
-      subtitle={mock_order.date}
-      secondaryActions={[
-        {
-          content: "Delete Mockup",
-          disabled: false,
-          icon: DeleteIcon,
-          destructive: true,
-        },
-        { content: "Create Product", disabled: false, icon: ProductAddIcon },
-      ]}
-    >
-      <Layout>
-        <Layout.Section>
-          <BlockStack gap={"500"}>
-            <Order order={mock_order} />
-            <Price order={mock_order} />
-          </BlockStack>
-        </Layout.Section>
+    <Suspense fallback={<LoadingSkeleton />}>
+      <Await resolve={data}>
+        {(loadedData) => {
+          const order = loadedData.order as OrderDocument;
+          return (
+            <Page
+              backAction={{ content: "Order", url: "/app/orders" }}
+              title={`#${String(order.merchant_order.order_number)}`}
+              subtitle={formatDateLong(order.created_at)}
+              secondaryActions={[
+                {
+                  content: "Delete Mockup",
+                  disabled: false,
+                  icon: DeleteIcon,
+                  destructive: true,
+                },
+                {
+                  content: "Create Product",
+                  disabled: false,
+                  icon: ProductAddIcon,
+                },
+              ]}
+            >
+              <Layout>
+                <Layout.Section>
+                  <BlockStack gap={"500"}>
+                    <Order order={order} />
+                    <Price order={order} />
+                  </BlockStack>
+                </Layout.Section>
 
-        <Layout.Section variant="oneThird">
-          <BlockStack gap={"500"}>
-            <Customer order={mock_order} />
-            <OrderDetail order={mock_order} />
-          </BlockStack>
-        </Layout.Section>
-      </Layout>
-      <Layout>
-        <Layout.Section>
-          <Footer />
-        </Layout.Section>
-      </Layout>
-    </Page>
+                <Layout.Section variant="oneThird">
+                  <BlockStack gap={"500"}>
+                    <Customer order={order} />
+                    <OrderDetail order={order} />
+                  </BlockStack>
+                </Layout.Section>
+              </Layout>
+              <Layout>
+                <Layout.Section>
+                  <Footer />
+                </Layout.Section>
+              </Layout>
+            </Page>
+          );
+        }}
+      </Await>
+    </Suspense>
   );
 }

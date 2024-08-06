@@ -9,10 +9,14 @@ import {
 import styles from "./Orders.module.css";
 import { MoneyFilledIcon } from "@shopify/polaris-icons";
 import { formatToMoney } from "~/lib/formatters/numbers";
-import { LineItemProps, OrderProps } from "~/lib/types/orders";
+import {
+  LineItemProps,
+  lineItemsShoppifyab,
+  OrderDocument,
+} from "~/lib/types/orders";
 
-const calculateSubtotal = (lineItems: LineItemProps[]) => {
-  return lineItems.reduce((prev, li) => prev + li.cost, 0);
+const calculateSubtotal = (lineItems: lineItemsShoppifyab[]) => {
+  return lineItems.reduce((prev, li) => prev + Number(li.price), 0);
 };
 
 const renderPriceRow = (title: string, description: string, amount: number) => (
@@ -29,9 +33,9 @@ const renderPriceRow = (title: string, description: string, amount: number) => (
   </InlineGrid>
 );
 
-export const Price = ({ order }: { order: OrderProps }) => {
-  const subtotal = calculateSubtotal(order.line_items);
-  const total = subtotal + order.shipping;
+export const Price = ({ order }: { order: OrderDocument }) => {
+  const subtotal = calculateSubtotal(order.merchant_order.line_items);
+  const total = subtotal + order.shipping_rate;
 
   return (
     <Card padding="400">
@@ -55,10 +59,14 @@ export const Price = ({ order }: { order: OrderProps }) => {
           <BlockStack gap="300">
             {renderPriceRow(
               "Subtotal",
-              `${order.line_items.length} ${order.line_items.length === 1 ? "item" : "items"}`,
+              `${order.merchant_order.line_items.length} ${order.merchant_order.line_items.length === 1 ? "item" : "items"}`,
               subtotal,
             )}
-            {renderPriceRow("Shipping", "Standard Shipping", order.shipping)}
+            {renderPriceRow(
+              "Shipping",
+              "Standard Shipping",
+              order.shipping_rate,
+            )}
             {renderPriceRow("Total", "-", total)}
           </BlockStack>
         </Box>

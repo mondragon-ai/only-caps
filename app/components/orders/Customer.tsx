@@ -1,9 +1,9 @@
 import { BlockStack, Card, Link, Text } from "@shopify/polaris";
 import styles from "./Orders.module.css";
-import { OrderProps } from "~/lib/types/orders";
+import { OrderDocument, OrderProps } from "~/lib/types/orders";
 import { useAppBridge } from "@shopify/app-bridge-react";
 
-export const Customer = ({ order }: { order: OrderProps }) => {
+export const Customer = ({ order }: { order: OrderDocument }) => {
   const shopify = useAppBridge();
 
   const handleEmailClick = async () => {
@@ -26,14 +26,14 @@ export const Customer = ({ order }: { order: OrderProps }) => {
   );
 };
 
-const RenderCustomerInfo = ({ order }: { order: OrderProps }) => (
+const RenderCustomerInfo = ({ order }: { order: OrderDocument }) => (
   <div className={styles.info}>
     <Text as="h2" variant="headingMd">
       Customer
     </Text>
     <div className={styles.info}>
       <Text as="p" variant="bodyMd" tone="disabled">
-        {order.customer.name}
+        {order.shopify_order_payload.shipping_address.first_name}
       </Text>
       <Link url={"#"}>{order.customer.id}</Link>
     </div>
@@ -44,7 +44,7 @@ const RenderContactInfo = ({
   order,
   copy,
 }: {
-  order: OrderProps;
+  order: OrderDocument;
   copy: () => Promise<void>;
 }) => (
   <div className={styles.info}>
@@ -55,20 +55,20 @@ const RenderContactInfo = ({
   </div>
 );
 
-const RenderShippingAddress = ({ order }: { order: OrderProps }) => (
+const RenderShippingAddress = ({ order }: { order: OrderDocument }) => (
   <div className={styles.info}>
     <Text as="h2" variant="headingMd">
       Shipping Address
     </Text>
     <div>
       <Text as="p" variant="bodyMd" tone="disabled">
-        {order.customer.address.line1}
+        {order.shopify_order_payload.shipping_address.address1}
       </Text>
       <Text as="p" variant="bodyMd" tone="disabled">
-        {order.customer.address.city}
+        {order.shopify_order_payload.shipping_address.city}
       </Text>
       <Text as="p" variant="bodyMd" tone="disabled">
-        {`${order.customer.address.country} ${order.customer.address.zip}`}
+        {`${order.shopify_order_payload.shipping_address.country} ${order.shopify_order_payload.shipping_address.zip}`}
       </Text>
     </div>
   </div>
