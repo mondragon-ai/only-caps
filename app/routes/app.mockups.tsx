@@ -1,13 +1,20 @@
-import { json, LoaderFunctionArgs } from "@remix-run/node";
-import { Await, useLoaderData } from "@remix-run/react";
-import { Box, Layout, Page, EmptyState } from "@shopify/polaris";
-import { Suspense } from "react";
+import { ActionFunctionArgs, json, LoaderFunctionArgs } from "@remix-run/node";
+import {
+  Await,
+  useFetcher,
+  useLoaderData,
+  useNavigate,
+} from "@remix-run/react";
+import { Box, Layout, Page, EmptyState, Banner } from "@shopify/polaris";
+import { Suspense, useCallback, useEffect, useState } from "react";
 import { Footer } from "~/components/layout/Footer";
 import { MockupList } from "~/components/mockups/MockupList";
 import { LoadingSkeleton } from "~/components/skeleton";
 import { mockup_init_state } from "~/lib/data/mockups";
 import { MockupProps } from "~/lib/types/mockups";
 import { authenticate } from "~/shopify.server";
+import { createProduct, deleteMockup } from "./models/models.server";
+import { useAppBridge } from "@shopify/app-bridge-react";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const admin = await authenticate.admin(request);
@@ -20,7 +27,36 @@ export async function loader({ request }: LoaderFunctionArgs) {
 }
 
 export default function MockupsPage() {
+  const shopify = useAppBridge();
   const data = useLoaderData<typeof loader>();
+  const fetcher = useFetcher<typeof action>();
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<{
+    title: string;
+    message: string;
+    type: "critical" | "warning";
+  } | null>(null);
+
+  const mockup_response = fetcher.data;
+
+  useEffect(() => {
+    if (mockup_response) {
+      if (mockup_response?.error) {
+        setError({
+          title: "Generating Mockup",
+          message: mockup_response.error,
+          type: "critical",
+        });
+        setLoading(false);
+      } else {
+        shopify.toast.show("Product Created");
+        setLoading(false);
+        // navigate(`/app/mockup/${mockup_response.mockup?.id}`);
+      }
+    }
+  }, [shopify, mockup_response, data]);
+
   return (
     <Page title="Your Mockups" subtitle="Mockups Generated With OnlyCaps">
       <Suspense fallback={<LoadingSkeleton />}>
@@ -28,6 +64,17 @@ export default function MockupsPage() {
           {(loadedData) => {
             return (
               <Layout>
+                <Layout.Section>
+                  {error && (
+                    <Banner
+                      title={error.title}
+                      tone={error.type}
+                      onDismiss={() => setError(null)}
+                    >
+                      <p>{error.message}</p>
+                    </Banner>
+                  )}
+                </Layout.Section>
                 {loadedData.mockups && loadedData.mockups.length > 0 ? (
                   <Layout.Section>
                     <MockupList mockups={loadedData.mockups as MockupProps[]} />
@@ -56,6 +103,40 @@ export default function MockupsPage() {
       </Suspense>
     </Page>
   );
+}
+
+/**
+ * Action function to handle mockup creation.
+ *
+ * @param {any} args - The action function arguments.
+ * @returns {Promise<Response>} The response containing the mockup data.
+ */
+export async function action({ request, params }: ActionFunctionArgs) {
+  const { session } = await authenticate.admin(request);
+  const { shop } = session;
+
+  // Parsing the mockup data from the formData
+  const formData = await request.formData();
+  const mockup = formData.get("mockup");
+  const type = formData.get("action");
+
+  // create pyalod
+  const payload = mockup ? (JSON.parse(String(mockup)) as MockupProps) : null;
+
+  let response;
+  switch (type) {
+    case "delete":
+      response = await deleteMockup(shop, payload);
+      console.log(response);
+      return json({ shop, mockup: null, error: null });
+    case "next":
+      return json({ shop, mockup: null, error: null });
+    case "prev":
+      return json({ shop, mockup: null, error: null });
+
+    default:
+      return json({ error: "" }, { status: 400 });
+  }
 }
 
 function Code({ children }: { children: React.ReactNode }) {

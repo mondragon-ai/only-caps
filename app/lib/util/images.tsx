@@ -12,10 +12,13 @@ export const uploadToServer = async (
     alert("Please choose a file first!");
     throw new Error("File not present");
   } else {
-    const name = `${mockup.domain || ""}_${new Date().getTime()}`;
+    const name = `${mockup.name || ""}_${new Date().getTime()}`;
 
     // Call Firebase storage bucket
-    const storageRef = ref(storage, `/mockups/designs/${name}`);
+    const storageRef = ref(
+      storage,
+      `/${mockup.domain || "mockups"}/designs/${name}`,
+    );
 
     const uploadTask = uploadBytesResumable(storageRef, image);
 
