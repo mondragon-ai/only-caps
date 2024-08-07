@@ -5,7 +5,7 @@ import { useCallback } from "react";
 import { DraggableData, Position, ResizableDelta, Rnd } from "react-rnd";
 import { HatData } from "~/lib/data/mockups";
 
-export const GenoratorMockupImageCard = ({
+export const GeneratorMockupImageCard = ({
   mockup,
   setMockup,
 }: {

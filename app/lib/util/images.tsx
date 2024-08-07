@@ -4,51 +4,56 @@ import { GeneratorStateProps, MockupProps } from "../types/mockups";
 
 // Upload images to storage bucket
 export const uploadToServer = async (
-  image: any,
+  image: File | null,
   setMockup: React.Dispatch<React.SetStateAction<GeneratorStateProps>>,
   mockup: MockupProps,
-) => {
-  const body = new FormData();
-
-  console.log(mockup.shop_name);
-
-  if (image === undefined) {
+): Promise<string> => {
+  if (!image) {
     alert("Please choose a file first!");
     throw new Error("File not present");
   } else {
-    const name = "" + (mockup.domain || "") + "_" + new Date().getTime();
-    console.log(name);
+    const name = `${mockup.domain || ""}_${new Date().getTime()}`;
 
     // Call Firebase storage bucket
-    const storageRef = ref(storage, "/mockups/designs/" + name);
+    const storageRef = ref(storage, `/mockups/designs/${name}`);
 
     const uploadTask = uploadBytesResumable(storageRef, image);
 
-    uploadTask.on(
-      "state_changed",
-      (snapshot) => {
-        const progress = Math.round(
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100,
-        );
-        // Update progress
-        setMockup((pre) => ({
-          ...pre,
-          percent: 0,
-        }));
-      },
-      (err) => console.log(err),
-      () => {
-        // Get download URL
-        getDownloadURL(uploadTask.snapshot.ref).then(async (url) => {
-          console.log(url);
-          setMockup((pre) => ({
-            ...pre,
-            design: "",
-            percent: 0,
+    const url = await new Promise<string>((resolve, reject) => {
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          const progress = Math.round(
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100,
+          );
+          // Update progress
+          setMockup((prev) => ({
+            ...prev,
+            percent: progress,
           }));
-        });
-      },
-    );
+        },
+        (err) => {
+          console.error(err);
+          reject(err);
+        },
+        async () => {
+          try {
+            const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+            setMockup((prev) => ({
+              ...prev,
+              design: downloadURL,
+              percent: 0,
+            }));
+            resolve(downloadURL);
+          } catch (err) {
+            console.error(err);
+            reject(err);
+          }
+        },
+      );
+    });
+
+    return url;
   }
 };
 

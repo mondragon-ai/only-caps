@@ -284,7 +284,6 @@ export const mockup_dummy = {
   base_sku: "",
   product_id: "",
   mockups: [""],
-
   design_dimensions: {
     height: 0,
     width: 0,

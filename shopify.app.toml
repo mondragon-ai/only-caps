@@ -3,7 +3,7 @@
 client_id = "e062b2afbda40feef1c957b971c7b292"
 name = "Only Caps"
 handle = "only-caps"
-application_url = "https://whilst-hayes-infant-treatment.trycloudflare.com"
+application_url = "https://burke-aging-ala-produced.trycloudflare.com"
 embedded = true
 
 [build]
@@ -17,9 +17,9 @@ scopes = "write_products"
 
 [auth]
 redirect_urls = [
-  "https://whilst-hayes-infant-treatment.trycloudflare.com/auth/callback",
-  "https://whilst-hayes-infant-treatment.trycloudflare.com/auth/shopify/callback",
-  "https://whilst-hayes-infant-treatment.trycloudflare.com/api/auth/callback"
+  "https://burke-aging-ala-produced.trycloudflare.com/auth/callback",
+  "https://burke-aging-ala-produced.trycloudflare.com/auth/shopify/callback",
+  "https://burke-aging-ala-produced.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]
