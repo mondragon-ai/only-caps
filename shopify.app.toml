@@ -3,7 +3,7 @@
 client_id = "e062b2afbda40feef1c957b971c7b292"
 name = "Only Caps"
 handle = "only-caps"
-application_url = "https://regarded-boss-comparison-naturally.trycloudflare.com"
+application_url = "https://kim-cultural-par-bound.trycloudflare.com"
 embedded = true
 
 [build]
@@ -17,9 +17,9 @@ scopes = "write_products"
 
 [auth]
 redirect_urls = [
-  "https://regarded-boss-comparison-naturally.trycloudflare.com/auth/callback",
-  "https://regarded-boss-comparison-naturally.trycloudflare.com/auth/shopify/callback",
-  "https://regarded-boss-comparison-naturally.trycloudflare.com/api/auth/callback"
+  "https://kim-cultural-par-bound.trycloudflare.com/auth/callback",
+  "https://kim-cultural-par-bound.trycloudflare.com/auth/shopify/callback",
+  "https://kim-cultural-par-bound.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]

@@ -1,4 +1,4 @@
-import type { LoaderFunctionArgs } from "@remix-run/node";
+import type { ActionFunction, LoaderFunctionArgs } from "@remix-run/node";
 import {
   Await,
   defer,
@@ -139,6 +139,26 @@ function LoadingSkeleton() {
     </SkeletonPage>
   );
 }
+
+// const actionData = useActionData<typeof action>();
+// export let action: ActionFunction = async ({ request }) => {
+//   const { admin } = await authenticate.admin(request);
+//   const formData = await request.formData();
+//   const actionType = formData.get("actionType");
+
+//   switch (actionType) {
+//     case "createProduct":
+//       // Product creation logic
+//       return json({ message: "Product created" });
+
+//     case "deleteProduct":
+//       // Product deletion logic
+//       return json({ message: "Product deleted" });
+
+//     default:
+//       throw new Error("Unknown action");
+//   }
+// };
 
 // const createProductFetcher = useFetcher<any>();
 

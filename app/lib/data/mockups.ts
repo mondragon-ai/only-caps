@@ -270,10 +270,9 @@ export const mockup_dummy = {
   status: "ACTIVE",
   cost: 0,
   created: new Date().toLocaleString(),
-  name: "Hawk Tuah",
-  colors: ["red", "green", "black"],
-  design:
-    "https://cdn.shopify.com/app-store/listing_images/58928b5d71d8f97ebd905e289c151269/icon/CKqbxsDgrP8CEAE=.png",
+  name: "",
+  colors: [] as string[],
+  design: "",
   location: {
     top: 0,
     left: 0,
@@ -282,7 +281,7 @@ export const mockup_dummy = {
     width: 0,
     height: 0,
   },
-  SKU: "POD-TRCK-",
+  base_sku: "",
   product_id: "",
   mockups: [""],
 
@@ -297,7 +296,7 @@ export const mockup_dummy = {
   },
 } as MockupProps;
 
-export const mockup_init_state = [];
+export const mockup_init_state = [] as MockupProps[];
 // export const mockup_init_state = [
 //   {
 //     id: "",
