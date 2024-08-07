@@ -1,19 +1,20 @@
 import { BlockStack, Layout, Page } from "@shopify/polaris";
 import { Footer } from "~/components/layout/Footer";
 import { ProductAddIcon } from "@shopify/polaris-icons";
-import { MockupProps, MockupTypes } from "~/lib/types/mockups";
-import { act, useCallback, useEffect, useState } from "react";
+import { GeneratorStateProps, MockupTypes } from "~/lib/types/mockups";
+import { useCallback, useEffect, useState } from "react";
 import { MockupInfo } from "~/components/mockups/MockupInfo";
-import { useFetcher, useLocation } from "@remix-run/react";
+import { useFetcher, useLoaderData, useLocation } from "@remix-run/react";
 import { GenoratorMockupImageCard } from "~/components/generator/GenoratorMockupImageCard";
 import { GeneratorColors } from "~/components/generator/GeneratorColors";
 import { GeneratorMockupImage } from "~/components/generator/GeneratorMockupImage";
 import { GeneratorDimensions } from "~/components/generator/GeneratorDimensions";
 import { GeneratorMockupDetail } from "~/components/generator/GeneratorMockupDetail";
 import { mockup_dummy } from "~/lib/data/mockups";
-import { ActionFunction, json } from "@remix-run/node";
+import { ActionFunction, json, LoaderFunctionArgs } from "@remix-run/node";
 import { authenticate } from "~/shopify.server";
 import { useAppBridge } from "@shopify/app-bridge-react";
+import { uploadToServer } from "~/lib/util/images";
 
 function generateRandomString(length: number) {
   const characters =
@@ -28,17 +29,30 @@ function generateRandomString(length: number) {
   return "POD-" + randomString.toLocaleUpperCase();
 }
 
+export async function loader({ request }: LoaderFunctionArgs) {
+  const admin = await authenticate.admin(request);
+
+  // Return deferred data
+  return json({
+    shop: admin.session.shop,
+  });
+}
+
 export default function GeneratorPage() {
   const fetcher = useFetcher<typeof action>();
+  const data = useLoaderData<typeof loader>();
   const shopify = useAppBridge();
 
   const location = useLocation();
   const pathSegments = location.pathname.split("/");
   const slug = pathSegments[pathSegments.length - 1];
-  const [mockup, setMockup] = useState<MockupProps>({
+
+  const [mockup, setMockup] = useState<GeneratorStateProps>({
     ...mockup_dummy,
     base_sku: generateRandomString(5),
     type: slug as MockupTypes,
+    original_file: null,
+    progress: 0,
   });
 
   const isLoading =
@@ -48,18 +62,24 @@ export default function GeneratorPage() {
   const shop = fetcher.data;
 
   useEffect(() => {
+    if (data) {
+      setMockup((prev) => ({ ...prev, shop_name: data.shop }));
+    }
     if (shop) {
       shopify.toast.show("Mockup Created");
       console.log(shop);
+      console.log(data.shop);
     }
-  }, [shopify, shop]);
+  }, [shopify, shop, data]);
 
-  const handleSubmit = useCallback(() => {
+  const handleSubmit = useCallback(async () => {
+    await uploadToServer(mockup.original_file, setMockup, mockup);
+
     const formData = new FormData();
     formData.append("mockup", JSON.stringify(mockup));
 
     fetcher.submit(formData, { method: "POST" });
-  }, [mockup]);
+  }, [mockup, data]);
 
   return (
     <Page

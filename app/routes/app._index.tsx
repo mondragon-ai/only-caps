@@ -1,8 +1,7 @@
-import type { ActionFunction, LoaderFunctionArgs } from "@remix-run/node";
+import type { LoaderFunctionArgs } from "@remix-run/node";
 import {
   Await,
   defer,
-  json,
   useLoaderData,
   useNavigate,
   useNavigation,
@@ -10,7 +9,6 @@ import {
 import {
   Page,
   Layout,
-  Text,
   SkeletonPage,
   SkeletonDisplayText,
   SkeletonBodyText,
@@ -27,7 +25,7 @@ import {
 } from "~/components/home/index";
 import { Footer } from "~/components/layout/Footer";
 import { ShopifyMerchantInit } from "~/lib/data/merchant";
-import { Suspense, useEffect, useState } from "react";
+import { Suspense } from "react";
 
 // Function to add a delay
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -38,11 +36,13 @@ export async function loader({ request }: LoaderFunctionArgs) {
   // Mock a delay of 3 seconds
   await delay(3000);
 
+  const merchant = ShopifyMerchantInit;
+
   // Return deferred data
   return defer({
     shop: admin.session.shop,
-    orders_summary: ShopifyMerchantInit.analytics.orders_summary,
-    highlight_stats: ShopifyMerchantInit.analytics.highlight_stats,
+    orders_summary: merchant.analytics.orders_summary,
+    highlight_stats: merchant.analytics.highlight_stats,
   });
 }
 
@@ -139,42 +139,3 @@ function LoadingSkeleton() {
     </SkeletonPage>
   );
 }
-
-// const actionData = useActionData<typeof action>();
-// export let action: ActionFunction = async ({ request }) => {
-//   const { admin } = await authenticate.admin(request);
-//   const formData = await request.formData();
-//   const actionType = formData.get("actionType");
-
-//   switch (actionType) {
-//     case "createProduct":
-//       // Product creation logic
-//       return json({ message: "Product created" });
-
-//     case "deleteProduct":
-//       // Product deletion logic
-//       return json({ message: "Product deleted" });
-
-//     default:
-//       throw new Error("Unknown action");
-//   }
-// };
-
-// const createProductFetcher = useFetcher<any>();
-
-// const productId = createProductFetcher.data?.product?.id.replace(
-//   "gid://shopify/Product/",
-//   "",
-// );
-
-// const isLoading = createProductFetcher.state === "loading";
-
-// useEffect(() => {
-//   if (createProductFetcher.data?.product) {
-//     shopify.toast.show("Product created");
-//   }
-// }, [createProductFetcher.data, shopify]);
-
-// const generateProduct = () => {
-//   createProductFetcher.submit({}, { method: "post", action: "/product" });
-// };

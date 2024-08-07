@@ -1,14 +1,16 @@
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { storage } from "./storage";
-import { MockupProps } from "../types/mockups";
+import { GeneratorStateProps, MockupProps } from "../types/mockups";
 
 // Upload images to storage bucket
 export const uploadToServer = async (
   image: any,
-  setMockup: React.Dispatch<React.SetStateAction<MockupProps>>,
+  setMockup: React.Dispatch<React.SetStateAction<GeneratorStateProps>>,
   mockup: MockupProps,
 ) => {
   const body = new FormData();
+
+  console.log(mockup.shop_name);
 
   if (image === undefined) {
     alert("Please choose a file first!");

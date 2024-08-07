@@ -6,7 +6,7 @@ import {
   InlineGrid,
   Text,
 } from "@shopify/polaris";
-import { MockupProps } from "~/lib/types/mockups";
+import { GeneratorStateProps, MockupProps } from "~/lib/types/mockups";
 import { DeleteIcon, WandIcon, UploadIcon } from "@shopify/polaris-icons";
 import styles from "./Mockups.module.css";
 import { useCallback, useState } from "react";
@@ -15,8 +15,8 @@ export const GeneratorMockupImage = ({
   mockup,
   setMockup,
 }: {
-  mockup: MockupProps;
-  setMockup: React.Dispatch<React.SetStateAction<MockupProps>>;
+  mockup: GeneratorStateProps;
+  setMockup: React.Dispatch<React.SetStateAction<GeneratorStateProps>>;
 }) => {
   const [toUpload, setToUpload] = useState(true);
 
@@ -69,7 +69,7 @@ const UploadImage = ({
   setMockup,
 }: {
   mockup: MockupProps;
-  setMockup: React.Dispatch<React.SetStateAction<MockupProps>>;
+  setMockup: React.Dispatch<React.SetStateAction<GeneratorStateProps>>;
 }) => {
   const handleDropZoneDrop = useCallback(
     (_dropFiles: File[], acceptedFiles: File[], _rejectedFiles: File[]) => {
@@ -110,6 +110,7 @@ const UploadImage = ({
             resized_design: resizedDataUrl,
             design_dimensions: { width: img.width, height: img.height },
             resized_dimensions: { width, height },
+            original_file: selectedFile,
           }));
         };
       }

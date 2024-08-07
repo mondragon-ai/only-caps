@@ -6,7 +6,7 @@ import {
   Text,
   TextField,
 } from "@shopify/polaris";
-import { MockupProps } from "~/lib/types/mockups";
+import { GeneratorStateProps, MockupProps } from "~/lib/types/mockups";
 import styles from "./Mockups.module.css";
 import { useCallback } from "react";
 import {
@@ -21,7 +21,7 @@ export const GeneratorDimensions = ({
   setMockup,
 }: {
   mockup: MockupProps;
-  setMockup: React.Dispatch<React.SetStateAction<MockupProps>>;
+  setMockup: React.Dispatch<React.SetStateAction<GeneratorStateProps>>;
 }) => {
   const handleWidthChange = useCallback(
     (value: string) => {

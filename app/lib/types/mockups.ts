@@ -49,6 +49,11 @@ export type MockupProps = {
   };
 };
 
+export type GeneratorStateProps = MockupProps & {
+  original_file: null | File;
+  progress: number;
+};
+
 export type MockupTypes =
   | "dad"
   | "trucker"

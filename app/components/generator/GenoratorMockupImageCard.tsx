@@ -1,7 +1,7 @@
 import { Card } from "@shopify/polaris";
-import { MockupProps } from "~/lib/types/mockups";
+import { GeneratorStateProps, MockupProps } from "~/lib/types/mockups";
 import styles from "./Mockups.module.css";
-import { useCallback, useRef } from "react";
+import { useCallback } from "react";
 import { DraggableData, Position, ResizableDelta, Rnd } from "react-rnd";
 import { HatData } from "~/lib/data/mockups";
 
@@ -10,7 +10,7 @@ export const GenoratorMockupImageCard = ({
   setMockup,
 }: {
   mockup: MockupProps;
-  setMockup: React.Dispatch<React.SetStateAction<MockupProps>>;
+  setMockup: React.Dispatch<React.SetStateAction<GeneratorStateProps>>;
 }) => {
   return (
     <Card padding="200">
@@ -34,7 +34,7 @@ const DraggableResizableImage = ({
   setMockup,
 }: {
   mockup: MockupProps;
-  setMockup: React.Dispatch<React.SetStateAction<MockupProps>>;
+  setMockup: React.Dispatch<React.SetStateAction<GeneratorStateProps>>;
 }) => {
   const handleDragStop = useCallback(
     (e: any, d: DraggableData) => {
