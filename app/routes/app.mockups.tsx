@@ -13,7 +13,7 @@ import { LoadingSkeleton } from "~/components/skeleton";
 import { mockup_init_state } from "~/lib/data/mockups";
 import { MockupProps } from "~/lib/types/mockups";
 import { authenticate } from "~/shopify.server";
-import { createProduct, deleteMockup } from "./models/models.server";
+import { createProduct, deleteMockup } from "./models/mockups.server";
 import { useAppBridge } from "@shopify/app-bridge-react";
 
 export async function loader({ request }: LoaderFunctionArgs) {

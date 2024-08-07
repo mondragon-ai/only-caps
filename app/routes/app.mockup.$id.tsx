@@ -20,7 +20,7 @@ import { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
 import { Suspense, useCallback, useEffect, useState } from "react";
 import { LoadingSkeleton } from "~/components/skeleton";
 import { MockupProps } from "~/lib/types/mockups";
-import { createProduct, deleteMockup } from "./models/models.server";
+import { createProduct, deleteMockup } from "./models/mockups.server";
 import { useAppBridge } from "@shopify/app-bridge-react";
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
