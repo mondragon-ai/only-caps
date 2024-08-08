@@ -13,7 +13,12 @@ import { LoadingSkeleton } from "~/components/skeleton";
 import { mockup_init_state } from "~/lib/data/mockups";
 import { MockupProps } from "~/lib/types/mockups";
 import { authenticate } from "~/shopify.server";
-import { createProduct, deleteMockup } from "./models/mockups.server";
+import {
+  createProduct,
+  deleteMockup,
+  nextMockupList,
+  previousMockupList,
+} from "./models/mockups.server";
 import { useAppBridge } from "@shopify/app-bridge-react";
 
 export async function loader({ request }: LoaderFunctionArgs) {
@@ -130,9 +135,11 @@ export async function action({ request, params }: ActionFunctionArgs) {
       console.log(response);
       return json({ shop, mockup: null, error: null });
     case "next":
-      return json({ shop, mockup: null, error: null });
-    case "prev":
-      return json({ shop, mockup: null, error: null });
+      response = await nextMockupList(shop, "");
+      return json({ shop, orders: null, error: null });
+    case "previous":
+      response = await previousMockupList(shop, "");
+      return json({ shop, orders: null, error: null });
 
     default:
       return json({ error: "" }, { status: 400 });

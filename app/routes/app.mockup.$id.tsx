@@ -16,25 +16,57 @@ import {
   useNavigate,
 } from "@remix-run/react";
 import { authenticate } from "~/shopify.server";
-import { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
+import {
+  ActionFunctionArgs,
+  LoaderFunctionArgs,
+  redirect,
+} from "@remix-run/node";
 import { Suspense, useCallback, useEffect, useState } from "react";
 import { LoadingSkeleton } from "~/components/skeleton";
 import { MockupProps } from "~/lib/types/mockups";
-import { createProduct, deleteMockup } from "./models/mockups.server";
+import {
+  createProduct,
+  deleteMockup,
+  purchaseWholesale,
+} from "./models/mockups.server";
 import { useAppBridge } from "@shopify/app-bridge-react";
+import {
+  createProductMockupCallback,
+  deleteMockupCallback,
+  purchaseWholesaleCallback,
+} from "~/services/mockups";
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
-  const admin = await authenticate.admin(request);
+  const { session, admin } = await authenticate.admin(request);
   const id = params.id;
+  console.log("START");
+
+  const shopRespons = await admin.graphql(
+    `query {
+      shop {
+        name
+        currencyCode
+        billingAddress {
+          address1
+          city
+          provinceCode
+          zip
+        }
+      }
+    }`,
+  );
+  const responseJson = await shopRespons.json();
+  console.log(responseJson.data);
 
   // Introduce a delay
   await new Promise((resolve) => setTimeout(resolve, 10000)); // 2 second delay
 
   const mockups = mockup_dummy;
   return json({
-    shop: admin.session.shop,
+    shop: session.shop,
     mockups,
     id,
+    address: responseJson.data?.billingAddress,
   });
 }
 
@@ -51,81 +83,28 @@ export default function MockupPage() {
   } | null>(null);
 
   const handleDelete = useCallback(async () => {
-    setLoading(true);
-
-    if (!data.id) {
-      setError({
-        title: "Mockup does not exist",
-        message: "The mockup may have already been deleted.",
-        type: "critical",
-      });
-      setLoading(false);
-      navigate("/app/mockups");
-      return;
-    }
-
-    try {
-      if (data) {
-        const formData = new FormData();
-        formData.append(
-          "mockup",
-          JSON.stringify({ id: data.id, domain: data.shop }),
-        );
-        formData.append("action", "delete");
-        fetcher.submit(formData, { method: "POST" });
-        setLoading(false);
-      }
-      setLoading(false);
-    } catch (error) {
-      console.error("Error deleting mockups:", error);
-      setLoading(false);
-    }
-  }, [data, fetcher]);
+    deleteMockupCallback(data, fetcher, navigate, setLoading, setError);
+  }, [data, fetcher, navigate, setLoading, setError]);
 
   const handleCreateProduct = useCallback(async () => {
-    setLoading(true);
+    createProductMockupCallback(data, fetcher, navigate, setLoading, setError);
+  }, [data, fetcher, navigate, setLoading, setError]);
 
-    if (!data.id) {
-      setError({
-        title: "Mockup does not exist",
-        message: "The mockup may have been deleted.",
-        type: "critical",
-      });
-      setLoading(false);
-      navigate("/app/mockups");
-      return;
-    }
-
-    if (data.mockups.product_id && String(data.mockups.product_id) !== "") {
-      setError({
-        title: "Product already exist",
-        message:
-          "The mockup already has a corresponding product: " +
-          String(data.mockups.product_id) +
-          ".",
-        type: "warning",
-      });
-      setLoading(false);
-      return;
-    }
-
-    try {
-      if (data) {
-        const formData = new FormData();
-        formData.append(
-          "mockup",
-          JSON.stringify({ id: data.id, domain: data.shop }),
-        );
-        formData.append("action", "create");
-        fetcher.submit(formData, { method: "POST" });
-        setLoading(false);
-      }
-      setLoading(false);
-    } catch (error) {
-      console.error("Error creating product:", error);
-      setLoading(false);
-    }
-  }, [data, fetcher]);
+  const address = data.address;
+  const handleWholesale = useCallback(
+    async (
+      quantity: number,
+      address: {
+        address1: null | string;
+        city: null | string;
+        provinceCode: null | string;
+        zip: null | string;
+      },
+    ) => {
+      purchaseWholesaleCallback(data, fetcher, navigate, setLoading, setError);
+    },
+    [data, fetcher, navigate, setLoading, setError],
+  );
 
   const mockup_response = fetcher.data;
 
@@ -133,15 +112,27 @@ export default function MockupPage() {
     if (mockup_response) {
       if (mockup_response?.error) {
         setError({
-          title: "Generating Mockup",
+          title:
+            mockup_response.type == "DELETE"
+              ? "Deleting Mockup"
+              : mockup_response.type == "CREATE"
+                ? "Creating Product"
+                : mockup_response.type == "WHOLESALE"
+                  ? "Purchasing Wholesale"
+                  : "Unknown Error",
           message: mockup_response.error,
           type: "critical",
         });
         setLoading(false);
       } else {
-        shopify.toast.show("Product Created");
+        shopify.toast.show(
+          mockup_response.type == "PURCHASE"
+            ? "Product Created"
+            : mockup_response.type == "WHOLESALE"
+              ? "Wholesale Purchased"
+              : "Mockup Deleted",
+        );
         setLoading(false);
-        // navigate(`/app/mockup/${mockup_response.mockup?.id}`);
       }
     }
   }, [shopify, mockup_response, data]);
@@ -170,7 +161,6 @@ export default function MockupPage() {
               secondaryActions={[
                 {
                   content: "Delete Mockup",
-                  disabled: false,
                   icon: DeleteIcon,
                   destructive: true,
                   onAction: handleDelete,
@@ -200,7 +190,10 @@ export default function MockupPage() {
                 <Layout.Section>
                   <BlockStack gap={"500"}>
                     <MockupImageCard mockup={mockup} />
-                    <WholeSale mockup={mockup} />
+                    <WholeSale
+                      mockup={mockup}
+                      handleWholesale={handleWholesale}
+                    />
                   </BlockStack>
                 </Layout.Section>
 
@@ -248,13 +241,18 @@ export async function action({ request, params }: ActionFunctionArgs) {
   switch (type) {
     case "delete":
       response = await deleteMockup(shop, payload);
-      console.log(response);
-      return json({ shop, mockup: null, error: null });
+      return redirect("/app/mockups", 303);
     case "create":
       response = await createProduct(shop, payload);
-      return json({ shop, mockup: null, error: null });
+      return json({ shop, mockup: null, error: null, type: "CREATE" });
+    case "wholesale":
+      response = await purchaseWholesale(shop, payload);
+      return json({ shop, mockup: null, error: null, type: "WHOLESALE" });
 
     default:
-      return json({ error: "" }, { status: 400 });
+      return json(
+        { error: "", shop, mockup: null, type: null },
+        { status: 400 },
+      );
   }
 }
