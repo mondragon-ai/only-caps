@@ -6,7 +6,7 @@ import { Colors } from "~/components/mockups/Colors";
 import { MockupImage } from "~/components/mockups/MockupImage";
 import { Dimensions } from "~/components/mockups/Dimensions";
 import { MockupDetail } from "~/components/mockups/MockupDetail";
-import { WholeSale } from "~/components/mockups/WholeSale";
+import { Address, WholeSale } from "~/components/mockups/WholeSale";
 import { mockup_dummy } from "~/lib/data/mockups";
 import {
   Await,
@@ -66,7 +66,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
     shop: session.shop,
     mockups,
     id,
-    address: responseJson.data?.billingAddress,
+    address: responseJson.data?.shop.billingAddress,
   });
 }
 
@@ -83,25 +83,23 @@ export default function MockupPage() {
   } | null>(null);
 
   const handleDelete = useCallback(async () => {
-    deleteMockupCallback(data, fetcher, navigate, setLoading, setError);
+    deleteMockupCallback(data as any, fetcher, setLoading, setError);
   }, [data, fetcher, navigate, setLoading, setError]);
 
   const handleCreateProduct = useCallback(async () => {
-    createProductMockupCallback(data, fetcher, navigate, setLoading, setError);
+    createProductMockupCallback(data as any, fetcher, setLoading, setError);
   }, [data, fetcher, navigate, setLoading, setError]);
 
   const address = data.address;
   const handleWholesale = useCallback(
-    async (
-      quantity: number,
-      address: {
-        address1: null | string;
-        city: null | string;
-        provinceCode: null | string;
-        zip: null | string;
-      },
-    ) => {
-      purchaseWholesaleCallback(data, fetcher, navigate, setLoading, setError);
+    async (quantity: number, address: Address, color: string) => {
+      const payload = {
+        address,
+        quantity,
+        color,
+        mockup_id: data.id,
+      };
+      purchaseWholesaleCallback(payload, fetcher, setLoading, setError);
     },
     [data, fetcher, navigate, setLoading, setError],
   );
@@ -193,6 +191,7 @@ export default function MockupPage() {
                     <WholeSale
                       mockup={mockup}
                       handleWholesale={handleWholesale}
+                      address={address}
                     />
                   </BlockStack>
                 </Layout.Section>

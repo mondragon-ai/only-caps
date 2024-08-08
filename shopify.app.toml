@@ -3,7 +3,7 @@
 client_id = "e062b2afbda40feef1c957b971c7b292"
 name = "Only Caps"
 handle = "only-caps"
-application_url = "https://douglas-matt-considerations-consistently.trycloudflare.com"
+application_url = "https://italiano-dns-pj-british.trycloudflare.com"
 embedded = true
 
 [build]
@@ -17,9 +17,9 @@ scopes = "write_products"
 
 [auth]
 redirect_urls = [
-  "https://douglas-matt-considerations-consistently.trycloudflare.com/auth/callback",
-  "https://douglas-matt-considerations-consistently.trycloudflare.com/auth/shopify/callback",
-  "https://douglas-matt-considerations-consistently.trycloudflare.com/api/auth/callback"
+  "https://italiano-dns-pj-british.trycloudflare.com/auth/callback",
+  "https://italiano-dns-pj-british.trycloudflare.com/auth/shopify/callback",
+  "https://italiano-dns-pj-british.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]
