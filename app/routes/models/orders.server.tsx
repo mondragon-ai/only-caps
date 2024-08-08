@@ -12,7 +12,7 @@ export const deleteOrder = async (shop: string, order_id: string) => {
 
     if (order_id) {
       const data = order_id;
-      return { shop, mockup: data, error: null };
+      return { shop, mockup: data, error: null, status: 200 };
     } else {
       return {
         shop,

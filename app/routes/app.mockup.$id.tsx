@@ -239,7 +239,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
   let response;
   switch (type) {
     case "delete":
-      response = await deleteMockup(shop, payload);
+      response = await deleteMockup(shop, String(params.id || ""));
       return redirect("/app/mockups", 303);
     case "create":
       response = await createProduct(shop, payload);

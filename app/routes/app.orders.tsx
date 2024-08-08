@@ -5,8 +5,8 @@ import {
   useLoaderData,
   useNavigate,
 } from "@remix-run/react";
-import { Box, Layout, Page, EmptyState } from "@shopify/polaris";
-import { Suspense, useEffect, useState } from "react";
+import { Box, Layout, Page, EmptyState, Banner } from "@shopify/polaris";
+import { Suspense, useCallback, useEffect, useState } from "react";
 import { OrderSummary } from "~/components/home/OrderSummary";
 import { Footer } from "~/components/layout/Footer";
 import { OrderList } from "~/components/orders/OrderList";
@@ -35,7 +35,6 @@ export default function OrdersPage() {
   const shopify = useAppBridge();
   const data = useLoaderData<typeof loader>();
   const fetcher = useFetcher<typeof action>();
-  const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<{
     title: string;
@@ -45,19 +44,26 @@ export default function OrdersPage() {
 
   const mockup_response = fetcher.data;
 
+  const handleDelete = useCallback(async () => {
+    console.log("Todo: implement bulk delete");
+    // deleteOrderCallback(data as any, fetcher as any, setLoading, setError);
+  }, [data, fetcher, setLoading, setError]);
+
   useEffect(() => {
     if (mockup_response) {
       if (mockup_response?.error) {
         setError({
-          title: "Generating Mockup",
+          title:
+            mockup_response.type == "DELETE"
+              ? "Deleting Mockups"
+              : "Unknown Error",
           message: mockup_response.error,
           type: "critical",
         });
         setLoading(false);
       } else {
-        shopify.toast.show("Product Created");
+        shopify.toast.show("Order Deleted");
         setLoading(false);
-        // navigate(`/app/mockup/${mockup_response.mockup?.id}`);
       }
     }
   }, [shopify, mockup_response, data]);
@@ -77,9 +83,21 @@ export default function OrdersPage() {
                     failed={0}
                   />
                 </Layout.Section>
+                {error && (
+                  <Banner
+                    title={error.title}
+                    tone={error.type}
+                    onDismiss={() => setError(null)}
+                  >
+                    <p>{error.message}</p>
+                  </Banner>
+                )}
                 {loadedData.orders && loadedData.orders.length > 0 ? (
                   <Layout.Section>
-                    <OrderList orders={loadedData.orders} />
+                    <OrderList
+                      orders={loadedData.orders}
+                      handleDelete={handleDelete}
+                    />
                   </Layout.Section>
                 ) : (
                   <Layout.Section>
@@ -146,16 +164,18 @@ export async function action({ request, params }: ActionFunctionArgs) {
   switch (type) {
     case "delete":
       response = await deleteOrder(shop, String(params.id));
-      console.log(response);
-      return json({ shop, orders: null, error: null });
+      return json({ shop, orders: null, error: null, type: "DELETE" });
     case "next":
       response = await nextOrderList(shop, "");
-      return json({ shop, orders: null, error: null });
+      return json({ shop, orders: null, error: null, type: "NEXT" });
     case "previous":
       response = await previousOrderList(shop, "");
-      return json({ shop, orders: null, error: null });
+      return json({ shop, orders: null, error: null, type: "PREVIOUS" });
 
     default:
-      return json({ error: "" }, { status: 400 });
+      return json(
+        { error: "", shop, mockup: null, type: null },
+        { status: 400 },
+      );
   }
 }

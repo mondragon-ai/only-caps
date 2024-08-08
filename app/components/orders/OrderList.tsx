@@ -7,14 +7,15 @@ import {
   useBreakpoints,
   useIndexResourceState,
 } from "@shopify/polaris";
-import { DeleteIcon, ShippingLabelIcon } from "@shopify/polaris-icons";
+import { DeleteIcon } from "@shopify/polaris-icons";
 import { formatDateLong, formatToMoney } from "~/lib/formatters/numbers";
-import { OrderDocument, OrderProps } from "~/lib/types/orders";
+import { OrderDocument } from "~/lib/types/orders";
 
 type OrderListProps = {
   orders: OrderDocument[];
+  handleDelete: () => Promise<void>;
 };
-export const OrderList = ({ orders }: OrderListProps) => {
+export const OrderList = ({ orders, handleDelete }: OrderListProps) => {
   const navigate = useNavigate();
   const resourceName = {
     singular: "order",
@@ -101,18 +102,12 @@ export const OrderList = ({ orders }: OrderListProps) => {
     },
   );
 
-  const bulkActions = [
-    {
-      destructive: false,
-      icon: ShippingLabelIcon,
-      content: "Request Fulfillment",
-      onAction: () => console.log("Todo: implement bulk add tags"),
-    },
+  const promotedBulkActions = [
     {
       icon: DeleteIcon,
       destructive: true,
-      content: "Delete orders",
-      onAction: () => console.log("Todo: implement bulk delete"),
+      content: "Delete Orders",
+      onAction: handleDelete,
     },
   ];
 
@@ -134,8 +129,7 @@ export const OrderList = ({ orders }: OrderListProps) => {
           { title: "Fulfillment status" },
           { title: "Date" },
         ]}
-        bulkActions={bulkActions}
-        // promotedBulkActions={promotedBulkActions}
+        promotedBulkActions={promotedBulkActions}
       >
         {rowMarkup}
       </IndexTable>

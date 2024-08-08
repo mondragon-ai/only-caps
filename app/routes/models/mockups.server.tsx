@@ -1,9 +1,6 @@
 import { MockupProps } from "~/lib/types/mockups";
 
-export const deleteMockup = async (
-  shop: string,
-  payload: MockupProps | null,
-) => {
+export const deleteMockup = async (shop: string, mockup_id: string) => {
   try {
     // const response = await fetch('YOUR_API_ENDPOINT', {
     //   method: 'POST',
@@ -13,9 +10,8 @@ export const deleteMockup = async (
     //   body: JSON.stringify(payload),
     // });
 
-    if (payload) {
-      const data = payload;
-      return { shop, mockup: data, error: null };
+    if (mockup_id) {
+      return { shop, mockup: mockup_id, error: null, status: 200 };
     } else {
       return {
         shop,

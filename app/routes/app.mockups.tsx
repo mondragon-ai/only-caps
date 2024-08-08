@@ -35,7 +35,6 @@ export default function MockupsPage() {
   const shopify = useAppBridge();
   const data = useLoaderData<typeof loader>();
   const fetcher = useFetcher<typeof action>();
-  const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<{
     title: string;
@@ -45,19 +44,23 @@ export default function MockupsPage() {
 
   const mockup_response = fetcher.data;
 
+  const handleDelete = useCallback(async () => {
+    console.log("Todo: implement bulk delete");
+    // deleteOrderCallback(data as any, fetcher as any, setLoading, setError);
+  }, [data, fetcher, setLoading, setError]);
+
   useEffect(() => {
     if (mockup_response) {
       if (mockup_response?.error) {
         setError({
-          title: "Generating Mockup",
+          title: "Deleting Mockup",
           message: mockup_response.error,
           type: "critical",
         });
         setLoading(false);
       } else {
-        shopify.toast.show("Product Created");
+        shopify.toast.show("Mockup Deleted");
         setLoading(false);
-        // navigate(`/app/mockup/${mockup_response.mockup?.id}`);
       }
     }
   }, [shopify, mockup_response, data]);
@@ -82,7 +85,10 @@ export default function MockupsPage() {
                 </Layout.Section>
                 {loadedData.mockups && loadedData.mockups.length > 0 ? (
                   <Layout.Section>
-                    <MockupList mockups={loadedData.mockups as MockupProps[]} />
+                    <MockupList
+                      mockups={loadedData.mockups as MockupProps[]}
+                      handleDelete={handleDelete}
+                    />
                   </Layout.Section>
                 ) : (
                   <Layout.Section>
@@ -131,18 +137,20 @@ export async function action({ request, params }: ActionFunctionArgs) {
   let response;
   switch (type) {
     case "delete":
-      response = await deleteMockup(shop, payload);
-      console.log(response);
-      return json({ shop, mockup: null, error: null });
+      response = await deleteMockup(shop, String(params.id));
+      return json({ shop, orders: null, error: null, type: "DELETE" });
     case "next":
       response = await nextMockupList(shop, "");
-      return json({ shop, orders: null, error: null });
+      return json({ shop, orders: null, error: null, type: "NEXT" });
     case "previous":
       response = await previousMockupList(shop, "");
-      return json({ shop, orders: null, error: null });
+      return json({ shop, orders: null, error: null, type: "PREVIOUS" });
 
     default:
-      return json({ error: "" }, { status: 400 });
+      return json(
+        { error: "", shop, mockup: null, type: null },
+        { status: 400 },
+      );
   }
 }
 

@@ -1,4 +1,4 @@
-import { BlockStack, Layout, Page } from "@shopify/polaris";
+import { Banner, BlockStack, Layout, Page } from "@shopify/polaris";
 import { Footer } from "~/components/layout/Footer";
 import { DeleteIcon, ProductAddIcon } from "@shopify/polaris-icons";
 import { Order } from "~/components/orders/Order";
@@ -6,7 +6,12 @@ import { Price } from "~/components/orders/Price";
 import { Customer } from "~/components/orders/Customer";
 import { OrderDetail } from "~/components/orders/OrderDetail";
 import { mock_order } from "~/lib/data/orders";
-import { ActionFunctionArgs, json, LoaderFunctionArgs } from "@remix-run/node";
+import {
+  ActionFunctionArgs,
+  json,
+  LoaderFunctionArgs,
+  redirect,
+} from "@remix-run/node";
 import { authenticate } from "~/shopify.server";
 import {
   Await,
@@ -25,6 +30,7 @@ import {
   nextOrderList,
   previousOrderList,
 } from "./models/orders.server";
+import { deleteOrderCallback } from "~/services/orders";
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
   const admin = await authenticate.admin(request);
@@ -39,10 +45,10 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
 }
 
 export default function OrdersPage() {
+  const navigate = useNavigate();
   const shopify = useAppBridge();
   const data = useLoaderData<typeof loader>();
   const fetcher = useFetcher<typeof action>();
-  const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<{
     title: string;
@@ -50,53 +56,27 @@ export default function OrdersPage() {
     type: "critical" | "warning";
   } | null>(null);
 
-  const handleDelete = useCallback(async () => {
-    setLoading(true);
-
-    if (!data.id) {
-      setError({
-        title: "Mockup does not exist",
-        message: "The mockup may have already been deleted.",
-        type: "critical",
-      });
-      setLoading(false);
-      navigate("/app/mockups");
-      return;
-    }
-
-    try {
-      if (data) {
-        const formData = new FormData();
-        formData.append(
-          "mockup",
-          JSON.stringify({ id: data.id, domain: data.shop }),
-        );
-        formData.append("action", "delete");
-        fetcher.submit(formData, { method: "POST" });
-        setLoading(false);
-      }
-      setLoading(false);
-    } catch (error) {
-      console.error("Error deleting mockups:", error);
-      setLoading(false);
-    }
-  }, [data, fetcher]);
-
   const mockup_response = fetcher.data;
+
+  const handleDelete = useCallback(async () => {
+    deleteOrderCallback(data as any, fetcher as any, setLoading, setError);
+  }, [data, fetcher, navigate, setLoading, setError]);
 
   useEffect(() => {
     if (mockup_response) {
       if (mockup_response?.error) {
         setError({
-          title: "Generating Mockup",
+          title:
+            mockup_response.type == "DELETE"
+              ? "Deleting Mockup"
+              : "Unknown Error",
           message: mockup_response.error,
           type: "critical",
         });
         setLoading(false);
       } else {
-        shopify.toast.show("Product Created");
+        shopify.toast.show("Order Deleted");
         setLoading(false);
-        // navigate(`/app/mockup/${mockup_response.mockup?.id}`);
       }
     }
   }, [shopify, mockup_response, data]);
@@ -111,21 +91,27 @@ export default function OrdersPage() {
               backAction={{ content: "Order", url: "/app/orders" }}
               title={`#${String(order.merchant_order.order_number)}`}
               subtitle={formatDateLong(order.created_at)}
-              secondaryActions={[
-                {
-                  content: "Delete Mockup",
-                  disabled: false,
-                  icon: DeleteIcon,
-                  destructive: true,
-                },
-                {
-                  content: "Create Product",
-                  disabled: false,
-                  icon: ProductAddIcon,
-                },
-              ]}
+              primaryAction={{
+                content: "Delete Order",
+                disabled: loading,
+                loading: loading,
+                icon: DeleteIcon,
+                destructive: true,
+                onAction: handleDelete,
+              }}
             >
               <Layout>
+                <Layout.Section>
+                  {error && (
+                    <Banner
+                      title={error.title}
+                      tone={error.type}
+                      onDismiss={() => setError(null)}
+                    >
+                      <p>{error.message}</p>
+                    </Banner>
+                  )}
+                </Layout.Section>
                 <Layout.Section>
                   <BlockStack gap={"500"}>
                     <Order order={order} />
@@ -165,20 +151,18 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
   // Parsing the mockup data from the formData
   const formData = await request.formData();
-  const mockup = formData.get("mockup");
   const type = formData.get("action");
-
-  // create pyalod
-  const payload = mockup ? (JSON.parse(String(mockup)) as MockupProps) : null;
 
   let response;
   switch (type) {
     case "delete":
-      response = await deleteOrder(shop, String(params.id));
-      console.log(response);
-      return json({ shop, orders: null, error: null });
+      response = await deleteOrder(shop, String(params.id || ""));
+      return redirect("/app/orders", 303);
 
     default:
-      return json({ error: "" }, { status: 400 });
+      return json(
+        { error: "", shop, mockup: null, type: null },
+        { status: 400 },
+      );
   }
 }

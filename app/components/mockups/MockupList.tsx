@@ -12,7 +12,12 @@ import { DeleteIcon } from "@shopify/polaris-icons";
 import { formatToMoney } from "~/lib/formatters/numbers";
 import { MockupProps } from "~/lib/types/mockups";
 
-export const MockupList = ({ mockups }: { mockups: MockupProps[] }) => {
+type MockupListProps = {
+  mockups: MockupProps[];
+  handleDelete: () => Promise<void>;
+};
+
+export const MockupList = ({ mockups, handleDelete }: MockupListProps) => {
   const navigate = useNavigate();
   const resourceName = {
     singular: "Mockup",
@@ -77,7 +82,7 @@ export const MockupList = ({ mockups }: { mockups: MockupProps[] }) => {
       icon: DeleteIcon,
       destructive: true,
       content: "Delete Mockups",
-      onAction: () => console.log("Todo: implement bulk delete"),
+      onAction: handleDelete,
     },
   ];
 
