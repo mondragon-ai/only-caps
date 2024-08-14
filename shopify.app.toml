@@ -3,7 +3,7 @@
 client_id = "e062b2afbda40feef1c957b971c7b292"
 name = "Only Caps"
 handle = "only-caps"
-application_url = "https://italiano-dns-pj-british.trycloudflare.com"
+application_url = "https://standing-tobago-u-mile.trycloudflare.com"
 embedded = true
 
 [build]
@@ -13,20 +13,20 @@ include_config_on_deploy = true
 
 [access_scopes]
 # Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
-scopes = "write_products"
+scopes = "read_assigned_fulfillment_orders,read_merchant_managed_fulfillment_orders,read_orders,read_products,read_third_party_fulfillment_orders,write_assigned_fulfillment_orders,write_fulfillments,write_inventory,write_merchant_managed_fulfillment_orders,write_orders,write_products,write_third_party_fulfillment_orders"
 
 [auth]
 redirect_urls = [
-  "https://italiano-dns-pj-british.trycloudflare.com/auth/callback",
-  "https://italiano-dns-pj-british.trycloudflare.com/auth/shopify/callback",
-  "https://italiano-dns-pj-british.trycloudflare.com/api/auth/callback"
+  "https://standing-tobago-u-mile.trycloudflare.com/auth/callback",
+  "https://standing-tobago-u-mile.trycloudflare.com/auth/shopify/callback",
+  "https://standing-tobago-u-mile.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]
 api_version = "2024-07"
 
   [[webhooks.subscriptions]]
-  topics = [ "app/uninstalled" ]
+  topics = [ "app_subscriptions/update", "app/uninstalled" ]
   uri = "/webhooks"
 
 [pos]

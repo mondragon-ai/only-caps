@@ -101,6 +101,7 @@ export default function GeneratorPage() {
         });
         setLoading(false);
       } else {
+        console.log({ mockup: mockup_response.mockup });
         shopify.toast.show("Mockup Created");
         setLoading(false);
         navigate(`/app/mockup/${mockup_response.mockup?.id}`);

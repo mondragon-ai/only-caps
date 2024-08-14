@@ -23,11 +23,19 @@ import { useAppBridge } from "@shopify/app-bridge-react";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const admin = await authenticate.admin(request);
-  const mockups = mockup_init_state as MockupProps[];
+
+  const response = await fetch(
+    `https://us-central1-only-caps.cloudfunctions.net/store/${admin.session.shop}/mockups`,
+  );
+
+  const data = (await response.json()) as {
+    text: string;
+    mockups: MockupProps[];
+  };
 
   return json({
     shop: admin.session.shop,
-    mockups,
+    mockups: data.mockups,
   });
 }
 
