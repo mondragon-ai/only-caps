@@ -1,5 +1,5 @@
 import { BlockStack, Card, Text, TextField } from "@shopify/polaris";
-import { GeneratorStateProps, MockupProps } from "~/lib/types/mockups";
+import { GeneratorStateProps, MockupDocument } from "~/lib/types/mockups";
 import styles from "./Mockups.module.css";
 import { useCallback } from "react";
 
@@ -7,12 +7,12 @@ export const GeneratorMockupDetail = ({
   mockup,
   setMockup,
 }: {
-  mockup: MockupProps;
+  mockup: MockupDocument;
   setMockup: React.Dispatch<React.SetStateAction<GeneratorStateProps>>;
 }) => {
   const handleTitleChange = useCallback(
     (value: string) => {
-      setMockup((prevMockup) => ({ ...prevMockup, name: value }));
+      setMockup((prevMockup) => ({ ...prevMockup, title: value }));
     },
     [setMockup],
   );
@@ -27,7 +27,7 @@ export const GeneratorMockupDetail = ({
         </div>
         <TextFieldInput
           label="Title"
-          value={mockup.name}
+          value={mockup.title}
           onChange={handleTitleChange}
         />
       </BlockStack>

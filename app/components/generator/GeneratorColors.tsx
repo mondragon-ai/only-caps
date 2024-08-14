@@ -1,12 +1,12 @@
 import { BlockStack, Card, Icon, Text } from "@shopify/polaris";
 import styles from "./Mockups.module.css";
-import { GeneratorStateProps, MockupProps } from "~/lib/types/mockups";
+import { GeneratorStateProps, MockupDocument } from "~/lib/types/mockups";
 import { CheckIcon } from "@shopify/polaris-icons";
 import { HatData } from "~/lib/data/mockups";
 import { useCallback } from "react";
 
 interface ColorsProps {
-  mockup: MockupProps;
+  mockup: MockupDocument;
   setMockup: React.Dispatch<React.SetStateAction<GeneratorStateProps>>;
 }
 
@@ -45,7 +45,7 @@ export const GeneratorColors = ({ mockup, setMockup }: ColorsProps) => {
 };
 
 export const renderSingleColorSwatch = (
-  mockup: MockupProps,
+  mockup: MockupDocument,
   color: string,
   handleColorChange: (color: string) => void,
 ) => (
@@ -63,7 +63,7 @@ export const renderSingleColorSwatch = (
 );
 
 export const renderDualColorSwatch = (
-  mockup: MockupProps,
+  mockup: MockupDocument,
   color: string,
   handleColorChange: (color: string) => void,
 ) => {

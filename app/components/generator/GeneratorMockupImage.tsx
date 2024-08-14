@@ -6,7 +6,7 @@ import {
   InlineGrid,
   Text,
 } from "@shopify/polaris";
-import { GeneratorStateProps, MockupProps } from "~/lib/types/mockups";
+import { GeneratorStateProps, MockupDocument } from "~/lib/types/mockups";
 import { DeleteIcon, WandIcon, UploadIcon } from "@shopify/polaris-icons";
 import styles from "./Mockups.module.css";
 import { useCallback, useState } from "react";
@@ -23,11 +23,17 @@ export const GeneratorMockupImage = ({
   const handleDelete = () => {
     setMockup({
       ...mockup,
-      design: "",
-      design_dimensions: { width: 0, height: 0 },
+      design_url: "",
+      dimension: {
+        original_width: 0,
+        original_height: 0,
+        resized_height: 0,
+        resized_width: 0,
+        blank_width: 0,
+        blank_height: 0,
+      },
       resized_design: "",
-      resized_dimensions: { width: 0, height: 0 },
-      location: { top: 0, left: 0 },
+      position: { top: 0, left: 0 },
     });
   };
 
@@ -47,10 +53,10 @@ export const GeneratorMockupImage = ({
           </Button>
         </InlineGrid>
 
-        {mockup.design ? (
+        {mockup.design_url ? (
           <>
             <img
-              src={mockup.design}
+              src={mockup.design_url}
               alt="Mockup design"
               className={styles.designImg}
             />
@@ -68,7 +74,7 @@ const UploadImage = ({
   mockup,
   setMockup,
 }: {
-  mockup: MockupProps;
+  mockup: MockupDocument;
   setMockup: React.Dispatch<React.SetStateAction<GeneratorStateProps>>;
 }) => {
   const handleDropZoneDrop = useCallback(
@@ -106,10 +112,16 @@ const UploadImage = ({
 
           setMockup((prevMockup) => ({
             ...prevMockup,
-            design: objectUrl,
+            design_url: objectUrl,
+            dimension: {
+              original_width: img.width,
+              original_height: img.height,
+              resized_height: height,
+              resized_width: width,
+              blank_width: 1200,
+              blank_height: 1200,
+            },
             resized_design: resizedDataUrl,
-            design_dimensions: { width: img.width, height: img.height },
-            resized_dimensions: { width, height },
             original_file: selectedFile,
           }));
         };

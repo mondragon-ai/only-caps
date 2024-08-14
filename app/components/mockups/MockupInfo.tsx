@@ -1,8 +1,8 @@
 import { DescriptionList, Text } from "@shopify/polaris";
 import { HatData } from "~/lib/data/mockups";
-import { MockupProps } from "~/lib/types/mockups";
+import { MockupDocument } from "~/lib/types/mockups";
 
-export const MockupInfo = ({ mockup }: { mockup: MockupProps }) => {
+export const MockupInfo = ({ mockup }: { mockup: MockupDocument }) => {
   return (
     <DescriptionList
       gap="tight"

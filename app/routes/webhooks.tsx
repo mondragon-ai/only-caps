@@ -31,12 +31,16 @@ export const action = async ({ request }: ActionFunctionArgs) => {
           `${SERVER_BASE_URL}/store/${webhook.session.shop}/billing`,
           {
             method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
             body: JSON.stringify({
-              payent_status: status,
-              capped_limit: capped_amount,
+              payment_status: status,
+              capped_amount: capped_amount,
             }),
           },
         );
+
         console.log({ response });
       }
 

@@ -6,7 +6,7 @@ import {
   Text,
   TextField,
 } from "@shopify/polaris";
-import { MockupProps } from "~/lib/types/mockups";
+import { MockupDocument } from "~/lib/types/mockups";
 import { useCallback, useState } from "react";
 import { formatToMoney } from "~/lib/formatters/numbers";
 import { AddressForm, GeneratorColors } from "./WholesaleForm";
@@ -20,7 +20,7 @@ export type Address = {
 };
 
 type WholeSaleProps = {
-  mockup: MockupProps;
+  mockup: MockupDocument;
   handleWholesale: (
     quantity: number,
     address: Address,

@@ -1,11 +1,11 @@
 import { Badge, BlockStack, Card, Text } from "@shopify/polaris";
-import { MockupProps } from "~/lib/types/mockups";
+import { MockupDocument } from "~/lib/types/mockups";
 import styles from "./Mockups.module.css";
 
 const capitalizeFirstLetter = (str: string) =>
   str.charAt(0).toUpperCase() + str.slice(1);
 
-export const MockupDetail = ({ mockup }: { mockup: MockupProps }) => {
+export const MockupDetail = ({ mockup }: { mockup: MockupDocument }) => {
   return (
     <Card>
       <BlockStack gap="300">
@@ -20,16 +20,16 @@ export const MockupDetail = ({ mockup }: { mockup: MockupProps }) => {
               <Badge tone="magic">{`${capitalizeFirstLetter(mockup.type)} Hat`}</Badge>
             </Text>
             <Text as="p" variant="bodyMd" tone="disabled">
-              {mockup.name}
+              {mockup.title}
             </Text>
             <Text as="p" variant="bodyMd" tone="disabled">
-              {mockup.SKU}
+              {mockup.base_sku}
             </Text>
             <Text as="p" variant="bodyMd" tone="disabled">
               {mockup.product_id}
             </Text>
             <Text as="p" variant="bodyMd" tone="disabled">
-              {mockup.created}
+              {mockup.state}
             </Text>
           </BlockStack>
         </div>

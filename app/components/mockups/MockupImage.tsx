@@ -1,15 +1,15 @@
 import { BlockStack, Card, Text } from "@shopify/polaris";
-import { MockupProps } from "~/lib/types/mockups";
+import { MockupDocument } from "~/lib/types/mockups";
 import styles from "./Mockups.module.css";
 
-export const MockupImage = ({ mockup }: { mockup: MockupProps }) => {
+export const MockupImage = ({ mockup }: { mockup: MockupDocument }) => {
   return (
     <Card>
       <BlockStack gap={"400"}>
         <Text as={"h4"} variant="headingMd">
           Your Design
         </Text>
-        <img src={mockup.design} alt="" className={styles.designImg} />
+        <img src={mockup.design_url} alt="" className={styles.designImg} />
       </BlockStack>
     </Card>
   );

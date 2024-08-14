@@ -1,11 +1,4 @@
-import {
-  BlockStack,
-  Button,
-  Card,
-  InlineGrid,
-  Text,
-  Badge,
-} from "@shopify/polaris";
+import { BlockStack, Card, InlineGrid, Text } from "@shopify/polaris";
 import styles from "./Mockups.module.css";
 import { HatData } from "~/lib/data/mockups";
 import { MockupTypes } from "~/lib/types/mockups";

@@ -1,9 +1,9 @@
 import { BlockStack, Card, Icon, Text } from "@shopify/polaris";
 import styles from "./Mockups.module.css";
-import { MockupProps } from "~/lib/types/mockups";
+import { MockupDocument } from "~/lib/types/mockups";
 
 interface ColorsProps {
-  mockup: MockupProps;
+  mockup: MockupDocument;
 }
 
 export const renderSingleColorSwatch = (color: string) => (

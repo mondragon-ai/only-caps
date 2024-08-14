@@ -3,7 +3,7 @@
 client_id = "e062b2afbda40feef1c957b971c7b292"
 name = "Only Caps"
 handle = "only-caps"
-application_url = "https://standing-tobago-u-mile.trycloudflare.com"
+application_url = "https://proud-years-terminals-sisters.trycloudflare.com"
 embedded = true
 
 [build]
@@ -17,9 +17,9 @@ scopes = "read_assigned_fulfillment_orders,read_merchant_managed_fulfillment_ord
 
 [auth]
 redirect_urls = [
-  "https://standing-tobago-u-mile.trycloudflare.com/auth/callback",
-  "https://standing-tobago-u-mile.trycloudflare.com/auth/shopify/callback",
-  "https://standing-tobago-u-mile.trycloudflare.com/api/auth/callback"
+  "https://proud-years-terminals-sisters.trycloudflare.com/auth/callback",
+  "https://proud-years-terminals-sisters.trycloudflare.com/auth/shopify/callback",
+  "https://proud-years-terminals-sisters.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]

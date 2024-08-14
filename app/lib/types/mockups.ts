@@ -1,16 +1,13 @@
-export type MockupProps = {
+export type MockupDocument = {
   id: string;
   domain: string;
   access_token: string;
   shop_name: string;
-  status: "ACTIVE" | "DEACTIVE";
-  is_shirt: boolean;
+  design_url: string;
   base_sku: string;
   title: string;
-  mockup_urls: { url: string; alt: string }[];
-  has_inverted: boolean;
-  design_urls: "";
-  sizes?: (
+  colors: string[];
+  sizes: (
     | "Small"
     | "Medium"
     | "Large"
@@ -20,37 +17,77 @@ export type MockupProps = {
     | "4XL"
     | "5XL"
   )[];
-  image: string;
+  blank_image: string;
   type: MockupTypes;
   cost: number;
-  created: string;
-  name: string;
-  colors: string[];
-  design: string | undefined;
-  location: {
+  state: number;
+  created_at: any;
+  updated_at: any;
+  mockup_urls: { url: string; alt: string }[];
+  status: "ACTIVE" | "DEACTIVE";
+  product_id: string;
+  dimension: MockupDimensions;
+  position: {
     top: number;
     left: number;
   };
-  size: {
-    width: number;
-    height: number;
-  };
-  SKU: string;
-  product_id: string;
-  mockups: string[];
-  design_dimensions: {
-    height: number;
-    width: number;
-  };
   resized_design: string;
-  resized_dimensions: {
-    height: number;
-    width: number;
-  };
+  original_file: File;
 };
 
-export type GeneratorStateProps = MockupProps & {
+export type MockupDimensions = {
+  original_width: number;
+  original_height: number;
+  resized_height: number;
+  resized_width: number;
+  blank_width: number;
+  blank_height: number;
+};
+
+export type MockupPosition = {
+  top: number;
+  left: number;
+};
+
+export type MockupRequestBody = {
+  design_url: string;
+  base_sku: string;
+  title: string;
+  colors: string[];
+  sizes: (
+    | "Small"
+    | "Medium"
+    | "Large"
+    | "XL"
+    | "2XL"
+    | "3XL"
+    | "4XL"
+    | "5XL"
+  )[];
+  blank_image: string;
+  type: MockupTypes;
+  cost: number;
+  created_at: any;
+  updated_at: any;
+  mockups: string[];
+  dimension: {
+    original_width: number;
+    original_height: number;
+    resized_height: number;
+    resized_width: number;
+    blank_width: number;
+    blank_height: number;
+  };
+  position: {
+    top: number;
+    left: number;
+  };
+  resized_design: string;
+};
+
+export type GeneratorStateProps = MockupDocument & {
   original_file: null | File;
+  resized_design: string;
   progress: number;
 };
 

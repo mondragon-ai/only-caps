@@ -1,5 +1,5 @@
 import { Card } from "@shopify/polaris";
-import { GeneratorStateProps, MockupProps } from "~/lib/types/mockups";
+import { GeneratorStateProps, MockupDocument } from "~/lib/types/mockups";
 import styles from "./Mockups.module.css";
 import { useCallback } from "react";
 import { DraggableData, Position, ResizableDelta, Rnd } from "react-rnd";
@@ -9,7 +9,7 @@ export const GeneratorMockupImageCard = ({
   mockup,
   setMockup,
 }: {
-  mockup: MockupProps;
+  mockup: MockupDocument;
   setMockup: React.Dispatch<React.SetStateAction<GeneratorStateProps>>;
 }) => {
   return (
@@ -17,7 +17,7 @@ export const GeneratorMockupImageCard = ({
       <div className={styles.mockupContainer}>
         <img
           src={HatData[mockup.type].sample}
-          alt={mockup.name}
+          alt={mockup.title}
           className={styles.mainImg}
           height="500"
           width="500"
@@ -33,14 +33,14 @@ const DraggableResizableImage = ({
   mockup,
   setMockup,
 }: {
-  mockup: MockupProps;
+  mockup: MockupDocument;
   setMockup: React.Dispatch<React.SetStateAction<GeneratorStateProps>>;
 }) => {
   const handleDragStop = useCallback(
     (e: any, d: DraggableData) => {
       setMockup((prevMockup) => ({
         ...prevMockup,
-        location: {
+        position: {
           top: d.y,
           left: d.x,
         },
@@ -77,10 +77,10 @@ const DraggableResizableImage = ({
       <Rnd
         bounds="parent"
         size={{
-          width: mockup.resized_dimensions.width,
-          height: mockup.resized_dimensions.height,
+          width: mockup.dimension.resized_width,
+          height: mockup.dimension.resized_height,
         }}
-        position={{ x: mockup.location.left, y: mockup.location.top }}
+        position={{ x: mockup.position.left, y: mockup.position.top }}
         lockAspectRatio
         onDragStop={handleDragStop}
         maxWidth={400}
@@ -91,8 +91,8 @@ const DraggableResizableImage = ({
           src={mockup.resized_design}
           alt=""
           style={{
-            width: mockup.resized_dimensions.width,
-            height: mockup.resized_dimensions.height,
+            width: mockup.dimension.resized_width,
+            height: mockup.dimension.resized_height,
           }}
         />
       </Rnd>

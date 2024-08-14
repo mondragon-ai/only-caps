@@ -6,7 +6,7 @@ import {
   TextField,
 } from "@shopify/polaris";
 import { Address } from "./WholeSale";
-import { MockupProps } from "~/lib/types/mockups";
+import { MockupDocument } from "~/lib/types/mockups";
 import { useCallback } from "react";
 import { formatToMoney } from "~/lib/formatters/numbers";
 import { CheckIcon } from "@shopify/polaris-icons";
@@ -119,7 +119,7 @@ export const AddressForm = ({
 };
 
 interface ColorsProps {
-  mockup: MockupProps;
+  mockup: MockupDocument;
   form: FormProps;
   setForm: React.Dispatch<React.SetStateAction<FormProps>>;
 }

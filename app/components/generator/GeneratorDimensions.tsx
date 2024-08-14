@@ -6,7 +6,7 @@ import {
   Text,
   TextField,
 } from "@shopify/polaris";
-import { GeneratorStateProps, MockupProps } from "~/lib/types/mockups";
+import { GeneratorStateProps, MockupDocument } from "~/lib/types/mockups";
 import styles from "./Mockups.module.css";
 import { useCallback } from "react";
 import {
@@ -20,16 +20,16 @@ export const GeneratorDimensions = ({
   mockup,
   setMockup,
 }: {
-  mockup: MockupProps;
+  mockup: MockupDocument;
   setMockup: React.Dispatch<React.SetStateAction<GeneratorStateProps>>;
 }) => {
   const handleWidthChange = useCallback(
     (value: string) => {
       setMockup((prevMockup) => ({
         ...prevMockup,
-        resized_dimensions: {
-          ...prevMockup.resized_dimensions,
-          width: Number(value),
+        dimension: {
+          ...prevMockup.dimension,
+          resized_width: Number(value),
         },
       }));
     },
@@ -40,9 +40,9 @@ export const GeneratorDimensions = ({
     (value: string) => {
       setMockup((prevMockup) => ({
         ...prevMockup,
-        resized_dimensions: {
-          ...prevMockup.resized_dimensions,
-          height: Number(value),
+        dimension: {
+          ...prevMockup.dimension,
+          resized_height: Number(value),
         },
       }));
     },
@@ -53,7 +53,7 @@ export const GeneratorDimensions = ({
     (value: string) => {
       setMockup((prevMockup) => ({
         ...prevMockup,
-        location: { ...prevMockup.location, top: Number(value) },
+        position: { ...prevMockup.position, top: Number(value) },
       }));
     },
     [setMockup],
@@ -63,7 +63,7 @@ export const GeneratorDimensions = ({
     (value: string) => {
       setMockup((prevMockup) => ({
         ...prevMockup,
-        location: { ...prevMockup.location, left: Number(value) },
+        position: { ...prevMockup.position, left: Number(value) },
       }));
     },
     [setMockup],
@@ -72,23 +72,23 @@ export const GeneratorDimensions = ({
   const alignLeft = useCallback(() => {
     setMockup((prevMockup) => ({
       ...prevMockup,
-      location: { ...prevMockup.location, left: 0 },
+      position: { ...prevMockup.position, left: 0 },
     }));
   }, [setMockup]);
 
   const alignTop = useCallback(() => {
     setMockup((prevMockup) => ({
       ...prevMockup,
-      location: { ...prevMockup.location, top: 0 },
+      position: { ...prevMockup.position, top: 0 },
     }));
   }, [setMockup]);
 
   const alignBottom = useCallback(() => {
     setMockup((prevMockup) => ({
       ...prevMockup,
-      location: {
-        ...prevMockup.location,
-        top: 200 - prevMockup.resized_dimensions.height,
+      position: {
+        ...prevMockup.position,
+        top: 200 - prevMockup.dimension.resized_height,
       },
     }));
   }, [setMockup]);
@@ -96,9 +96,9 @@ export const GeneratorDimensions = ({
   const alignRight = useCallback(() => {
     setMockup((prevMockup) => ({
       ...prevMockup,
-      location: {
-        ...prevMockup.location,
-        left: 400 - prevMockup.resized_dimensions.width,
+      position: {
+        ...prevMockup.position,
+        left: 400 - prevMockup.dimension.resized_width,
       },
     }));
   }, [setMockup]);
@@ -106,9 +106,9 @@ export const GeneratorDimensions = ({
   const alignMiddleHorizontal = useCallback(() => {
     setMockup((prevMockup) => ({
       ...prevMockup,
-      location: {
-        ...prevMockup.location,
-        left: Math.round((400 - prevMockup.resized_dimensions.width) / 2),
+      position: {
+        ...prevMockup.position,
+        left: Math.round((400 - prevMockup.dimension.resized_width) / 2),
       },
     }));
   }, [setMockup]);
@@ -116,9 +116,9 @@ export const GeneratorDimensions = ({
   const alignMiddleVertical = useCallback(() => {
     setMockup((prevMockup) => ({
       ...prevMockup,
-      location: {
-        ...prevMockup.location,
-        top: Math.round((200 - prevMockup.resized_dimensions.height) / 2),
+      position: {
+        ...prevMockup.position,
+        top: Math.round((200 - prevMockup.dimension.resized_height) / 2),
       },
     }));
   }, [setMockup]);
@@ -133,12 +133,12 @@ export const GeneratorDimensions = ({
         <div className={styles.sizeWrapper}>
           <DimensionInput
             label="Width"
-            value={String(mockup.resized_dimensions.width)}
+            value={String(mockup.dimension.resized_width)}
             onChange={handleWidthChange}
           />
           <DimensionInput
             label="Height"
-            value={String(mockup.resized_dimensions.height)}
+            value={String(mockup.dimension.resized_height)}
             onChange={handleHeightChange}
           />
         </div>
@@ -146,12 +146,12 @@ export const GeneratorDimensions = ({
         <div className={styles.sizeWrapper}>
           <DimensionInput
             label="Top"
-            value={String(mockup.location.top)}
+            value={String(mockup.position.top)}
             onChange={handleTopChange}
           />
           <DimensionInput
             label="Left"
-            value={String(mockup.location.left)}
+            value={String(mockup.position.left)}
             onChange={handleLeftChange}
           />
         </div>

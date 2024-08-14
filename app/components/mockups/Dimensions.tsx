@@ -1,5 +1,5 @@
 import { BlockStack, Card, Text } from "@shopify/polaris";
-import { MockupProps } from "~/lib/types/mockups";
+import { MockupDocument } from "~/lib/types/mockups";
 import styles from "./Mockups.module.css";
 
 interface DimensionProps {
@@ -7,7 +7,7 @@ interface DimensionProps {
   label: string;
 }
 
-export const Dimensions = ({ mockup }: { mockup: MockupProps }) => {
+export const Dimensions = ({ mockup }: { mockup: MockupDocument }) => {
   return (
     <Card>
       <BlockStack gap="400">
@@ -15,12 +15,18 @@ export const Dimensions = ({ mockup }: { mockup: MockupProps }) => {
           Dimensions
         </Text>
         <div className={styles.sizeWrapper}>
-          <DimensionField label="Width" value={mockup.size.width} />
-          <DimensionField label="Height" value={mockup.size.height} />
+          <DimensionField
+            label="Width"
+            value={mockup.dimension.resized_width}
+          />
+          <DimensionField
+            label="Height"
+            value={mockup.dimension.resized_height}
+          />
         </div>
         <div className={styles.sizeWrapper}>
-          <DimensionField label="Top" value={mockup.location.top} />
-          <DimensionField label="Left" value={mockup.location.left} />
+          <DimensionField label="Top" value={mockup.position.top} />
+          <DimensionField label="Left" value={mockup.position.left} />
         </div>
       </BlockStack>
     </Card>

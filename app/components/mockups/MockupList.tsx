@@ -10,10 +10,10 @@ import {
 } from "@shopify/polaris";
 import { DeleteIcon } from "@shopify/polaris-icons";
 import { formatToMoney } from "~/lib/formatters/numbers";
-import { MockupProps } from "~/lib/types/mockups";
+import { MockupDocument } from "~/lib/types/mockups";
 
 type MockupListProps = {
-  mockups: MockupProps[];
+  mockups: MockupDocument[];
   handleDelete: () => Promise<void>;
 };
 
@@ -39,8 +39,8 @@ export const MockupList = ({ mockups, handleDelete }: MockupListProps) => {
     );
   };
 
-  const renderRow = (mockup: MockupProps, index: number) => {
-    const { id, name, created, type, cost, status, image } = mockup;
+  const renderRow = (mockup: MockupDocument, index: number) => {
+    const { id, title, state, type, cost, status, mockup_urls } = mockup;
     return (
       <IndexTable.Row
         id={id}
@@ -50,7 +50,10 @@ export const MockupList = ({ mockups, handleDelete }: MockupListProps) => {
         onClick={() => navigate(`/app/mockup/${id}`)}
       >
         <IndexTable.Cell>
-          <Thumbnail source={image} alt={name} />
+          <Thumbnail
+            source={mockup_urls && mockup_urls[0] && mockup_urls[0].url}
+            alt={mockup_urls && mockup_urls[0] && mockup_urls[0].alt}
+          />
         </IndexTable.Cell>
         <IndexTable.Cell>
           <Text variant="bodyMd" as="span">
@@ -59,7 +62,7 @@ export const MockupList = ({ mockups, handleDelete }: MockupListProps) => {
         </IndexTable.Cell>
         <IndexTable.Cell>
           <Text variant="bodyMd" as="span">
-            {name}
+            {title}
           </Text>
         </IndexTable.Cell>
         <IndexTable.Cell>{renderStatusBadge(status)}</IndexTable.Cell>
@@ -70,7 +73,7 @@ export const MockupList = ({ mockups, handleDelete }: MockupListProps) => {
         </IndexTable.Cell>
         <IndexTable.Cell>
           <Text variant="bodyMd" as="span">
-            {created}
+            {state}
           </Text>
         </IndexTable.Cell>
       </IndexTable.Row>
