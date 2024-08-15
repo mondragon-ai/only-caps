@@ -3,7 +3,7 @@
 client_id = "e062b2afbda40feef1c957b971c7b292"
 name = "Only Caps"
 handle = "only-caps"
-application_url = "https://bar-devil-phil-screens.trycloudflare.com"
+application_url = "https://indicating-recovery-substance-ip.trycloudflare.com"
 embedded = true
 
 [build]
@@ -17,9 +17,9 @@ scopes = "read_assigned_fulfillment_orders,read_merchant_managed_fulfillment_ord
 
 [auth]
 redirect_urls = [
-  "https://bar-devil-phil-screens.trycloudflare.com/auth/callback",
-  "https://bar-devil-phil-screens.trycloudflare.com/auth/shopify/callback",
-  "https://bar-devil-phil-screens.trycloudflare.com/api/auth/callback"
+  "https://indicating-recovery-substance-ip.trycloudflare.com/auth/callback",
+  "https://indicating-recovery-substance-ip.trycloudflare.com/auth/shopify/callback",
+  "https://indicating-recovery-substance-ip.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]

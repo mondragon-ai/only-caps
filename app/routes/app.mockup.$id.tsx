@@ -9,6 +9,7 @@ import { MockupDetail } from "~/components/mockups/MockupDetail";
 import { Address, WholeSale } from "~/components/mockups/WholeSale";
 import {
   Await,
+  FetcherWithComponents,
   json,
   useFetcher,
   useLoaderData,
@@ -35,6 +36,8 @@ import {
   purchaseWholesaleCallback,
 } from "~/services/mockups";
 import { formatDateLong } from "~/lib/formatters/numbers";
+import { SERVER_BASE_URL } from "~/lib/contants";
+import { ResponseProp } from "~/lib/types/shared";
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
   const { session, admin } = await authenticate.admin(request);
@@ -58,7 +61,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
   console.log(responseJson.data);
 
   const response = await fetch(
-    `https://us-central1-only-caps.cloudfunctions.net/store/${session.shop}/mockups?id=${id}`,
+    `${SERVER_BASE_URL}/store/${session.shop}/mockups?id=${id}`,
   );
 
   const data = (await response.json()) as {
@@ -77,7 +80,9 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
 export default function MockupPage() {
   const shopify = useAppBridge();
   const data = useLoaderData<typeof loader>();
-  const fetcher = useFetcher<typeof action>();
+  const fetcher = useFetcher<
+    typeof action
+  >() as FetcherWithComponents<ResponseProp>;
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<{
@@ -87,11 +92,16 @@ export default function MockupPage() {
   } | null>(null);
 
   const handleDelete = useCallback(async () => {
-    deleteMockupCallback(data as any, fetcher, setLoading, setError);
+    await deleteMockupCallback(data as any, fetcher, setLoading, setError);
   }, [data, fetcher, navigate, setLoading, setError]);
 
   const handleCreateProduct = useCallback(async () => {
-    createProductMockupCallback(data as any, fetcher, setLoading, setError);
+    await createProductMockupCallback(
+      data as any,
+      fetcher,
+      setLoading,
+      setError,
+    );
   }, [data, fetcher, navigate, setLoading, setError]);
 
   const address = data.address;
@@ -112,6 +122,7 @@ export default function MockupPage() {
 
   useEffect(() => {
     if (mockup_response) {
+      console.log({ mockup_response: mockup_response.result });
       if (mockup_response?.error) {
         setError({
           title:
@@ -134,6 +145,10 @@ export default function MockupPage() {
               ? "Wholesale Purchased"
               : "Mockup Deleted",
         );
+
+        if (mockup_response.type == "CREATE" && loading) {
+          navigate(".", { replace: true });
+        }
         setLoading(false);
       }
     }
@@ -232,33 +247,53 @@ export default function MockupPage() {
  */
 export async function action({ request, params }: ActionFunctionArgs) {
   const { session } = await authenticate.admin(request);
-  const { shop } = session;
+  const { shop, accessToken } = session;
 
   // Parsing the mockup data from the formData
   const formData = await request.formData();
+  console.log({ formData });
   const mockup = formData.get("mockup");
   const type = formData.get("action");
+  console.log({ mockup, type });
 
   // create pyalod
   const payload = mockup
-    ? (JSON.parse(String(mockup)) as MockupDocument)
+    ? (JSON.parse(String(mockup)) as { id: string; domain: string })
     : null;
 
-  let response;
+  let response: ResponseProp;
   switch (type) {
     case "delete":
       response = await deleteMockup(shop, String(params.id || ""));
       return redirect("/app/mockups", 303);
     case "create":
-      response = await createProduct(shop, payload);
-      return json({ shop, mockup: null, error: null, type: "CREATE" });
+      response = await createProduct(shop, payload, accessToken);
+      return json({
+        shop,
+        result: response.result,
+        error: response.error,
+        type: "CREATE",
+        status: 201,
+      } as ResponseProp);
     case "wholesale":
       response = await purchaseWholesale(shop, payload);
-      return json({ shop, mockup: null, error: null, type: "WHOLESALE" });
+      return json({
+        shop,
+        result: null,
+        error: null,
+        type: "WHOLESALE",
+        status: 200,
+      } as ResponseProp);
 
     default:
       return json(
-        { error: "", shop, mockup: null, type: null },
+        {
+          shop,
+          result: null,
+          error: "Server Error",
+          status: 400,
+          type: "WHOLESALE",
+        } as ResponseProp,
         { status: 400 },
       );
   }

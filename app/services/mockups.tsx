@@ -1,6 +1,7 @@
 import { FetcherWithComponents, NavigateFunction } from "@remix-run/react";
 import { Address } from "~/components/mockups/WholeSale";
-import { MockupProps } from "~/lib/types/mockups";
+import { MockupDocument } from "~/lib/types/mockups";
+import { ResponseProp } from "~/lib/types/shared";
 
 type ErrorState = {
   title: string;
@@ -20,7 +21,7 @@ const prepareFormData = (payload: object, action: string): FormData => {
  *
  * @param {Object} data - The data containing shop and mockup details.
  * @param {string} data.shop - The shop identifier.
- * @param {MockupProps} data.mockups - The mockup properties.
+ * @param {MockupDocument} data.mockups - The mockup properties.
  * @param {string | undefined} data.id - The mockup ID.
  * @param {FetcherWithComponents} fetcher - The fetcher component for submitting data.
  * @param {NavigateFunction} navigate - The function to navigate to different routes.
@@ -31,13 +32,11 @@ const prepareFormData = (payload: object, action: string): FormData => {
 export const deleteMockupCallback = async (
   data: {
     shop: string;
-    mockups: MockupProps;
+    mockups: MockupDocument;
     id: string | undefined;
     address: any;
   },
-  fetcher: FetcherWithComponents<
-    { shop: string; mockup: null; error: null } | { error: string }
-  >,
+  fetcher: FetcherWithComponents<ResponseProp>,
   setLoading: React.Dispatch<React.SetStateAction<boolean>>,
   setError: React.Dispatch<React.SetStateAction<ErrorState | null>>,
 ) => {
@@ -69,7 +68,7 @@ export const deleteMockupCallback = async (
  *
  * @param {Object} data - The data containing shop and mockup details.
  * @param {string} data.shop - The shop identifier.
- * @param {MockupProps} data.mockups - The mockup properties.
+ * @param {MockupDocument} data.mockups - The mockup properties.
  * @param {string | undefined} data.id - The mockup ID.
  * @param {FetcherWithComponents} fetcher - The fetcher component for submitting data.
  * @param {NavigateFunction} navigate - The function to navigate to different routes.
@@ -78,16 +77,19 @@ export const deleteMockupCallback = async (
  * @returns {Promise<void>} - A promise that resolves when the product mockup creation is handled.
  */
 export const createProductMockupCallback = async (
-  data: { shop: string; mockups: MockupProps; id: string | undefined },
-  fetcher: FetcherWithComponents<
-    { shop: string; mockup: null; error: null } | { error: string }
-  >,
+  data: {
+    shop: string;
+    mockups: { mockups: MockupDocument[] };
+    id: string | undefined;
+  },
+  fetcher: FetcherWithComponents<ResponseProp>,
   setLoading: React.Dispatch<React.SetStateAction<boolean>>,
   setError: React.Dispatch<React.SetStateAction<ErrorState | null>>,
 ) => {
   setLoading(true);
-
-  if (!data.id) {
+  console.log({ data: data.mockups.mockups });
+  const mockup = data.mockups.mockups[0];
+  if (!mockup) {
     setError({
       title: "Mockup Deleted",
       message: "The mockup may have been deleted.",
@@ -97,10 +99,20 @@ export const createProductMockupCallback = async (
     return;
   }
 
-  if (data.mockups.product_id) {
+  if (!mockup.id) {
+    setError({
+      title: "Mockup Deleted",
+      message: "The mockup may have been deleted.",
+      type: "critical",
+    });
+    setLoading(false);
+    return;
+  }
+
+  if (mockup.product_id !== "") {
     setError({
       title: "Product Already Created",
-      message: `The mockup already has a corresponding product: ${data.mockups.product_id}.`,
+      message: `The mockup already has a corresponding product: ${mockup.id}.`,
       type: "warning",
     });
     setLoading(false);
@@ -108,7 +120,8 @@ export const createProductMockupCallback = async (
   }
 
   try {
-    const payload = { id: data.id, domain: data.shop };
+    console.log("CLICKED: CREATED");
+    const payload = { id: mockup.id, domain: data.shop };
     const formData = prepareFormData(payload, "create");
     fetcher.submit(formData, { method: "POST" });
   } catch (error) {
@@ -134,10 +147,7 @@ export const purchaseWholesaleCallback = async (
     color: string;
     mockup_id: string | undefined;
   },
-  fetcher: FetcherWithComponents<
-    | { error: string; shop: string; mockup: null; type: null }
-    | { shop: string; mockup: null; error: null; type: string }
-  >,
+  fetcher: FetcherWithComponents<ResponseProp>,
   setLoading: React.Dispatch<React.SetStateAction<boolean>>,
   setError: React.Dispatch<React.SetStateAction<ErrorState | null>>,
 ) => {

@@ -23,6 +23,10 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   const subscription = billingCheck.appSubscriptions[0];
   console.log(`Shop is on ${subscription.name} (id ${subscription.id})`);
 
+  if (billingCheck.hasActivePayment) {
+    console.log({ hasActivePayment: true });
+  }
+
   const response = await fetch(
     `${SERVER_BASE_URL}/store/${admin.session.shop}/install/${admin.session.accessToken}`,
     {

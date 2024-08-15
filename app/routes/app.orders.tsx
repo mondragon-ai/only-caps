@@ -11,8 +11,7 @@ import { OrderSummary } from "~/components/home/OrderSummary";
 import { Footer } from "~/components/layout/Footer";
 import { OrderList } from "~/components/orders/OrderList";
 import { LoadingSkeleton } from "~/components/skeleton";
-import { mockOrders } from "~/lib/data/orders";
-import { MockupProps } from "~/lib/types/mockups";
+import { MockupDocument } from "~/lib/types/mockups";
 import { authenticate } from "~/shopify.server";
 import {
   deleteOrder,
@@ -20,14 +19,24 @@ import {
   previousOrderList,
 } from "./models/orders.server";
 import { useAppBridge } from "@shopify/app-bridge-react";
+import { OrderDocument } from "~/lib/types/orders";
+import { SERVER_BASE_URL } from "~/lib/contants";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const admin = await authenticate.admin(request);
-  const orders = mockOrders;
+
+  const response = await fetch(
+    `${SERVER_BASE_URL}/store/${admin.session.shop}/orders`,
+  );
+
+  const data = (await response.json()) as {
+    text: string;
+    orders: OrderDocument[];
+  };
 
   return json({
     shop: admin.session.shop,
-    orders: orders,
+    orders: data.orders,
   });
 }
 
@@ -158,7 +167,9 @@ export async function action({ request, params }: ActionFunctionArgs) {
   const type = formData.get("action");
 
   // create pyalod
-  const payload = mockup ? (JSON.parse(String(mockup)) as MockupProps) : null;
+  const payload = mockup
+    ? (JSON.parse(String(mockup)) as MockupDocument)
+    : null;
 
   let response;
   switch (type) {

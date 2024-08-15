@@ -34,7 +34,7 @@ import { SERVER_BASE_URL } from "~/lib/contants";
  * @param {number} length - The length of the string to generate.
  * @returns {string} The generated random string.
  */
-function generateRandomString(length: number): string {
+function generateRandomString(length: number, type: string): string {
   const characters =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
   let randomString = "";
@@ -44,7 +44,11 @@ function generateRandomString(length: number): string {
     randomString += characters.charAt(randomIndex);
   }
 
-  return "POD-" + randomString.toLocaleUpperCase();
+  return (
+    "POD-" +
+    randomString.toLocaleUpperCase() +
+    `-${type.toLocaleUpperCase().replaceAll("_", "-")}`
+  );
 }
 
 /**
@@ -79,7 +83,7 @@ export default function GeneratorPage() {
   const [loading, setLoading] = useState<boolean>(false);
   const [mockup, setMockup] = useState<GeneratorStateProps>({
     ...mockup_dummy,
-    base_sku: generateRandomString(5),
+    base_sku: generateRandomString(5, slug),
     type: slug as MockupTypes,
     original_file: null,
     progress: 0,
@@ -104,12 +108,10 @@ export default function GeneratorPage() {
         });
         setLoading(false);
       } else {
-        console.log({ mockup: mockup_response.mockup });
-        console.log({ mockups: mockup_response.mockup?.mockups });
-        console.log({ design_id: mockup_response.mockup?.mockups.design_id });
+        const design_id = mockup_response.mockup?.mockups.design_id;
         shopify.toast.show("Mockup Created");
         setLoading(false);
-        // navigate(`/app/mockup/${mockup_response.mockup?.id}`);
+        navigate(`/app/mockup/${design_id}`);
       }
     }
   }, [shopify, mockup_response, data]);
@@ -220,16 +222,16 @@ export default function GeneratorPage() {
  * @param {any} args - The action function arguments.
  * @returns {Promise<Response>} The response containing the mockup data.
  */
-export async function action({ request, params }: ActionFunctionArgs) {
+export async function action({
+  request,
+  params,
+}: ActionFunctionArgs): Promise<Response> {
   const { session } = await authenticate.admin(request);
   const { shop, accessToken } = session;
 
   // Parsing the mockup data from the formData
   const formData = await request.formData();
   const mockup = formData.get("mockup");
-
-  // create pyalod
-  const payload = mockup ? mockup : null;
 
   try {
     const response = await fetch(

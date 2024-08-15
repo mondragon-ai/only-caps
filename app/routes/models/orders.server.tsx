@@ -1,5 +1,3 @@
-import { MockupProps } from "~/lib/types/mockups";
-
 export const deleteOrder = async (shop: string, order_id: string) => {
   try {
     // const response = await fetch('YOUR_API_ENDPOINT', {

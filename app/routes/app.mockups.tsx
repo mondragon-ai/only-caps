@@ -14,18 +14,18 @@ import { mockup_init_state } from "~/lib/data/mockups";
 import { MockupDocument } from "~/lib/types/mockups";
 import { authenticate } from "~/shopify.server";
 import {
-  createProduct,
   deleteMockup,
   nextMockupList,
   previousMockupList,
 } from "./models/mockups.server";
 import { useAppBridge } from "@shopify/app-bridge-react";
+import { SERVER_BASE_URL } from "~/lib/contants";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const admin = await authenticate.admin(request);
 
   const response = await fetch(
-    `https://us-central1-only-caps.cloudfunctions.net/store/${admin.session.shop}/mockups`,
+    `${SERVER_BASE_URL}/store/${admin.session.shop}/mockups`,
   );
 
   const data = (await response.json()) as {
