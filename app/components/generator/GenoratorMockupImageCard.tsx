@@ -59,11 +59,12 @@ const DraggableResizableImage = ({
     ) => {
       setMockup((prevMockup) => ({
         ...prevMockup,
-        resized_dimensions: {
-          height: ref.offsetHeight,
-          width: ref.offsetWidth,
+        dimension: {
+          ...prevMockup.dimension,
+          resized_height: ref.offsetHeight,
+          resized_width: ref.offsetWidth,
         },
-        location: {
+        position: {
           top: position.y,
           left: position.x,
         },

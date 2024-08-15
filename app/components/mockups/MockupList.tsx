@@ -9,7 +9,9 @@ import {
   useIndexResourceState,
 } from "@shopify/polaris";
 import { DeleteIcon } from "@shopify/polaris-icons";
-import { formatToMoney } from "~/lib/formatters/numbers";
+import { HatData } from "~/lib/data/mockups";
+import { formatDateLong, formatToMoney } from "~/lib/formatters/numbers";
+import { capitalizeEachWord } from "~/lib/formatters/text";
 import { MockupDocument } from "~/lib/types/mockups";
 
 type MockupListProps = {
@@ -27,20 +29,20 @@ export const MockupList = ({ mockups, handleDelete }: MockupListProps) => {
   const { selectedResources, allResourcesSelected, handleSelectionChange } =
     useIndexResourceState(mockups);
 
-  const renderStatusBadge = (status: string) => {
-    return status === "created" ? (
-      <Badge tone="magic" progress="complete">
-        Created
+  const renderStatusBadge = (product_id: string) => {
+    return product_id === "" ? (
+      <Badge tone="critical" progress="incomplete">
+        Not Created
       </Badge>
     ) : (
-      <Badge tone="attention" progress="incomplete">
-        Not Created
+      <Badge tone="magic" progress="complete">
+        Created
       </Badge>
     );
   };
 
   const renderRow = (mockup: MockupDocument, index: number) => {
-    const { id, title, state, type, cost, status, mockup_urls } = mockup;
+    const { id, title, state, type, product_id, mockup_urls } = mockup;
     return (
       <IndexTable.Row
         id={id}
@@ -57,7 +59,7 @@ export const MockupList = ({ mockups, handleDelete }: MockupListProps) => {
         </IndexTable.Cell>
         <IndexTable.Cell>
           <Text variant="bodyMd" as="span">
-            {type}
+            {capitalizeEachWord(type)}
           </Text>
         </IndexTable.Cell>
         <IndexTable.Cell>
@@ -65,15 +67,15 @@ export const MockupList = ({ mockups, handleDelete }: MockupListProps) => {
             {title}
           </Text>
         </IndexTable.Cell>
-        <IndexTable.Cell>{renderStatusBadge(status)}</IndexTable.Cell>
+        <IndexTable.Cell>{renderStatusBadge(product_id)}</IndexTable.Cell>
         <IndexTable.Cell>
           <Text as="span" alignment="end" numeric>
-            {`$${formatToMoney(Number(cost))}`}
+            {`$${formatToMoney(Number(HatData[type].cost))}`}
           </Text>
         </IndexTable.Cell>
         <IndexTable.Cell>
           <Text variant="bodyMd" as="span">
-            {state}
+            {formatDateLong(state)}
           </Text>
         </IndexTable.Cell>
       </IndexTable.Row>

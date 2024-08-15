@@ -1,4 +1,4 @@
-import { HatDataType, MockupProps, MockupTypes } from "../types/mockups";
+import { HatDataType, MockupDocument, MockupTypes } from "../types/mockups";
 
 export const HatData: HatDataType = {
   foam_trucker: {
@@ -15,6 +15,7 @@ export const HatData: HatDataType = {
       "https://theparkwholesale.com/cdn/shop/products/211-BLK_2_90193956-3eb8-4f7b-86a8-5cfd9fa608b5_1200x1200.png?v=1681785666",
     delivery: "🇺🇸 Estimated Delivery 7 - 10 days",
     price: "$30.00 - $35.00",
+    cost: 15.99,
   },
   retro_trucker: {
     name: "Decky 6030 - Classic, 5-Panel Retro Trucker Cap",
@@ -44,6 +45,7 @@ export const HatData: HatDataType = {
       "https://theparkwholesale.com/cdn/shop/products/211-BLK_2_90193956-3eb8-4f7b-86a8-5cfd9fa608b5_1200x1200.png?v=1681785666",
     delivery: "🇺🇸 Estimated Delivery 7 - 10 days",
     price: "$30.00 - $35.00",
+    cost: 17.99,
   },
   flat_bill: {
     name: "Decky 6032 - Classic Rope Cap, 5 Panel Flat Bill Hat, Snapback",
@@ -74,6 +76,7 @@ export const HatData: HatDataType = {
       "https://theparkwholesale.com/cdn/shop/products/211-BLK_2_90193956-3eb8-4f7b-86a8-5cfd9fa608b5_1200x1200.png?v=1681785666",
     delivery: "🇺🇸 Estimated Delivery 7 - 10 days",
     price: "$30.00 - $35.00",
+    cost: 22.99,
   },
   high_profile: {
     name: "Decky 1133 7 Panel High Profile Structured Cotton Blend Trucker Hat",
@@ -94,6 +97,7 @@ export const HatData: HatDataType = {
       "https://theparkwholesale.com/cdn/shop/products/211-BLK_2_90193956-3eb8-4f7b-86a8-5cfd9fa608b5_1200x1200.png?v=1681785666",
     delivery: "🇺🇸 Estimated Delivery 7 - 10 days",
     price: "$30.00 - $35.00",
+    cost: 19.99,
   },
   low_profile: {
     name: "Decky 205 - Classic Low Profile, Relaxed Cotton Dad Hat",
@@ -114,6 +118,7 @@ export const HatData: HatDataType = {
       "https://theparkwholesale.com/cdn/shop/products/211-BLK_2_90193956-3eb8-4f7b-86a8-5cfd9fa608b5_1200x1200.png?v=1681785666",
     delivery: "🇺🇸 Estimated Delivery 7 - 10 days",
     price: "$30.00 - $35.00",
+    cost: 17.99,
   },
   mid_profile: {
     name: "Decky 6038 5 Panel Mid Profile Structured Polyester Cap",
@@ -134,6 +139,7 @@ export const HatData: HatDataType = {
       "https://theparkwholesale.com/cdn/shop/products/211-BLK_2_90193956-3eb8-4f7b-86a8-5cfd9fa608b5_1200x1200.png?v=1681785666",
     delivery: "🇺🇸 Estimated Delivery 7 - 10 days",
     price: "$30.00 - $35.00",
+    cost: 17.99,
   },
   structured: {
     name: "Bigly Performance Hats",
@@ -154,6 +160,7 @@ export const HatData: HatDataType = {
       "https://theparkwholesale.com/cdn/shop/products/211-BLK_2_90193956-3eb8-4f7b-86a8-5cfd9fa608b5_1200x1200.png?v=1681785666",
     delivery: "🇺🇸 Estimated Delivery 7 - 10 days",
     price: "$30.00 - $35.00",
+    cost: 16.99,
   },
   dad: {
     name: "",
@@ -174,6 +181,7 @@ export const HatData: HatDataType = {
       "https://theparkwholesale.com/cdn/shop/products/211-BLK_2_90193956-3eb8-4f7b-86a8-5cfd9fa608b5_1200x1200.png?v=1681785666",
     delivery: "🇺🇸 Estimated Delivery 7 - 10 days",
     price: "$30.00 - $35.00",
+    cost: 16.99,
   },
   trucker: {
     name: "",
@@ -189,6 +197,7 @@ export const HatData: HatDataType = {
       "https://theparkwholesale.com/cdn/shop/products/211-BLK_2_90193956-3eb8-4f7b-86a8-5cfd9fa608b5_1200x1200.png?v=1681785666",
     delivery: "🇺🇸 Estimated Delivery 7 - 10 days",
     price: "$30.00 - $35.00",
+    cost: 16.99,
   },
   snapback: {
     name: "",
@@ -204,6 +213,7 @@ export const HatData: HatDataType = {
       "https://theparkwholesale.com/cdn/shop/products/211-BLK_2_90193956-3eb8-4f7b-86a8-5cfd9fa608b5_1200x1200.png?v=1681785666",
     delivery: "🇺🇸 Estimated Delivery 7 - 10 days",
     price: "$30.00 - $35.00",
+    cost: 16.99,
   },
   relaxed: {
     name: "",
@@ -224,6 +234,7 @@ export const HatData: HatDataType = {
       "https://theparkwholesale.com/cdn/shop/products/211-BLK_2_90193956-3eb8-4f7b-86a8-5cfd9fa608b5_1200x1200.png?v=1681785666",
     delivery: "🇺🇸 Estimated Delivery 7 - 10 days",
     price: "$30.00 - $35.00",
+    cost: 16.99,
   },
 };
 
@@ -262,40 +273,43 @@ export const mockup_list: any[] = [
   },
 ];
 
-export const mockup_dummy = {
-  id: "1",
-  image:
+export const mockup_dummy: MockupDocument = {
+  design_url: "",
+  base_sku: "SKU123456",
+  title: "",
+  colors: [],
+  sizes: ["OSFA"],
+  blank_image:
     "https://cdn.shopify.com/s/files/1/0783/4802/6165/files/RetroTruckerCap.webp?v=1722090003",
-  type: "trucker" as MockupTypes,
-  status: "ACTIVE",
-  cost: 0,
-  created: new Date().toLocaleString(),
-  name: "",
-  colors: [] as string[],
-  design: "",
-  location: {
+  type: "flat_bill",
+  cost: 35.0,
+  dimension: {
+    original_width: 0,
+    original_height: 0,
+    resized_height: 0,
+    resized_width: 0,
+    blank_width: 1200,
+    blank_height: 1200,
+  },
+  position: {
     top: 0,
     left: 0,
   },
-  size: {
-    width: 0,
-    height: 0,
-  },
-  base_sku: "",
+  resized_design: "https://example.com/resized_design.png",
+  id: "",
+  domain: "",
+  access_token: "",
+  shop_name: "",
+  state: 0,
+  created_at: undefined,
+  updated_at: undefined,
+  mockup_urls: [],
+  status: "DEACTIVE",
   product_id: "",
-  mockups: [""],
-  design_dimensions: {
-    height: 0,
-    width: 0,
-  },
-  resized_design: "",
-  resized_dimensions: {
-    height: 0,
-    width: 0,
-  },
-} as MockupProps;
+  original_file: null,
+};
 
-export const mockup_init_state = [] as MockupProps[];
+export const mockup_init_state = [] as MockupDocument[];
 // export const mockup_init_state = [
 //   {
 //     id: "",

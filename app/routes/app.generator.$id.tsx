@@ -3,7 +3,8 @@ import { Footer } from "~/components/layout/Footer";
 import { ProductAddIcon } from "@shopify/polaris-icons";
 import {
   GeneratorStateProps,
-  MockupProps,
+  MockupDocument,
+  MockupResponseType,
   MockupTypes,
 } from "~/lib/types/mockups";
 import { useCallback, useEffect, useState } from "react";
@@ -24,6 +25,8 @@ import { ActionFunctionArgs, json, LoaderFunctionArgs } from "@remix-run/node";
 import { authenticate } from "~/shopify.server";
 import { useAppBridge } from "@shopify/app-bridge-react";
 import { uploadToServer } from "~/lib/util/images";
+import { convertToMockupRequestBody } from "~/lib/payloads/mockups";
+import { SERVER_BASE_URL } from "~/lib/contants";
 
 /**
  * Generates a random string with a specified length.
@@ -102,16 +105,18 @@ export default function GeneratorPage() {
         setLoading(false);
       } else {
         console.log({ mockup: mockup_response.mockup });
+        console.log({ mockups: mockup_response.mockup?.mockups });
+        console.log({ design_id: mockup_response.mockup?.mockups.design_id });
         shopify.toast.show("Mockup Created");
         setLoading(false);
-        navigate(`/app/mockup/${mockup_response.mockup?.id}`);
+        // navigate(`/app/mockup/${mockup_response.mockup?.id}`);
       }
     }
   }, [shopify, mockup_response, data]);
 
   const handleSubmit = useCallback(async () => {
     setLoading(true);
-    if (mockup.name === "" || mockup.name.length < 4) {
+    if (mockup.title === "" || mockup.title.length < 4) {
       setError({
         title: "Mockup Title",
         message: "Please add a title or make it greater than 3 characters",
@@ -120,7 +125,7 @@ export default function GeneratorPage() {
       setLoading(false);
       return;
     }
-    if (!mockup.design || mockup.design === "") {
+    if (!mockup.design_url || mockup.design_url === "") {
       setError({
         title: "Mockup Design",
         message: "Please upload a design image.",
@@ -146,10 +151,10 @@ export default function GeneratorPage() {
         mockup,
       );
       const formData = new FormData();
-      formData.append(
-        "mockup",
-        JSON.stringify({ ...mockup, design: design_url }),
-      );
+      const payload = convertToMockupRequestBody(mockup, design_url);
+      formData.append("mockup", JSON.stringify({ ...payload }));
+
+      console.log({ payload });
 
       fetcher.submit(formData, { method: "POST" });
       setLoading(false);
@@ -162,7 +167,7 @@ export default function GeneratorPage() {
   return (
     <Page
       backAction={{ content: "Order", url: "/app/catalog" }}
-      title={mockup.name !== "" ? mockup.name : "Create Name"}
+      title={mockup.title !== "" ? mockup.title : "Create Name"}
       subtitle={"Design and Generate Your Mockup"}
       primaryAction={{
         content: "Create Mockup",
@@ -217,27 +222,31 @@ export default function GeneratorPage() {
  */
 export async function action({ request, params }: ActionFunctionArgs) {
   const { session } = await authenticate.admin(request);
-  const { shop } = session;
+  const { shop, accessToken } = session;
 
   // Parsing the mockup data from the formData
   const formData = await request.formData();
   const mockup = formData.get("mockup");
 
   // create pyalod
-  const payload = mockup ? (JSON.parse(String(mockup)) as MockupProps) : null;
+  const payload = mockup ? mockup : null;
 
   try {
-    // const response = await fetch('YOUR_API_ENDPOINT', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify(payload),
-    // });
+    const response = await fetch(
+      `${SERVER_BASE_URL}/generate/${shop}/mockups/${accessToken}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: mockup,
+      },
+    );
 
-    if (payload) {
-      const data = payload;
-      return json({ shop, mockup: data, error: null });
+    if (response.ok) {
+      const data = await response.json();
+      console.log(data);
+      return json({ shop, mockup: data as MockupResponseType, error: null });
     } else {
       return json(
         {

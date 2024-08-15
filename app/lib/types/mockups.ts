@@ -7,16 +7,7 @@ export type MockupDocument = {
   base_sku: string;
   title: string;
   colors: string[];
-  sizes: (
-    | "Small"
-    | "Medium"
-    | "Large"
-    | "XL"
-    | "2XL"
-    | "3XL"
-    | "4XL"
-    | "5XL"
-  )[];
+  sizes: string[];
   blank_image: string;
   type: MockupTypes;
   cost: number;
@@ -32,7 +23,7 @@ export type MockupDocument = {
     left: number;
   };
   resized_design: string;
-  original_file: File;
+  original_file: File | null;
 };
 
 export type MockupDimensions = {
@@ -54,22 +45,9 @@ export type MockupRequestBody = {
   base_sku: string;
   title: string;
   colors: string[];
-  sizes: (
-    | "Small"
-    | "Medium"
-    | "Large"
-    | "XL"
-    | "2XL"
-    | "3XL"
-    | "4XL"
-    | "5XL"
-  )[];
-  blank_image: string;
+  sizes: string[];
   type: MockupTypes;
   cost: number;
-  created_at: any;
-  updated_at: any;
-  mockups: string[];
   dimension: {
     original_width: number;
     original_height: number;
@@ -82,7 +60,6 @@ export type MockupRequestBody = {
     top: number;
     left: number;
   };
-  resized_design: string;
 };
 
 export type GeneratorStateProps = MockupDocument & {
@@ -116,6 +93,7 @@ export type HatDetail = {
   delivery: string;
   price: string;
   title: string;
+  cost: number;
 };
 
 export type HatDataType = {
@@ -148,4 +126,16 @@ export type DesignDocument = {
   url?: string;
   updated_at: any;
   created_at: any;
+};
+
+export type MockupResponseType = {
+  error: boolean;
+  mockups: {
+    design_id: string;
+    urls: {
+      url: string;
+      alt: string;
+    }[];
+  };
+  text: string;
 };

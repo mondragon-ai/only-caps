@@ -7,7 +7,6 @@ import { MockupImage } from "~/components/mockups/MockupImage";
 import { Dimensions } from "~/components/mockups/Dimensions";
 import { MockupDetail } from "~/components/mockups/MockupDetail";
 import { Address, WholeSale } from "~/components/mockups/WholeSale";
-import { mockup_dummy } from "~/lib/data/mockups";
 import {
   Await,
   json,
@@ -23,7 +22,7 @@ import {
 } from "@remix-run/node";
 import { Suspense, useCallback, useEffect, useState } from "react";
 import { LoadingSkeleton } from "~/components/skeleton";
-import { MockupProps } from "~/lib/types/mockups";
+import { MockupDocument } from "~/lib/types/mockups";
 import {
   createProduct,
   deleteMockup,
@@ -35,11 +34,11 @@ import {
   deleteMockupCallback,
   purchaseWholesaleCallback,
 } from "~/services/mockups";
+import { formatDateLong } from "~/lib/formatters/numbers";
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
   const { session, admin } = await authenticate.admin(request);
   const id = params.id;
-  console.log("START");
 
   const shopRespons = await admin.graphql(
     `query {
@@ -58,13 +57,18 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
   const responseJson = await shopRespons.json();
   console.log(responseJson.data);
 
-  // Introduce a delay
-  await new Promise((resolve) => setTimeout(resolve, 10000)); // 2 second delay
+  const response = await fetch(
+    `https://us-central1-only-caps.cloudfunctions.net/store/${session.shop}/mockups?id=${id}`,
+  );
 
-  const mockups = mockup_dummy;
+  const data = (await response.json()) as {
+    text: string;
+    mockups: MockupDocument[];
+  };
+
   return json({
     shop: session.shop,
-    mockups,
+    mockups: data,
     id,
     address: responseJson.data?.shop.billingAddress,
   });
@@ -139,7 +143,9 @@ export default function MockupPage() {
     <Suspense fallback={<LoadingSkeleton />}>
       <Await resolve={data}>
         {(loadedData) => {
-          const mockup = loadedData.mockups as MockupProps;
+          const mockups = loadedData.mockups.mockups as MockupDocument[];
+          const mockup =
+            mockups && mockups[0] ? mockups[0] : ({} as MockupDocument);
           return (
             <Page
               titleMetadata={
@@ -154,8 +160,8 @@ export default function MockupPage() {
                 )
               }
               backAction={{ content: "Order", url: "/app/mockups" }}
-              title={`${String(mockup.name)}`}
-              subtitle={mockup.created}
+              title={`${String(mockup.title)}`}
+              subtitle={formatDateLong(mockup.state)}
               secondaryActions={[
                 {
                   content: "Delete Mockup",
@@ -234,7 +240,9 @@ export async function action({ request, params }: ActionFunctionArgs) {
   const type = formData.get("action");
 
   // create pyalod
-  const payload = mockup ? (JSON.parse(String(mockup)) as MockupProps) : null;
+  const payload = mockup
+    ? (JSON.parse(String(mockup)) as MockupDocument)
+    : null;
 
   let response;
   switch (type) {

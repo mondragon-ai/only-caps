@@ -17,16 +17,16 @@ export const Dimensions = ({ mockup }: { mockup: MockupDocument }) => {
         <div className={styles.sizeWrapper}>
           <DimensionField
             label="Width"
-            value={mockup.dimension.resized_width}
+            value={mockup.dimension.resized_width || 0}
           />
           <DimensionField
             label="Height"
-            value={mockup.dimension.resized_height}
+            value={mockup.dimension.resized_height || 0}
           />
         </div>
         <div className={styles.sizeWrapper}>
-          <DimensionField label="Top" value={mockup.position.top} />
-          <DimensionField label="Left" value={mockup.position.left} />
+          <DimensionField label="Top" value={mockup.position.top || 0} />
+          <DimensionField label="Left" value={mockup.position.left || 0} />
         </div>
       </BlockStack>
     </Card>

@@ -93,7 +93,8 @@ export const getDifferenceInDays = (
  * console.log(formatDate(exampleEpoch)); // Output: "Jul 1"
  */
 export const formatDateLong = (epochMillis: number): string => {
-  const date = new Date(epochMillis * 1000);
+  console.log(epochMillis);
+  const date = new Date(epochMillis);
   const options: Intl.DateTimeFormatOptions = {
     month: "short",
     day: "numeric",

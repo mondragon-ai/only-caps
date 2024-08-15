@@ -11,7 +11,7 @@ import { Footer } from "~/components/layout/Footer";
 import { MockupList } from "~/components/mockups/MockupList";
 import { LoadingSkeleton } from "~/components/skeleton";
 import { mockup_init_state } from "~/lib/data/mockups";
-import { MockupProps } from "~/lib/types/mockups";
+import { MockupDocument } from "~/lib/types/mockups";
 import { authenticate } from "~/shopify.server";
 import {
   createProduct,
@@ -30,7 +30,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
   const data = (await response.json()) as {
     text: string;
-    mockups: MockupProps[];
+    mockups: MockupDocument[];
   };
 
   return json({
@@ -94,7 +94,7 @@ export default function MockupsPage() {
                 {loadedData.mockups && loadedData.mockups.length > 0 ? (
                   <Layout.Section>
                     <MockupList
-                      mockups={loadedData.mockups as MockupProps[]}
+                      mockups={loadedData.mockups as MockupDocument[]}
                       handleDelete={handleDelete}
                     />
                   </Layout.Section>
@@ -140,7 +140,9 @@ export async function action({ request, params }: ActionFunctionArgs) {
   const type = formData.get("action");
 
   // create pyalod
-  const payload = mockup ? (JSON.parse(String(mockup)) as MockupProps) : null;
+  const payload = mockup
+    ? (JSON.parse(String(mockup)) as MockupDocument)
+    : null;
 
   let response;
   switch (type) {
