@@ -1,7 +1,5 @@
-import { FetcherWithComponents, NavigateFunction } from "@remix-run/react";
-import { Address } from "~/components/mockups/WholeSale";
-import { MockupProps } from "~/lib/types/mockups";
-import { OrderDocument } from "~/lib/types/orders";
+import { FetcherWithComponents } from "@remix-run/react";
+import { ResponseProp } from "~/lib/types/shared";
 
 type ErrorState = {
   title: string;
@@ -9,9 +7,8 @@ type ErrorState = {
   type: "critical" | "warning";
 };
 
-const prepareFormData = (payload: object, action: string): FormData => {
+const prepareFormData = (action: string): FormData => {
   const formData = new FormData();
-  formData.append("mockup", JSON.stringify(payload));
   formData.append("action", action);
   return formData;
 };
@@ -28,23 +25,40 @@ const prepareFormData = (payload: object, action: string): FormData => {
  * @returns {Promise<void>} - A promise that resolves when the order deletion is handled.
  */
 export const deleteOrderCallback = async (
-  data: {
-    shop: string;
-    orders: OrderDocument;
-    id: string | undefined;
-  },
   fetcher: FetcherWithComponents<
     { shop: string; order: null; error: null } | { error: string }
   >,
   setLoading: React.Dispatch<React.SetStateAction<boolean>>,
-  setError: React.Dispatch<React.SetStateAction<ErrorState | null>>,
 ): Promise<void> => {
   setLoading(true);
 
-  if (!data.id) {
+  try {
+    const formData = prepareFormData("delete");
+    fetcher.submit(formData, { method: "POST" });
+  } catch (error) {
+    console.error("Error deleting orders:", error);
+  } finally {
+    setLoading(false);
+  }
+};
+
+export const bulkDeleteOrdersCallback = async (
+  data: {
+    shop: string;
+    ids: string[] | undefined;
+  },
+  fetcher: FetcherWithComponents<ResponseProp>,
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>,
+  setError: React.Dispatch<React.SetStateAction<ErrorState | null>>,
+) => {
+  setLoading(true);
+
+  console.log({ ids: data.ids });
+
+  if (!data.ids || data.ids.length == 0) {
     setError({
-      title: "Order Deleted",
-      message: "The order may have already been deleted.",
+      title: "Select Orders",
+      message: "Please select orders to be deleted.",
       type: "critical",
     });
     setLoading(false);
@@ -52,11 +66,15 @@ export const deleteOrderCallback = async (
   }
 
   try {
-    const payload = { id: data.id, domain: data.shop };
-    const formData = prepareFormData(payload, "delete");
+    console.log("CLICKED: DELETED BULK");
+    const payload = { id: data.ids, domain: data.shop };
+    console.log({ payload });
+    const formData = new FormData();
+    formData.append("action", "delete");
+    formData.append("order_ids", JSON.stringify(payload));
     fetcher.submit(formData, { method: "POST" });
   } catch (error) {
-    console.error("Error deleting orders:", error);
+    console.error("Error deleting mockups:", error);
   } finally {
     setLoading(false);
   }

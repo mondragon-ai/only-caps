@@ -27,6 +27,7 @@ import { useAppBridge } from "@shopify/app-bridge-react";
 import { deleteOrder } from "./models/orders.server";
 import { deleteOrderCallback } from "~/services/orders";
 import { SERVER_BASE_URL } from "~/lib/contants";
+import { ResponseProp } from "~/lib/types/shared";
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
   const admin = await authenticate.admin(request);
@@ -62,8 +63,12 @@ export default function OrdersPage() {
 
   const mockup_response = fetcher.data;
 
+  const isLoading =
+    ["loading", "submitting"].includes(fetcher.state) &&
+    fetcher.formMethod === "POST";
+
   const handleDelete = useCallback(async () => {
-    deleteOrderCallback(data as any, fetcher as any, setLoading, setError);
+    await deleteOrderCallback(fetcher as any, setLoading);
   }, [data, fetcher, navigate, setLoading, setError]);
 
   useEffect(() => {
@@ -99,8 +104,8 @@ export default function OrdersPage() {
               )}
               primaryAction={{
                 content: "Delete Order",
-                disabled: loading,
-                loading: loading,
+                disabled: isLoading || loading,
+                loading: isLoading || loading,
                 icon: DeleteIcon,
                 destructive: true,
                 onAction: handleDelete,
@@ -159,15 +164,34 @@ export async function action({ request, params }: ActionFunctionArgs) {
   const formData = await request.formData();
   const type = formData.get("action");
 
-  let response;
+  if (!params.id) {
+    return json(
+      {
+        shop,
+        result: null,
+        error: "ID Not Found",
+        status: 400,
+        type: "DELETE",
+      } as ResponseProp,
+      { status: 400 },
+    );
+  }
+
+  let response: ResponseProp;
   switch (type) {
     case "delete":
-      response = await deleteOrder(shop, String(params.id || ""));
+      response = await deleteOrder(shop, params.id, false);
       return redirect("/app/orders", 303);
 
     default:
       return json(
-        { error: "", shop, mockup: null, type: null },
+        {
+          shop,
+          result: null,
+          error: "Server Error",
+          status: 400,
+          type: "DELETE",
+        } as ResponseProp,
         { status: 400 },
       );
   }

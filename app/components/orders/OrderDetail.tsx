@@ -1,4 +1,4 @@
-import { BlockStack, Card, Text } from "@shopify/polaris";
+import { BlockStack, Card, Link, Text } from "@shopify/polaris";
 import styles from "./Orders.module.css";
 import { OrderDocument } from "~/lib/types/orders";
 import { formatDateLong } from "~/lib/formatters/numbers";
@@ -13,7 +13,12 @@ export const OrderDetail = ({ order }: { order: OrderDocument }) => {
           </Text>
           <div>
             <Text as="p" variant="bodyMd" tone="disabled">
-              {order.id}
+              <Link
+                url={`https://${order.domain}/admin/orders/${order.id}`}
+                target="_blank"
+              >
+                {order.id}
+              </Link>
             </Text>
             <Text as="p" variant="bodyMd" tone="disabled">
               {formatDateLong(Number(order.created_at?._seconds) * 1000)}

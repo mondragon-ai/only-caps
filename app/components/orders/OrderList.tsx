@@ -13,7 +13,7 @@ import { OrderDocument } from "~/lib/types/orders";
 
 type OrderListProps = {
   orders: OrderDocument[];
-  handleDelete: () => Promise<void>;
+  handleDelete: (ids: string[]) => Promise<void>;
 };
 export const OrderList = ({ orders, handleDelete }: OrderListProps) => {
   const navigate = useNavigate();
@@ -107,7 +107,7 @@ export const OrderList = ({ orders, handleDelete }: OrderListProps) => {
       icon: DeleteIcon,
       destructive: true,
       content: "Delete Orders",
-      onAction: handleDelete,
+      onAction: () => handleDelete(selectedResources),
     },
   ];
 

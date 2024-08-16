@@ -1,6 +1,7 @@
 import { ActionFunctionArgs, json, LoaderFunctionArgs } from "@remix-run/node";
 import {
   Await,
+  FetcherWithComponents,
   useFetcher,
   useLoaderData,
   useNavigate,
@@ -22,6 +23,8 @@ import { useAppBridge } from "@shopify/app-bridge-react";
 import { OrderDocument } from "~/lib/types/orders";
 import { SERVER_BASE_URL } from "~/lib/contants";
 import { getAnalyticss } from "~/lib/util/analytics";
+import { bulkDeleteOrdersCallback } from "~/services/orders";
+import { ResponseProp } from "~/lib/types/shared";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const admin = await authenticate.admin(request);
@@ -44,7 +47,9 @@ export async function loader({ request }: LoaderFunctionArgs) {
 export default function OrdersPage() {
   const shopify = useAppBridge();
   const data = useLoaderData<typeof loader>();
-  const fetcher = useFetcher<typeof action>();
+  const fetcher = useFetcher<
+    typeof action
+  >() as FetcherWithComponents<ResponseProp>;
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<{
     title: string;
@@ -54,10 +59,17 @@ export default function OrdersPage() {
 
   const mockup_response = fetcher.data;
 
-  const handleDelete = useCallback(async () => {
-    console.log("Todo: implement bulk delete");
-    // deleteOrderCallback(data as any, fetcher as any, setLoading, setError);
-  }, [data, fetcher, setLoading, setError]);
+  const handleDelete = useCallback(
+    async (ids: string[]) => {
+      await bulkDeleteOrdersCallback(
+        { ids: ids, shop: data.shop },
+        fetcher,
+        setLoading,
+        setError,
+      );
+    },
+    [data, fetcher, setLoading, setError],
+  );
 
   useEffect(() => {
     if (mockup_response) {
@@ -167,29 +179,54 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
   // Parsing the mockup data from the formData
   const formData = await request.formData();
-  const mockup = formData.get("mockup");
+  const order_ids = formData.get("order_ids");
   const type = formData.get("action");
 
   // create pyalod
-  const payload = mockup
-    ? (JSON.parse(String(mockup)) as MockupDocument)
+  const payload = order_ids
+    ? (JSON.parse(String(order_ids)) as {
+        id: string[];
+        domain: string;
+      })
     : null;
 
   let response;
   switch (type) {
     case "delete":
-      response = await deleteOrder(shop, String(params.id));
-      return json({ shop, orders: null, error: null, type: "DELETE" });
+      response = await deleteOrder(shop, payload!.id, true);
+      return json({
+        shop,
+        result: null,
+        error: null,
+        type: "DELETE",
+      } as ResponseProp);
     case "next":
       response = await nextOrderList(shop, "");
-      return json({ shop, orders: null, error: null, type: "NEXT" });
+      return json({
+        shop,
+        result: null,
+        error: null,
+        type: "NEXT",
+      } as ResponseProp);
     case "previous":
       response = await previousOrderList(shop, "");
-      return json({ shop, orders: null, error: null, type: "PREVIOUS" });
+      return json({
+        shop,
+        result: null,
+        error: "Server Error",
+        status: 400,
+        type: "DELETE",
+      } as ResponseProp);
 
     default:
       return json(
-        { error: "", shop, mockup: null, type: null },
+        {
+          shop,
+          result: null,
+          error: "Server Error",
+          status: 400,
+          type: "DELETE",
+        } as ResponseProp,
         { status: 400 },
       );
   }

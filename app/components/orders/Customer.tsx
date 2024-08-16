@@ -35,7 +35,10 @@ const RenderCustomerInfo = ({ order }: { order: OrderDocument }) => (
       <Text as="p" variant="bodyMd" tone="disabled">
         {order.shopify_order_payload.shipping_address.first_name}
       </Text>
-      <Link url={"#"}>{order.customer.id}</Link>
+      <Text as="p" variant="bodyMd" tone="disabled">
+        External ID:
+        <Link url={`#`}>{order.customer.id}</Link>
+      </Text>
     </div>
   </div>
 );

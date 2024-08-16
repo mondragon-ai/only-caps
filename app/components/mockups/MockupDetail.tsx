@@ -1,6 +1,7 @@
-import { Badge, BlockStack, Card, Text } from "@shopify/polaris";
+import { Badge, BlockStack, Card, Link, Text } from "@shopify/polaris";
 import { MockupDocument } from "~/lib/types/mockups";
 import styles from "./Mockups.module.css";
+import { formatDateLong } from "~/lib/formatters/numbers";
 
 const capitalizeFirstLetter = (str: string) =>
   str.charAt(0).toUpperCase() + str.slice(1);
@@ -26,10 +27,15 @@ export const MockupDetail = ({ mockup }: { mockup: MockupDocument }) => {
               {mockup.base_sku}
             </Text>
             <Text as="p" variant="bodyMd" tone="disabled">
-              {mockup.product_id}
+              <Link
+                url={`https://${mockup.domain}/admin/products/${mockup.product_id}`}
+                target="_blank"
+              >
+                {mockup.product_id}
+              </Link>
             </Text>
             <Text as="p" variant="bodyMd" tone="disabled">
-              {mockup.state}
+              {formatDateLong(mockup.state)}
             </Text>
           </BlockStack>
         </div>

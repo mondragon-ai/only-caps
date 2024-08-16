@@ -84,11 +84,16 @@ export default function MockupPage() {
   >() as FetcherWithComponents<ResponseProp>;
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
+  const [complete, setComplete] = useState<boolean>(false);
   const [error, setError] = useState<{
     title: string;
     message: string;
     type: "critical" | "warning";
   } | null>(null);
+
+  const isLoading =
+    ["loading", "submitting"].includes(fetcher.state) &&
+    fetcher.formMethod === "POST";
 
   const handleDelete = useCallback(async () => {
     await deleteMockupCallback(data as any, fetcher, setLoading, setError);
@@ -121,6 +126,7 @@ export default function MockupPage() {
 
   useEffect(() => {
     if (mockup_response) {
+      console.log({ mockup_response });
       if (mockup_response?.error) {
         setError({
           title:
@@ -131,7 +137,7 @@ export default function MockupPage() {
                 : mockup_response.type == "WHOLESALE"
                   ? "Purchasing Wholesale"
                   : "Unknown Error",
-          message: mockup_response.error,
+          message: mockup_response.error || "",
           type: "critical",
         });
         setLoading(false);
@@ -144,8 +150,11 @@ export default function MockupPage() {
               : "Mockup Deleted",
         );
 
+        setComplete(true);
+
         if (mockup_response.type == "CREATE" && loading) {
           navigate(".", { replace: true });
+          setLoading(false);
         }
         setLoading(false);
       }
@@ -162,7 +171,7 @@ export default function MockupPage() {
           return (
             <Page
               titleMetadata={
-                mockup.product_id !== "" ? (
+                mockup.product_id !== "" || complete ? (
                   <Badge progress="complete" tone="success">
                     Product Created
                   </Badge>
@@ -179,13 +188,14 @@ export default function MockupPage() {
                 {
                   content: "Delete Mockup",
                   icon: DeleteIcon,
+                  disabled: isLoading || loading,
+                  loading: isLoading || loading,
                   destructive: true,
                   onAction: handleDelete,
-                  loading: loading,
                 },
                 {
                   content: "Create Product",
-                  disabled: mockup.product_id !== "",
+                  disabled: mockup.product_id !== "" || complete,
                   icon: ProductAddIcon,
                   onAction: handleCreateProduct,
                   loading: loading,
