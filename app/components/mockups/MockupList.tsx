@@ -16,7 +16,7 @@ import { MockupDocument } from "~/lib/types/mockups";
 
 type MockupListProps = {
   mockups: MockupDocument[];
-  handleDelete: () => Promise<void>;
+  handleDelete: (ids: string[]) => Promise<void>;
 };
 
 export const MockupList = ({ mockups, handleDelete }: MockupListProps) => {
@@ -87,7 +87,7 @@ export const MockupList = ({ mockups, handleDelete }: MockupListProps) => {
       icon: DeleteIcon,
       destructive: true,
       content: "Delete Mockups",
-      onAction: handleDelete,
+      onAction: () => handleDelete(selectedResources),
     },
   ];
 

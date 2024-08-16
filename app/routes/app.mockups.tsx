@@ -1,6 +1,7 @@
 import { ActionFunctionArgs, json, LoaderFunctionArgs } from "@remix-run/node";
 import {
   Await,
+  FetcherWithComponents,
   useFetcher,
   useLoaderData,
   useNavigate,
@@ -20,6 +21,11 @@ import {
 } from "./models/mockups.server";
 import { useAppBridge } from "@shopify/app-bridge-react";
 import { SERVER_BASE_URL } from "~/lib/contants";
+import {
+  bulkDeleteMockupCallback,
+  deleteMockupCallback,
+} from "~/services/mockups";
+import { ResponseProp } from "~/lib/types/shared";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const admin = await authenticate.admin(request);
@@ -42,7 +48,9 @@ export async function loader({ request }: LoaderFunctionArgs) {
 export default function MockupsPage() {
   const shopify = useAppBridge();
   const data = useLoaderData<typeof loader>();
-  const fetcher = useFetcher<typeof action>();
+  const fetcher = useFetcher<
+    typeof action
+  >() as FetcherWithComponents<ResponseProp>;
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<{
     title: string;
@@ -52,10 +60,17 @@ export default function MockupsPage() {
 
   const mockup_response = fetcher.data;
 
-  const handleDelete = useCallback(async () => {
-    console.log("Todo: implement bulk delete");
-    // deleteOrderCallback(data as any, fetcher as any, setLoading, setError);
-  }, [data, fetcher, setLoading, setError]);
+  const handleDelete = useCallback(
+    async (ids: string[]) => {
+      await bulkDeleteMockupCallback(
+        { ids: ids, shop: data.shop },
+        fetcher,
+        setLoading,
+        setError,
+      );
+    },
+    [data, fetcher, setLoading, setError],
+  );
 
   useEffect(() => {
     if (mockup_response) {
@@ -141,13 +156,13 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
   // create pyalod
   const payload = mockup
-    ? (JSON.parse(String(mockup)) as MockupDocument)
+    ? (JSON.parse(String(mockup)) as { id: string[] | string; domain: string })
     : null;
 
   let response;
   switch (type) {
     case "delete":
-      response = await deleteMockup(shop, String(params.id));
+      response = await deleteMockup(shop, payload, true);
       return json({ shop, orders: null, error: null, type: "DELETE" });
     case "next":
       response = await nextMockupList(shop, "");

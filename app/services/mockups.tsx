@@ -32,20 +32,29 @@ const prepareFormData = (payload: object, action: string): FormData => {
 export const deleteMockupCallback = async (
   data: {
     shop: string;
-    mockups: MockupDocument;
+    mockups: { mockups: MockupDocument[] };
     id: string | undefined;
-    address: any;
   },
   fetcher: FetcherWithComponents<ResponseProp>,
   setLoading: React.Dispatch<React.SetStateAction<boolean>>,
   setError: React.Dispatch<React.SetStateAction<ErrorState | null>>,
 ) => {
   setLoading(true);
-
-  if (!data.id) {
+  const mockup = data.mockups.mockups[0];
+  if (!mockup) {
     setError({
       title: "Mockup Deleted",
-      message: "The mockup may have been deleted already.",
+      message: "The mockup may have been deleted.",
+      type: "critical",
+    });
+    setLoading(false);
+    return;
+  }
+
+  if (!mockup.id) {
+    setError({
+      title: "Mockup Deleted",
+      message: "The mockup may have been deleted.",
       type: "critical",
     });
     setLoading(false);
@@ -53,7 +62,44 @@ export const deleteMockupCallback = async (
   }
 
   try {
+    console.log("CLICKED: DELETED");
     const payload = { id: data.id, domain: data.shop };
+    const formData = prepareFormData(payload, "delete");
+    fetcher.submit(formData, { method: "POST" });
+  } catch (error) {
+    console.error("Error deleting mockups:", error);
+  } finally {
+    setLoading(false);
+  }
+};
+
+export const bulkDeleteMockupCallback = async (
+  data: {
+    shop: string;
+    ids: string[] | undefined;
+  },
+  fetcher: FetcherWithComponents<ResponseProp>,
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>,
+  setError: React.Dispatch<React.SetStateAction<ErrorState | null>>,
+) => {
+  setLoading(true);
+
+  console.log({ ids: data.ids });
+
+  if (!data.ids || data.ids.length == 0) {
+    setError({
+      title: "Select Mockups",
+      message: "Please select mockup to be deleted.",
+      type: "critical",
+    });
+    setLoading(false);
+    return;
+  }
+
+  try {
+    console.log("CLICKED: DELETED BULK");
+    const payload = { id: data.ids, domain: data.shop };
+    console.log({ payload });
     const formData = prepareFormData(payload, "delete");
     fetcher.submit(formData, { method: "POST" });
   } catch (error) {
@@ -71,7 +117,6 @@ export const deleteMockupCallback = async (
  * @param {MockupDocument} data.mockups - The mockup properties.
  * @param {string | undefined} data.id - The mockup ID.
  * @param {FetcherWithComponents} fetcher - The fetcher component for submitting data.
- * @param {NavigateFunction} navigate - The function to navigate to different routes.
  * @param {React.Dispatch<React.SetStateAction<boolean>>} setLoading - Function to set the loading state.
  * @param {React.Dispatch<React.SetStateAction<ErrorState | null>>} setError - Function to set the error state.
  * @returns {Promise<void>} - A promise that resolves when the product mockup creation is handled.

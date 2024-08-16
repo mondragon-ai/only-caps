@@ -58,7 +58,6 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
     }`,
   );
   const responseJson = await shopRespons.json();
-  console.log(responseJson.data);
 
   const response = await fetch(
     `${SERVER_BASE_URL}/store/${session.shop}/mockups?id=${id}`,
@@ -122,7 +121,6 @@ export default function MockupPage() {
 
   useEffect(() => {
     if (mockup_response) {
-      console.log({ mockup_response: mockup_response.result });
       if (mockup_response?.error) {
         setError({
           title:
@@ -251,10 +249,8 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
   // Parsing the mockup data from the formData
   const formData = await request.formData();
-  console.log({ formData });
   const mockup = formData.get("mockup");
   const type = formData.get("action");
-  console.log({ mockup, type });
 
   // create pyalod
   const payload = mockup
@@ -264,7 +260,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
   let response: ResponseProp;
   switch (type) {
     case "delete":
-      response = await deleteMockup(shop, String(params.id || ""));
+      response = await deleteMockup(shop, payload, false);
       return redirect("/app/mockups", 303);
     case "create":
       response = await createProduct(shop, payload, accessToken);

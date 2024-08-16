@@ -1,27 +1,40 @@
 import { SERVER_BASE_URL } from "~/lib/contants";
-import { MockupDocument } from "~/lib/types/mockups";
 import { ResponseProp } from "~/lib/types/shared";
 
 export const deleteMockup = async (
   shop: string,
-  mockup_id: string,
+  payload: { id: string[] | string; domain: string } | null,
+  isBulk?: boolean,
 ): Promise<ResponseProp> => {
   try {
-    // const response = await fetch('YOUR_API_ENDPOINT', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify(payload),
-    // });
+    console.log({ DELETE: payload });
+    if (payload) {
+      let url = `${SERVER_BASE_URL}/store/${shop}/mockups?id=${payload.id}`;
+      if (isBulk && payload.id && payload.id.length > 0) {
+        const ids = (payload.id as string[]).join(",");
+        console.log({ ids });
+        url = `${SERVER_BASE_URL}/store/${shop}/mockups?mockups=${ids}`;
+      }
+      const response = await fetch(url, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
-    if (mockup_id) {
-      return { shop, result: mockup_id, error: null, status: 200, type: "" };
+      const data = await response.json();
+      return {
+        shop,
+        result: data,
+        error: null,
+        status: response.status,
+        type: "",
+      };
     } else {
       return {
         shop,
         result: null,
-        error: `Error: ${"Likley due to incompatable image format. Try again soon."}`,
+        error: `Error: ${"Likley due to incompatable format. Try again soon."}`,
         status: 400,
         type: "",
       };
@@ -30,7 +43,7 @@ export const deleteMockup = async (
     return {
       shop,
       result: null,
-      error: `Server Error: Try again in a minute.`,
+      error: "Server Error: Try again in a minute.",
       status: 500,
       type: "",
     };
