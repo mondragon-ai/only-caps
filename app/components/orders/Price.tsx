@@ -9,14 +9,10 @@ import {
 import styles from "./Orders.module.css";
 import { MoneyFilledIcon } from "@shopify/polaris-icons";
 import { formatToMoney } from "~/lib/formatters/numbers";
-import {
-  LineItemProps,
-  lineItemsShoppifyab,
-  OrderDocument,
-} from "~/lib/types/orders";
+import { OrderDocument, PODLineItemsProps } from "~/lib/types/orders";
 
-const calculateSubtotal = (lineItems: lineItemsShoppifyab[]) => {
-  return lineItems.reduce((prev, li) => prev + Number(li.price), 0);
+const calculateSubtotal = (lineItems: PODLineItemsProps[]) => {
+  return lineItems.reduce((prev, li) => prev + Number(li.cost), 0);
 };
 
 const renderPriceRow = (title: string, description: string, amount: number) => (
@@ -34,7 +30,7 @@ const renderPriceRow = (title: string, description: string, amount: number) => (
 );
 
 export const Price = ({ order }: { order: OrderDocument }) => {
-  const subtotal = calculateSubtotal(order.merchant_order.line_items);
+  const subtotal = calculateSubtotal(order.pod_line_items);
   const total = subtotal + order.shipping_rate;
 
   return (

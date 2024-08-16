@@ -1,5 +1,3 @@
-import { ShopifyLineItemProps } from "./shopify";
-
 export type LineItemProps = {
   id: string;
   url: string;
@@ -59,8 +57,8 @@ export type OrderDocument = {
   };
   merchant_order: {
     order_id: string | number;
-    line_items: lineItemsShoppifyab[];
-    order_number: string;
+    line_items: LineItem[];
+    order_number: string | number;
   };
   shopify_order_payload: {
     line_items: {
@@ -76,24 +74,16 @@ export type OrderDocument = {
     shipping_lines: {
       custom: boolean;
       price: string;
-      title: "Standard Shipping";
+      title: string | "Standard Shipping";
     }[];
     shipping_address: Address;
   };
   fulfillment_id: string;
-  created_at?: any;
+  created_at?: {
+    _seconds: number;
+    _nanoseconds: number;
+  };
   updated_at?: any;
-};
-
-export type lineItemsShoppifyab = {
-  id: number;
-  variant_id: number;
-  title: string;
-  quantity: number;
-  price: string;
-  total_discount: string;
-  sku: string;
-  variant_title: "";
 };
 
 export type PODLineItemsProps = {
@@ -122,6 +112,17 @@ export type Address = {
   country_code: string;
   country_name: string;
   default: boolean;
+};
+
+export type LineItem = {
+  product_id: number;
+  variant_id: number;
+  weight: number;
+  title: string;
+  quantity: number;
+  price: string;
+  sku: string;
+  variant_title: string;
 };
 
 export const OrderSummaryProps = {};

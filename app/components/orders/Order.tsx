@@ -4,6 +4,7 @@ import {
   Box,
   Card,
   InlineGrid,
+  Link,
   ResourceItem,
   ResourceList,
   Text,
@@ -12,13 +13,7 @@ import {
 import styles from "./Orders.module.css";
 import { OrderFulfilledIcon, ShippingLabelIcon } from "@shopify/polaris-icons";
 import { formatToMoney } from "~/lib/formatters/numbers";
-import {
-  LineItemProps,
-  lineItemsShoppifyab,
-  OrderDocument,
-  PODLineItemsProps,
-} from "~/lib/types/orders";
-import { ShopifyLineItemProps } from "~/lib/types/shopify";
+import { LineItem, OrderDocument, PODLineItemsProps } from "~/lib/types/orders";
 import { PRODUCT_PLACEHODLER } from "~/lib/contants";
 
 export const Order = ({ order }: { order: OrderDocument }) => {
@@ -41,7 +36,15 @@ export const Order = ({ order }: { order: OrderDocument }) => {
         <Text as="p" variant="bodyMd">
           Shipping Profile
           <Text as="p" variant="bodyMd" tone="disabled">
-            No Tracking
+            {order.tracking_number ? (
+              <Link url={order.tracking_number} target="_blank">
+                {order.tracking_number}{" "}
+              </Link>
+            ) : (
+              <Text as="p" variant="bodyMd" tone="disabled">
+                No Tracking
+              </Text>
+            )}
           </Text>
         </Text>
 
@@ -60,11 +63,11 @@ export const Order = ({ order }: { order: OrderDocument }) => {
 };
 
 const renderLineItem = (
-  item: lineItemsShoppifyab,
+  item: LineItem,
   pod_li: PODLineItemsProps[],
   i: number,
 ) => {
-  const { title, id, sku, variant_title, price, quantity } = item;
+  const { title, product_id, sku, variant_title, price, quantity } = item;
   const media = (
     <Thumbnail
       source={
@@ -77,7 +80,7 @@ const renderLineItem = (
 
   return (
     <ResourceItem
-      id={String(id)}
+      id={String(product_id)}
       url={"#"}
       media={media}
       accessibilityLabel={`View details for ${title}`}

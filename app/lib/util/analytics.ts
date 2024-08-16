@@ -6,6 +6,7 @@ import {
   TopSellerProps,
   TopSellersProps,
 } from "../types/analytics";
+import { OrderDocument } from "../types/orders";
 
 /**
  * Handles and aggregates analytics data.
@@ -105,4 +106,17 @@ export const handleAnalytics = (data: AnalyticsProps[]) => {
   }));
 
   return analytics;
+};
+
+export const getAnalyticss = (orders: OrderDocument[]) => {
+  const wait = orders.reduce(
+    (prev, o) => (o.tracking_number == "" ? prev + 1 : prev),
+    0,
+  );
+  const fulfilled = orders.reduce(
+    (prev, o) => (o.tracking_number !== "" ? prev + 1 : prev),
+    0,
+  );
+  const failed = 0;
+  return { wait, fulfilled, failed };
 };

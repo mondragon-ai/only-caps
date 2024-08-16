@@ -21,6 +21,7 @@ import {
 import { useAppBridge } from "@shopify/app-bridge-react";
 import { OrderDocument } from "~/lib/types/orders";
 import { SERVER_BASE_URL } from "~/lib/contants";
+import { getAnalyticss } from "~/lib/util/analytics";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const admin = await authenticate.admin(request);
@@ -82,14 +83,17 @@ export default function OrdersPage() {
       <Suspense fallback={<LoadingSkeleton />}>
         <Await resolve={data}>
           {(loadedData) => {
+            const { wait, fulfilled, failed } = getAnalyticss(
+              loadedData.orders,
+            );
             return (
               <Layout>
                 <Layout.Section>
                   <OrderSummary
                     orders={true}
-                    awaiting={0}
-                    fulfilled={0}
-                    failed={0}
+                    awaiting={wait}
+                    fulfilled={fulfilled}
+                    failed={failed}
                   />
                 </Layout.Section>
                 {error && (

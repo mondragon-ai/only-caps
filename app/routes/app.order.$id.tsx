@@ -1,6 +1,6 @@
 import { Banner, BlockStack, Layout, Page } from "@shopify/polaris";
 import { Footer } from "~/components/layout/Footer";
-import { DeleteIcon, ProductAddIcon } from "@shopify/polaris-icons";
+import { DeleteIcon } from "@shopify/polaris-icons";
 import { Order } from "~/components/orders/Order";
 import { Price } from "~/components/orders/Price";
 import { Customer } from "~/components/orders/Customer";
@@ -24,22 +24,26 @@ import { LoadingSkeleton } from "~/components/skeleton";
 import { OrderDocument } from "~/lib/types/orders";
 import { formatDateLong } from "~/lib/formatters/numbers";
 import { useAppBridge } from "@shopify/app-bridge-react";
-import { MockupProps } from "~/lib/types/mockups";
-import {
-  deleteOrder,
-  nextOrderList,
-  previousOrderList,
-} from "./models/orders.server";
+import { deleteOrder } from "./models/orders.server";
 import { deleteOrderCallback } from "~/services/orders";
+import { SERVER_BASE_URL } from "~/lib/contants";
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
   const admin = await authenticate.admin(request);
-  const order = mock_order as OrderDocument;
+
+  const response = await fetch(
+    `${SERVER_BASE_URL}/store/${admin.session.shop}/orders?`,
+  );
+
+  const data = (await response.json()) as {
+    text: string;
+    orders: OrderDocument[];
+  };
 
   return json({
     shop: admin.session.shop,
     params: params,
-    order,
+    order: data.orders[0] || null,
     id: params.id,
   });
 }
@@ -90,7 +94,9 @@ export default function OrdersPage() {
             <Page
               backAction={{ content: "Order", url: "/app/orders" }}
               title={`#${String(order.merchant_order.order_number)}`}
-              subtitle={formatDateLong(order.created_at)}
+              subtitle={formatDateLong(
+                Number(order.created_at?._seconds) * 1000,
+              )}
               primaryAction={{
                 content: "Delete Order",
                 disabled: loading,

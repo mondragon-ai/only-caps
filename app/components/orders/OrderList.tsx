@@ -94,7 +94,7 @@ export const OrderList = ({ orders, handleDelete }: OrderListProps) => {
           <IndexTable.Cell>{deliveryBadge}</IndexTable.Cell>
           <IndexTable.Cell>
             <Text variant="bodyMd" as="span">
-              {formatDateLong(created_at)}
+              {formatDateLong(Number(created_at?._seconds) * 1000)}
             </Text>
           </IndexTable.Cell>
         </IndexTable.Row>

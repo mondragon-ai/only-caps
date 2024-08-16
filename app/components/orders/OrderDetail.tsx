@@ -16,7 +16,7 @@ export const OrderDetail = ({ order }: { order: OrderDocument }) => {
               {order.id}
             </Text>
             <Text as="p" variant="bodyMd" tone="disabled">
-              {formatDateLong(order.created_at)}
+              {formatDateLong(Number(order.created_at?._seconds) * 1000)}
             </Text>
           </div>
         </div>
