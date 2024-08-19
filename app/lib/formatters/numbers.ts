@@ -14,7 +14,7 @@ export const formatNumber = (num: number, trunc?: boolean): string => {
       : (num / 1_000).toFixed(2).replace(/\.00$/, "") + "k";
   }
 
-  return num.toString();
+  return num.toFixed(2).toString();
 };
 
 /**

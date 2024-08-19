@@ -44,11 +44,7 @@ function generateRandomString(length: number, type: string): string {
     randomString += characters.charAt(randomIndex);
   }
 
-  return (
-    "POD-" +
-    randomString.toLocaleUpperCase() +
-    `-${type.toLocaleUpperCase().replaceAll("_", "-")}`
-  );
+  return "POD-" + `-${type.toLocaleUpperCase().replaceAll("_", "-")}`;
 }
 
 /**

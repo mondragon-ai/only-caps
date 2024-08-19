@@ -3,7 +3,7 @@
 client_id = "e062b2afbda40feef1c957b971c7b292"
 name = "Only Caps"
 handle = "only-caps"
-application_url = "https://beds-pale-bonus-advocacy.trycloudflare.com"
+application_url = "https://grand-ist-separate-stakeholders.trycloudflare.com"
 embedded = true
 
 [build]
@@ -17,9 +17,9 @@ scopes = "read_assigned_fulfillment_orders,read_merchant_managed_fulfillment_ord
 
 [auth]
 redirect_urls = [
-  "https://beds-pale-bonus-advocacy.trycloudflare.com/auth/callback",
-  "https://beds-pale-bonus-advocacy.trycloudflare.com/auth/shopify/callback",
-  "https://beds-pale-bonus-advocacy.trycloudflare.com/api/auth/callback"
+  "https://grand-ist-separate-stakeholders.trycloudflare.com/auth/callback",
+  "https://grand-ist-separate-stakeholders.trycloudflare.com/auth/shopify/callback",
+  "https://grand-ist-separate-stakeholders.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]

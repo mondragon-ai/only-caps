@@ -1,15 +1,5 @@
 import { BlockStack, Card, InlineGrid, Text } from "@shopify/polaris";
-import {
-  Area,
-  AreaChart,
-  Bar,
-  BarChart,
-  CartesianGrid,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from "recharts";
+
 import { calculateTotalValue, formatNumber } from "~/lib/formatters/numbers";
 import styles from "./Analytics.module.css";
 import { AnalyticsCard } from "./AnalyticsCard";

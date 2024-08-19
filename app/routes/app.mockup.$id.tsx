@@ -195,10 +195,14 @@ export default function MockupPage() {
                 },
                 {
                   content: "Create Product",
-                  disabled: mockup.product_id !== "" || complete,
                   icon: ProductAddIcon,
                   onAction: handleCreateProduct,
-                  loading: loading,
+                  disabled:
+                    mockup.product_id !== "" ||
+                    complete ||
+                    isLoading ||
+                    loading,
+                  loading: isLoading || loading,
                 },
               ]}
             >

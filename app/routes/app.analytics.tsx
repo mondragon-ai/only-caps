@@ -10,8 +10,13 @@ import {
   SkeletonDisplayText,
   SkeletonPage,
 } from "@shopify/polaris";
-import { Suspense, useCallback, useState } from "react";
-import { defer, type LoaderFunctionArgs } from "@remix-run/node";
+import { Suspense, useCallback, useEffect, useState } from "react";
+import {
+  ActionFunctionArgs,
+  defer,
+  json,
+  type LoaderFunctionArgs,
+} from "@remix-run/node";
 import { HighlightStats } from "~/components/home/HighlightStats";
 import { Footer } from "~/components/layout/Footer";
 import { CheckSmallIcon } from "@shopify/polaris-icons";
@@ -19,17 +24,57 @@ import { TopAnalytics } from "~/components/analytics/TopAnalytics";
 import { BottomAnalytics } from "~/components/analytics/BottomAnalytics";
 import { AnalyticsInit } from "~/lib/data/analytics";
 import { authenticate } from "~/shopify.server";
-import { Await, useLoaderData } from "@remix-run/react";
+import {
+  Await,
+  FetcherWithComponents,
+  useFetcher,
+  useLoaderData,
+  useNavigate,
+} from "@remix-run/react";
 import { handleAnalytics } from "~/lib/util/analytics";
 import { AnalyticsProps } from "~/lib/types/analytics";
 import { LoadingSkeleton } from "~/components/skeleton";
+import { SERVER_BASE_URL } from "~/lib/contants";
+import { ResponseProp } from "~/lib/types/shared";
 
 export async function loader({ request }: LoaderFunctionArgs) {
-  const admin = await authenticate.admin(request);
+  const { session, admin } = await authenticate.admin(request);
+  const url = new URL(request.url);
+
+  // Extract the query parameter 'time_frame'
+  const timeFrame = url.searchParams.get("time_frame");
+  console.log({ timeFrame });
+
+  const shopRespons = await admin.graphql(
+    `query {
+      shop {
+        name
+        currencyCode
+        billingAddress {
+          address1
+          city
+          provinceCode
+          zip
+        }
+      }
+    }`,
+  );
+  const responseJson = await shopRespons.json();
+
+  const response = await fetch(
+    `${SERVER_BASE_URL}/store/${session.shop}/analytics?time_frame=${timeFrame ? timeFrame : "seven_days"}&timezone=America/New_York`,
+  );
+
+  const data = (await response.json()) as {
+    text: string;
+    analytics: AnalyticsProps[];
+  };
+
+  console.log(data);
 
   return defer({
-    shop: admin.session.shop,
-    analytics: AnalyticsInit as AnalyticsProps[],
+    shop: session.shop,
+    analytics: data.analytics as AnalyticsProps[],
   });
 }
 
@@ -118,6 +163,7 @@ export default function AnalyticsPage() {
 
 function TimeFrameOptions() {
   const [selected, setSelected] = useState<TimeFrameProps>("seven_days");
+  const navigate = useNavigate();
   const [popoverActive, setPopoverActive] = useState(false);
 
   const togglePopoverActive = useCallback(
@@ -125,10 +171,11 @@ function TimeFrameOptions() {
     [],
   );
 
-  const selectOption = useCallback(
-    () => setPopoverActive((popoverActive) => !popoverActive),
-    [],
-  );
+  const selectOption = useCallback((type: TimeFrameProps) => {
+    setSelected(type);
+    navigate(`/app/analytics?time_frame=${type}`);
+    setPopoverActive((popoverActive) => !popoverActive);
+  }, []);
 
   const activator = (
     <Button onClick={togglePopoverActive} disclosure>
@@ -156,7 +203,7 @@ function TimeFrameOptions() {
           actionRole="menuitem"
           items={[
             {
-              onAction: () => setSelected("seven_days"),
+              onAction: () => selectOption("seven_days"),
               active: selected == "seven_days" && true,
               content: "Last 7 Days",
               suffix: selected == "seven_days" && (
@@ -164,7 +211,7 @@ function TimeFrameOptions() {
               ),
             },
             {
-              onAction: () => setSelected("thirty_days"),
+              onAction: () => selectOption("thirty_days"),
               active: selected == "thirty_days" && true,
               content: "Last 30 Days",
               suffix: selected == "thirty_days" && (
@@ -172,7 +219,7 @@ function TimeFrameOptions() {
               ),
             },
             {
-              onAction: () => setSelected("ninety_days"),
+              onAction: () => selectOption("ninety_days"),
               active: selected == "ninety_days" && true,
               content: "Last 90 Days",
               suffix: selected == "ninety_days" && (
@@ -180,7 +227,7 @@ function TimeFrameOptions() {
               ),
             },
             {
-              onAction: () => setSelected("twelve_months"),
+              onAction: () => selectOption("twelve_months"),
               active: selected == "twelve_months" && true,
               content: "Last 12 Months",
               suffix: selected == "twelve_months" && (
