@@ -70,9 +70,11 @@ export const handleAnalytics = (data: AnalyticsProps[]) => {
       total_shipping_cost += order.shipping_cost;
 
       if (order.fulfilled_date && Number(order.fulfilled_date) !== 0) {
-        total_fulfillment_time += getDifferenceInDays(
-          Number(order.fulfilled_date),
-          Number(order.created_at),
+        total_fulfillment_time += Number(
+          getDifferenceInDays(
+            Number(order.fulfilled_date),
+            Number(order.created_at),
+          ),
         );
       }
       daily_orders += 1;

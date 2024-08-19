@@ -1,59 +1,31 @@
-import { ActionFunctionArgs, json, LoaderFunctionArgs } from "@remix-run/node";
+import { mockupsLoader, mockupsAction } from "./models/mockups.server";
+import { Layout, Page, EmptyState, Banner } from "@shopify/polaris";
+import { ErrorStateProps, ResponseProp } from "~/lib/types/shared";
+import { Suspense, useCallback, useEffect, useState } from "react";
+import { bulkDeleteMockupCallback } from "~/services/mockups";
+import { MockupList } from "~/components/mockups/MockupList";
+import { useAppBridge } from "@shopify/app-bridge-react";
+import { LoadingSkeleton } from "~/components/skeleton";
+import { MockupDocument } from "~/lib/types/mockups";
+import { Footer } from "~/components/layout/Footer";
 import {
   Await,
   FetcherWithComponents,
   useFetcher,
   useLoaderData,
 } from "@remix-run/react";
-import { Box, Layout, Page, EmptyState, Banner } from "@shopify/polaris";
-import { Suspense, useCallback, useEffect, useState } from "react";
-import { Footer } from "~/components/layout/Footer";
-import { MockupList } from "~/components/mockups/MockupList";
-import { LoadingSkeleton } from "~/components/skeleton";
-import { MockupDocument } from "~/lib/types/mockups";
-import { authenticate } from "~/shopify.server";
-import {
-  deleteMockup,
-  nextMockupList,
-  previousMockupList,
-} from "./models/mockups.server";
-import { useAppBridge } from "@shopify/app-bridge-react";
-import { SERVER_BASE_URL } from "~/lib/contants";
-import { bulkDeleteMockupCallback } from "~/services/mockups";
-import { ResponseProp } from "~/lib/types/shared";
 
-export async function loader({ request }: LoaderFunctionArgs) {
-  const admin = await authenticate.admin(request);
+export const loader = mockupsLoader;
+export const action = mockupsAction;
 
-  const response = await fetch(
-    `${SERVER_BASE_URL}/store/${admin.session.shop}/mockups`,
-  );
-
-  const data = (await response.json()) as {
-    text: string;
-    mockups: MockupDocument[];
-  };
-
-  return json({
-    shop: admin.session.shop,
-    mockups: data.mockups,
-  });
-}
+export type FetcherProp = FetcherWithComponents<ResponseProp>;
 
 export default function MockupsPage() {
   const shopify = useAppBridge();
   const data = useLoaderData<typeof loader>();
-  const fetcher = useFetcher<
-    typeof action
-  >() as FetcherWithComponents<ResponseProp>;
+  const fetcher = useFetcher<typeof action>() as FetcherProp;
   const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<{
-    title: string;
-    message: string;
-    type: "critical" | "warning";
-  } | null>(null);
-
-  const mockup_response = fetcher.data;
+  const [error, setError] = useState<ErrorStateProps>(null);
 
   const handleDelete = useCallback(
     async (ids: string[]) => {
@@ -67,21 +39,17 @@ export default function MockupsPage() {
     [data, fetcher, setLoading, setError],
   );
 
+  const response = fetcher.data;
+
+  const isLoading =
+    ["loading", "submitting"].includes(fetcher.state) &&
+    fetcher.formMethod === "POST";
+
   useEffect(() => {
-    if (mockup_response) {
-      if (mockup_response?.error) {
-        setError({
-          title: "Deleting Mockup",
-          message: mockup_response.error,
-          type: "critical",
-        });
-        setLoading(false);
-      } else {
-        shopify.toast.show("Mockup Deleted");
-        setLoading(false);
-      }
+    if (response) {
+      handleMockupResponse(response, shopify, setError, setLoading);
     }
-  }, [shopify, mockup_response, data]);
+  }, [shopify, response]);
 
   return (
     <Page title="Your Mockups" subtitle="Mockups Generated With OnlyCaps">
@@ -135,58 +103,30 @@ export default function MockupsPage() {
 }
 
 /**
- * Action function to handle mockup creation.
- *
- * @param {any} args - The action function arguments.
- * @returns {Promise<Response>} The response containing the mockup data.
+ * Handle the response from the order API.
+ * @param {ResponseProp} response - The response from the API.
+ * @param {any} shopify - The Shopify app bridge instance.
+ * @param {Function} setError - The function to set the error state.
+ * @param {Function} setLoading - The function to set the loading state.
  */
-export async function action({ request, params }: ActionFunctionArgs) {
-  const { session } = await authenticate.admin(request);
-  const { shop } = session;
-
-  // Parsing the mockup data from the formData
-  const formData = await request.formData();
-  const mockup = formData.get("mockup");
-  const type = formData.get("action");
-
-  // create pyalod
-  const payload = mockup
-    ? (JSON.parse(String(mockup)) as { id: string[] | string; domain: string })
-    : null;
-
-  let response;
-  switch (type) {
-    case "delete":
-      response = await deleteMockup(shop, payload, true);
-      return json({ shop, orders: null, error: null, type: "DELETE" });
-    case "next":
-      response = await nextMockupList(shop, "");
-      return json({ shop, orders: null, error: null, type: "NEXT" });
-    case "previous":
-      response = await previousMockupList(shop, "");
-      return json({ shop, orders: null, error: null, type: "PREVIOUS" });
-
-    default:
-      return json(
-        { error: "", shop, mockup: null, type: null },
-        { status: 400 },
-      );
+function handleMockupResponse(
+  response: ResponseProp,
+  shopify: any,
+  setError: Function,
+  setLoading: Function,
+) {
+  if (response) {
+    if (response?.error) {
+      setError({
+        title: response.type === "DELETE" ? "Deleting Mockup" : "Unknown Error",
+        message: response.error,
+        type: "critical",
+      });
+      setLoading(false);
+    } else {
+      shopify.toast.show("Order Deleted");
+      setLoading(false);
+    }
   }
-}
-
-function Code({ children }: { children: React.ReactNode }) {
-  return (
-    <Box
-      as="span"
-      padding="025"
-      paddingInlineStart="100"
-      paddingInlineEnd="100"
-      background="bg-surface-active"
-      borderWidth="025"
-      borderColor="border"
-      borderRadius="100"
-    >
-      <code>{children}</code>
-    </Box>
-  );
+  setLoading(false);
 }

@@ -1,95 +1,45 @@
 import { Badge, Banner, BlockStack, Layout, Page } from "@shopify/polaris";
-import { Footer } from "~/components/layout/Footer";
-import { DeleteIcon, ProductAddIcon } from "@shopify/polaris-icons";
 import { MockupImageCard } from "~/components/mockups/MockupImageCard";
-import { Colors } from "~/components/mockups/Colors";
+import { mockupAction, mockupLoader } from "./models/mockups.server";
+import { DeleteIcon, ProductAddIcon } from "@shopify/polaris-icons";
+import { Suspense, useCallback, useEffect, useState } from "react";
+import { Address, WholeSale } from "~/components/mockups/WholeSale";
+import { ErrorStateProps, ResponseProp } from "~/lib/types/shared";
+import { MockupDetail } from "~/components/mockups/MockupDetail";
 import { MockupImage } from "~/components/mockups/MockupImage";
 import { Dimensions } from "~/components/mockups/Dimensions";
-import { MockupDetail } from "~/components/mockups/MockupDetail";
-import { Address, WholeSale } from "~/components/mockups/WholeSale";
+import { formatDateLong } from "~/lib/formatters/numbers";
+import { useAppBridge } from "@shopify/app-bridge-react";
+import { LoadingSkeleton } from "~/components/skeleton";
+import { Colors } from "~/components/mockups/Colors";
+import { MockupDocument } from "~/lib/types/mockups";
+import { Footer } from "~/components/layout/Footer";
 import {
   Await,
   FetcherWithComponents,
-  json,
   useFetcher,
   useLoaderData,
   useNavigate,
 } from "@remix-run/react";
-import { authenticate } from "~/shopify.server";
-import {
-  ActionFunctionArgs,
-  LoaderFunctionArgs,
-  redirect,
-} from "@remix-run/node";
-import { Suspense, useCallback, useEffect, useState } from "react";
-import { LoadingSkeleton } from "~/components/skeleton";
-import { MockupDocument } from "~/lib/types/mockups";
-import {
-  createProduct,
-  deleteMockup,
-  purchaseWholesale,
-} from "./models/mockups.server";
-import { useAppBridge } from "@shopify/app-bridge-react";
 import {
   createProductMockupCallback,
   deleteMockupCallback,
   purchaseWholesaleCallback,
 } from "~/services/mockups";
-import { formatDateLong } from "~/lib/formatters/numbers";
-import { SERVER_BASE_URL } from "~/lib/contants";
-import { ResponseProp } from "~/lib/types/shared";
 
-export async function loader({ request, params }: LoaderFunctionArgs) {
-  const { session, admin } = await authenticate.admin(request);
-  const id = params.id;
+export const loader = mockupLoader;
+export const action = mockupAction;
 
-  const shopRespons = await admin.graphql(
-    `query {
-      shop {
-        name
-        currencyCode
-        billingAddress {
-          address1
-          city
-          provinceCode
-          zip
-        }
-      }
-    }`,
-  );
-  const responseJson = await shopRespons.json();
-
-  const response = await fetch(
-    `${SERVER_BASE_URL}/store/${session.shop}/mockups?id=${id}`,
-  );
-
-  const data = (await response.json()) as {
-    text: string;
-    mockups: MockupDocument[];
-  };
-
-  return json({
-    shop: session.shop,
-    mockups: data,
-    id,
-    address: responseJson.data?.shop.billingAddress,
-  });
-}
+export type FetcherProp = FetcherWithComponents<ResponseProp>;
 
 export default function MockupPage() {
   const shopify = useAppBridge();
   const data = useLoaderData<typeof loader>();
-  const fetcher = useFetcher<
-    typeof action
-  >() as FetcherWithComponents<ResponseProp>;
+  const fetcher = useFetcher<typeof action>() as FetcherProp;
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
   const [complete, setComplete] = useState<boolean>(false);
-  const [error, setError] = useState<{
-    title: string;
-    message: string;
-    type: "critical" | "warning";
-  } | null>(null);
+  const [error, setError] = useState<ErrorStateProps>(null);
 
   const isLoading =
     ["loading", "submitting"].includes(fetcher.state) &&
@@ -122,44 +72,20 @@ export default function MockupPage() {
     [data, fetcher, navigate, setLoading, setError],
   );
 
-  const mockup_response = fetcher.data;
-
+  const response = fetcher.data;
   useEffect(() => {
-    if (mockup_response) {
-      console.log({ mockup_response });
-      if (mockup_response?.error) {
-        setError({
-          title:
-            mockup_response.type == "DELETE"
-              ? "Deleting Mockup"
-              : mockup_response.type == "CREATE"
-                ? "Creating Product"
-                : mockup_response.type == "WHOLESALE"
-                  ? "Purchasing Wholesale"
-                  : "Unknown Error",
-          message: mockup_response.error || "",
-          type: "critical",
-        });
-        setLoading(false);
-      } else {
-        shopify.toast.show(
-          mockup_response.type == "PURCHASE"
-            ? "Product Created"
-            : mockup_response.type == "WHOLESALE"
-              ? "Wholesale Purchased"
-              : "Mockup Deleted",
-        );
-
-        setComplete(true);
-
-        if (mockup_response.type == "CREATE" && loading) {
-          navigate(".", { replace: true });
-          setLoading(false);
-        }
-        setLoading(false);
-      }
+    if (response) {
+      handleMockupResponse(
+        response,
+        shopify,
+        setError,
+        setLoading,
+        setComplete,
+        loading,
+        navigate,
+      );
     }
-  }, [shopify, mockup_response, data]);
+  }, [shopify, response, data]);
 
   return (
     <Suspense fallback={<LoadingSkeleton />}>
@@ -252,59 +178,50 @@ export default function MockupPage() {
 }
 
 /**
- * Action function to handle mockup creation.
- *
- * @param {any} args - The action function arguments.
- * @returns {Promise<Response>} The response containing the mockup data.
+ * Handle the response from the mockup API.
+ * @param {ResponseProp} response - The response from the API.
+ * @param {any} shopify - The Shopify app bridge instance.
+ * @param {Function} setError - The function to set the error state.
+ * @param {Function} setLoading - The function to set the loading state.
+ * @param {Function} setComplete - The function to set the completion state.
+ * @param {boolean} loading - The current loading state.
+ * @param {Function} navigate - The function to navigate between routes.
  */
-export async function action({ request, params }: ActionFunctionArgs) {
-  const { session } = await authenticate.admin(request);
-  const { shop, accessToken } = session;
+function handleMockupResponse(
+  response: ResponseProp,
+  shopify: any,
+  setError: Function,
+  setLoading: Function,
+  setComplete: Function,
+  loading: boolean,
+  navigate: Function,
+) {
+  if (response.error) {
+    setError({
+      title:
+        response.type === "DELETE"
+          ? "Deleting Mockup"
+          : response.type === "CREATE"
+            ? "Creating Product"
+            : response.type === "WHOLESALE"
+              ? "Purchasing Wholesale"
+              : "Unknown Error",
+      message: response.error || "",
+      type: "critical",
+    });
+  } else {
+    shopify.toast.show(
+      response.type === "PURCHASE"
+        ? "Product Created"
+        : response.type === "WHOLESALE"
+          ? "Wholesale Purchased"
+          : "Mockup Deleted",
+    );
+    setComplete(true);
 
-  // Parsing the mockup data from the formData
-  const formData = await request.formData();
-  const mockup = formData.get("mockup");
-  const type = formData.get("action");
-
-  // create pyalod
-  const payload = mockup
-    ? (JSON.parse(String(mockup)) as { id: string; domain: string })
-    : null;
-
-  let response: ResponseProp;
-  switch (type) {
-    case "delete":
-      response = await deleteMockup(shop, payload, false);
-      return redirect("/app/mockups", 303);
-    case "create":
-      response = await createProduct(shop, payload, accessToken);
-      return json({
-        shop,
-        result: response.result,
-        error: response.error,
-        type: "CREATE",
-        status: 201,
-      } as ResponseProp);
-    case "wholesale":
-      response = await purchaseWholesale(shop, payload);
-      return json({
-        shop,
-        result: null,
-        error: null,
-        type: "WHOLESALE",
-        status: 200,
-      } as ResponseProp);
-
-    default:
-      return json(
-        {
-          shop,
-          result: null,
-          error: "Server Error",
-          status: 400,
-          type: "WHOLESALE",
-        } as ResponseProp,
-        { status: 400 },
-      );
+    if (response.type === "CREATE" && loading) {
+      navigate(".", { replace: true });
+    }
   }
+  setLoading(false);
 }

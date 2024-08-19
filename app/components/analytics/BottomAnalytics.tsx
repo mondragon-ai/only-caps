@@ -34,7 +34,7 @@ export const BottomAnalytics = ({
         )}
         subValue="days"
       >
-        <LineChartStats data={fulfillment} />
+        <LineChartStats data={fulfillment} isMoney={false} />
       </AnalyticsCard>
       <AnalyticsCard title="Type of Hats Sold">
         <PieChartStats data={types} />
@@ -43,7 +43,7 @@ export const BottomAnalytics = ({
         title="Avg. Shipping Cost"
         mainValue={`$${formatToMoney(total_shipping / shipping.length)}`}
       >
-        <LineChartStats data={shipping} />
+        <LineChartStats data={shipping} isMoney={true} />
       </AnalyticsCard>
     </InlineGrid>
   );

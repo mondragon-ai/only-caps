@@ -23,21 +23,29 @@ type CustomToolTipPrps = {
   value: string;
 };
 
-export function CustomTooltip({ date, value }: CustomToolTipPrps) {
-  return (
-    <div className="custom-tooltip">
-      <p className="label">{`Date: ${date}`}</p>
-      <p className="intro">{`Amount: ${value}}`}</p>
-    </div>
-  );
-}
+const CustomTooltip = ({ active, payload, label, isMoney }: any) => {
+  if (active && payload && payload.length) {
+    return (
+      <div className="custom-tooltip">
+        <p className="label">{`Date: ${label}`}</p>
+        <p className="intro">{`Value: ${isMoney ? "$" + payload[0].value : payload[0].value}`}</p>
+      </div>
+    );
+  }
+};
 
-export const LineChartStats = ({ data }: { data: DataProps[] }) => {
+export const LineChartStats = ({
+  data,
+  isMoney,
+}: {
+  data: DataProps[];
+  isMoney?: boolean;
+}) => {
   return (
     <ResponsiveContainer width="100%" height="100%">
       <AreaChart
         data={data}
-        margin={{ top: 5, right: 0, left: -20, bottom: 5 }}
+        margin={{ top: 5, right: 0, left: -10, bottom: 5 }}
       >
         <defs>
           <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
@@ -52,15 +60,21 @@ export const LineChartStats = ({ data }: { data: DataProps[] }) => {
           padding={{ left: 10, right: 10 }}
           axisLine={false}
           tickSize={0}
-          angle={30}
+          angle={90}
         />
         <YAxis
           axisLine={false}
-          padding={{ top: 0, bottom: 10 }}
+          padding={{ top: 0, bottom: 40 }}
           tickSize={0}
-          tickFormatter={(time) => `$${formatNumber(time, true)}`}
+          tickFormatter={(time) => {
+            if (isMoney) {
+              return `$${formatNumber(time, true)}`;
+            } else {
+              return `${formatNumber(time, true)}`;
+            }
+          }}
         />
-        <Tooltip />
+        <Tooltip content={<CustomTooltip isMoney={isMoney} />} />
         <Area
           type="monotone"
           dataKey="value"

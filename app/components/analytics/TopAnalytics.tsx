@@ -30,7 +30,7 @@ export const TopAnalytics = ({
         title="Total Revenue"
         mainValue={`$${formatNumber(total_revenue)}`}
       >
-        <LineChartStats data={revenue} />
+        <LineChartStats data={revenue} isMoney={true} />
       </AnalyticsCard>
       <AnalyticsCard title="Items Sold" mainValue={formatNumber(total_items)}>
         <BarChartStats data={sold} />
@@ -41,19 +41,20 @@ export const TopAnalytics = ({
             Top Seller
           </Text>
           <BlockStack gap="600">
-            {Object.keys(top_sellers).map((ts, i) => {
-              return (
-                <TopSeller
-                  title={ts}
-                  amount={Number(top_sellers[ts as keyof TopSellersProps])}
-                  width={Math.round(
-                    (Number(top_sellers[ts as keyof TopSellersProps]) /
-                      Number(total_sold)) *
-                      200,
-                  )}
-                />
-              );
-            })}
+            {Object.entries(top_sellers)
+              .sort(([, a], [, b]) => b - a)
+              .map(([ts, amount], i) => {
+                return (
+                  <TopSeller
+                    key={i}
+                    title={ts}
+                    amount={Number(amount)}
+                    width={Math.round(
+                      (Number(amount) / Number(total_sold)) * 200,
+                    )}
+                  />
+                );
+              })}
           </BlockStack>
         </BlockStack>
       </Card>

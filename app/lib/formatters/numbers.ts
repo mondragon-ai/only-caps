@@ -75,10 +75,11 @@ export const formatDate = (epochMillis: number): string => {
 export const getDifferenceInDays = (
   startMillis: number,
   endMillis: number,
-): number => {
+): string => {
   const millisecondsInADay = 24 * 60 * 60;
-  const differenceInMillis = Math.abs(endMillis - startMillis);
-  return Math.floor(differenceInMillis / millisecondsInADay);
+  const differenceInMillis = Math.abs(endMillis * 100 - startMillis * 100);
+
+  return (differenceInMillis / millisecondsInADay).toFixed(2);
 };
 
 /**

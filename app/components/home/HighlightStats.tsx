@@ -59,7 +59,7 @@ export const HighlightStats = ({
           <HighlightStatBox
             icon="CartIcon"
             value={String(`${formatNumber(sold)}`)}
-            label="Orders with Only Caps"
+            label="Items with Only Caps"
             isMobile={isMobile}
           />
         </div>

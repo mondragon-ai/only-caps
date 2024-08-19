@@ -1,82 +1,16 @@
-import {
-  ActionList,
-  Button,
-  EmptyState,
-  Icon,
-  Layout,
-  Page,
-  Popover,
-  SkeletonBodyText,
-  SkeletonDisplayText,
-  SkeletonPage,
-} from "@shopify/polaris";
-import { Suspense, useCallback, useEffect, useState } from "react";
-import {
-  ActionFunctionArgs,
-  defer,
-  json,
-  type LoaderFunctionArgs,
-} from "@remix-run/node";
-import { HighlightStats } from "~/components/home/HighlightStats";
-import { Footer } from "~/components/layout/Footer";
-import { CheckSmallIcon } from "@shopify/polaris-icons";
-import { TopAnalytics } from "~/components/analytics/TopAnalytics";
+import { TimeFrameOptions } from "~/components/analytics/TimeFrameOptions";
 import { BottomAnalytics } from "~/components/analytics/BottomAnalytics";
-import { AnalyticsInit } from "~/lib/data/analytics";
-import { authenticate } from "~/shopify.server";
-import {
-  Await,
-  FetcherWithComponents,
-  useFetcher,
-  useLoaderData,
-  useNavigate,
-} from "@remix-run/react";
-import { handleAnalytics } from "~/lib/util/analytics";
-import { AnalyticsProps } from "~/lib/types/analytics";
+import { Await, useLoaderData, useLocation } from "@remix-run/react";
+import { TopAnalytics } from "~/components/analytics/TopAnalytics";
+import { HighlightStats } from "~/components/home/HighlightStats";
+import { EmptyState, Layout, Page } from "@shopify/polaris";
+import { analyticsLoader } from "./models/analytics.server";
 import { LoadingSkeleton } from "~/components/skeleton";
-import { SERVER_BASE_URL } from "~/lib/contants";
-import { ResponseProp } from "~/lib/types/shared";
+import { handleAnalytics } from "~/lib/util/analytics";
+import { Footer } from "~/components/layout/Footer";
+import { Suspense } from "react";
 
-export async function loader({ request }: LoaderFunctionArgs) {
-  const { session, admin } = await authenticate.admin(request);
-  const url = new URL(request.url);
-
-  // Extract the query parameter 'time_frame'
-  const timeFrame = url.searchParams.get("time_frame");
-  console.log({ timeFrame });
-
-  const shopRespons = await admin.graphql(
-    `query {
-      shop {
-        name
-        currencyCode
-        billingAddress {
-          address1
-          city
-          provinceCode
-          zip
-        }
-      }
-    }`,
-  );
-  const responseJson = await shopRespons.json();
-
-  const response = await fetch(
-    `${SERVER_BASE_URL}/store/${session.shop}/analytics?time_frame=${timeFrame ? timeFrame : "seven_days"}&timezone=America/New_York`,
-  );
-
-  const data = (await response.json()) as {
-    text: string;
-    analytics: AnalyticsProps[];
-  };
-
-  console.log(data);
-
-  return defer({
-    shop: session.shop,
-    analytics: data.analytics as AnalyticsProps[],
-  });
-}
+export const loader = analyticsLoader;
 
 export default function AnalyticsPage() {
   const data = useLoaderData<typeof loader>();
@@ -160,89 +94,3 @@ export default function AnalyticsPage() {
     </Page>
   );
 }
-
-function TimeFrameOptions() {
-  const [selected, setSelected] = useState<TimeFrameProps>("seven_days");
-  const navigate = useNavigate();
-  const [popoverActive, setPopoverActive] = useState(false);
-
-  const togglePopoverActive = useCallback(
-    () => setPopoverActive((popoverActive) => !popoverActive),
-    [],
-  );
-
-  const selectOption = useCallback((type: TimeFrameProps) => {
-    setSelected(type);
-    navigate(`/app/analytics?time_frame=${type}`);
-    setPopoverActive((popoverActive) => !popoverActive);
-  }, []);
-
-  const activator = (
-    <Button onClick={togglePopoverActive} disclosure>
-      Options
-    </Button>
-  );
-
-  return (
-    <div
-      style={{
-        height: "auto",
-        minWidth: "150px",
-        width: "150px",
-        display: "flex",
-        justifyContent: "end",
-      }}
-    >
-      <Popover
-        active={popoverActive}
-        activator={activator}
-        onClose={togglePopoverActive}
-        fluidContent={false}
-      >
-        <ActionList
-          actionRole="menuitem"
-          items={[
-            {
-              onAction: () => selectOption("seven_days"),
-              active: selected == "seven_days" && true,
-              content: "Last 7 Days",
-              suffix: selected == "seven_days" && (
-                <Icon source={CheckSmallIcon} />
-              ),
-            },
-            {
-              onAction: () => selectOption("thirty_days"),
-              active: selected == "thirty_days" && true,
-              content: "Last 30 Days",
-              suffix: selected == "thirty_days" && (
-                <Icon source={CheckSmallIcon} />
-              ),
-            },
-            {
-              onAction: () => selectOption("ninety_days"),
-              active: selected == "ninety_days" && true,
-              content: "Last 90 Days",
-              suffix: selected == "ninety_days" && (
-                <Icon source={CheckSmallIcon} />
-              ),
-            },
-            {
-              onAction: () => selectOption("twelve_months"),
-              active: selected == "twelve_months" && true,
-              content: "Last 12 Months",
-              suffix: selected == "twelve_months" && (
-                <Icon source={CheckSmallIcon} />
-              ),
-            },
-          ]}
-        />
-      </Popover>
-    </div>
-  );
-}
-
-export type TimeFrameProps =
-  | "seven_days"
-  | "thirty_days"
-  | "ninety_days"
-  | "twelve_months";

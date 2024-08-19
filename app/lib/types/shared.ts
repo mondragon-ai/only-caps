@@ -1,6 +1,6 @@
 export type ResponseProp = {
-  shop: string;
-  result: any;
+  shop: string | null;
+  result: any | null;
   error: null | string;
   status: number;
   type: string;

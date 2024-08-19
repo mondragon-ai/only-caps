@@ -24,12 +24,12 @@ import { Price } from "~/components/orders/Price";
 export const loader = orderLoader;
 export const action = orderAction;
 
+export type FetcherProp = FetcherWithComponents<ResponseProp>;
+
 export default function OrdersPage() {
   const shopify = useAppBridge();
   const data = useLoaderData<typeof orderLoader>();
-  const fetcher = useFetcher<
-    typeof orderAction
-  >() as FetcherWithComponents<ResponseProp>;
+  const fetcher = useFetcher<typeof orderAction>() as FetcherProp;
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<ErrorStateProps>(null);
 
