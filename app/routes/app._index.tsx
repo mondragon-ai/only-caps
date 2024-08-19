@@ -1,11 +1,3 @@
-import type { LoaderFunctionArgs } from "@remix-run/node";
-import {
-  Await,
-  defer,
-  useLoaderData,
-  useNavigate,
-  useNavigation,
-} from "@remix-run/react";
 import {
   Page,
   Layout,
@@ -13,7 +5,6 @@ import {
   SkeletonDisplayText,
   SkeletonBodyText,
 } from "@shopify/polaris";
-import { authenticate } from "../shopify.server";
 import {
   FeaturedProducts,
   HowTo,
@@ -23,50 +14,31 @@ import {
   RecommendedApps,
   HighlightStats,
 } from "~/components/home/index";
-import { Footer } from "~/components/layout/Footer";
-import { ShopifyMerchantInit } from "~/lib/data/merchant";
+import {
+  calculateOrderHighlights,
+  handleAnalytics,
+} from "~/lib/util/analytics";
 import { Suspense } from "react";
+import { Footer } from "~/components/layout/Footer";
+import { indexLoader } from "./models/index.server";
+import { AnalyticsProps } from "~/lib/types/analytics";
+import { capitalizeEachWord } from "~/lib/formatters/text";
+import { Await, useLoaderData, useNavigate } from "@remix-run/react";
 
-// Function to add a delay
-const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+export const loader = indexLoader;
 
-export async function loader({ request }: LoaderFunctionArgs) {
-  const admin = await authenticate.admin(request);
-
-  // Mock a delay of 3 seconds
-  await delay(3000);
-
-  const merchant = ShopifyMerchantInit;
-
-  // Return deferred data
-  return defer({
-    shop: admin.session.shop,
-    orders_summary: merchant.analytics.orders_summary,
-    highlight_stats: merchant.analytics.highlight_stats,
-  });
-}
-
-interface MerchantData {
+interface MerchantLoaderData {
   shop: string;
-  orders_summary: {
-    awaiting: number;
-    fulfilled: number;
-    failed: number;
-  };
-  highlight_stats: {
-    revenue: number;
-    sold: number;
-  };
+  analytics: AnalyticsProps[];
 }
 
 export default function Index() {
-  const data = useLoaderData<MerchantData>();
+  const data = useLoaderData<MerchantLoaderData>();
   const navigate = useNavigate();
-  const navigation = useNavigation();
 
   return (
     <Page
-      title={`Welcome Back, ${data.shop}`}
+      title={`Welcome Back, ${capitalizeEachWord(String(data.shop || "").split(".")[0])}`}
       subtitle="Dashboard"
       primaryAction={{
         content: "Create Mockup",
@@ -76,43 +48,50 @@ export default function Index() {
     >
       <Suspense fallback={<LoadingSkeleton />}>
         <Await resolve={data}>
-          {(loadedData) => (
-            <Layout>
-              <Layout.Section>
-                <OrderSummary
-                  orders={false}
-                  awaiting={loadedData.orders_summary.awaiting}
-                  fulfilled={loadedData.orders_summary.fulfilled}
-                  failed={loadedData.orders_summary.failed}
-                />
-              </Layout.Section>
-              <Layout.Section>
-                <HighlightStats
-                  sold={loadedData.highlight_stats.sold}
-                  revenue={loadedData.highlight_stats.revenue}
-                  analytics={false}
-                />
-              </Layout.Section>
-              <Layout.Section>
-                <HowTo />
-              </Layout.Section>
-              <Layout.Section>
-                <FeaturedProducts />
-              </Layout.Section>
-              <Layout.Section>
-                <ProFroma />
-              </Layout.Section>
-              <Layout.Section>
-                <VideoCard />
-              </Layout.Section>
-              <Layout.Section>
-                <RecommendedApps />
-              </Layout.Section>
-              <Layout.Section>
-                <Footer />
-              </Layout.Section>
-            </Layout>
-          )}
+          {(loadedData) => {
+            const analytics = handleAnalytics(loadedData.analytics as any[]);
+            const { awaiting, fulfilled } = calculateOrderHighlights(
+              loadedData.analytics as any[],
+            );
+
+            return (
+              <Layout>
+                <Layout.Section>
+                  <OrderSummary
+                    orders={false}
+                    awaiting={awaiting}
+                    fulfilled={fulfilled}
+                    failed={0}
+                  />
+                </Layout.Section>
+                <Layout.Section>
+                  <HighlightStats
+                    sold={analytics.total_items}
+                    revenue={analytics.total_revenue}
+                    analytics={false}
+                  />
+                </Layout.Section>
+                <Layout.Section>
+                  <HowTo />
+                </Layout.Section>
+                <Layout.Section>
+                  <FeaturedProducts />
+                </Layout.Section>
+                <Layout.Section>
+                  <ProFroma />
+                </Layout.Section>
+                <Layout.Section>
+                  <VideoCard />
+                </Layout.Section>
+                <Layout.Section>
+                  <RecommendedApps />
+                </Layout.Section>
+                <Layout.Section>
+                  <Footer />
+                </Layout.Section>
+              </Layout>
+            );
+          }}
         </Await>
       </Suspense>
     </Page>

@@ -67,11 +67,12 @@ const renderLineItem = (
   pod_li: PODLineItemsProps[],
   i: number,
 ) => {
+  const j = Math.abs(i - (pod_li.length - 1));
   const { title, product_id, sku, variant_title, price, quantity } = item;
   const media = (
     <Thumbnail
       source={
-        pod_li[i] && pod_li[i].image ? pod_li[i].image : PRODUCT_PLACEHODLER
+        pod_li[j] && pod_li[j].image ? pod_li[j].image : PRODUCT_PLACEHODLER
       }
       alt={`${sku}`}
     />
@@ -99,7 +100,7 @@ const renderLineItem = (
         </div>
         <div>
           <Text variant="bodyMd" fontWeight="bold" as="h3">
-            {`$${formatToMoney(Number(pod_li[i] && pod_li[i].cost))}`}
+            {`$${formatToMoney(Number(pod_li[j] && pod_li[j].cost))}`}
           </Text>
         </div>
         <div>

@@ -6,6 +6,7 @@
 export const capitalizeEachWord = (text: string): string => {
   return text
     .replaceAll("_", " ")
+    .replaceAll("-", " ")
     .split(" ")
     .map(
       (word) =>

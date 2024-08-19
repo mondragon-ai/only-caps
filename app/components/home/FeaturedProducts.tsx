@@ -33,7 +33,7 @@ export const ProductCard = ({ type, bestSeller }: ProductCardProps) => {
 
   return (
     <div
-      onClick={() => navigate(`/app/genorator/${type}`)}
+      onClick={() => navigate(`/app/generator/${type}`)}
       className={styles.productCard}
     >
       <div className={styles.mediaContainer}>

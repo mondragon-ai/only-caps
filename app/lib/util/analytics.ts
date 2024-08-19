@@ -12,7 +12,6 @@ import { OrderDocument } from "../types/orders";
  * Handles and aggregates analytics data.
  *
  * @param {AnalyticsProps[]} data - Array of analytics data.
- * @returns {object} Aggregated analytics data including total orders, items, revenue, charts, and top sellers/types.
  */
 export const handleAnalytics = (data: AnalyticsProps[]) => {
   let analytics = {
@@ -119,4 +118,26 @@ export const getAnalyticss = (orders: OrderDocument[]) => {
   );
   const failed = 0;
   return { wait, fulfilled, failed };
+};
+
+export const calculateOrderHighlights = (data: AnalyticsProps[]) => {
+  const order_higlights = {
+    awaiting: 0,
+    fulfilled: 0,
+  };
+
+  const orders = [] as OrderAnalyticsProps[];
+  for (const day of data) {
+    orders.push(...day.orders);
+  }
+
+  orders.map((o) => {
+    if (o.fulfilled_date === 0) {
+      order_higlights.awaiting += 1;
+    } else {
+      order_higlights.fulfilled += 1;
+    }
+  });
+
+  return order_higlights;
 };

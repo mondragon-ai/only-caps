@@ -5,3 +5,9 @@ export type ResponseProp = {
   status: number;
   type: string;
 };
+
+export type ErrorStateProps = {
+  title: string;
+  message: string;
+  type: "critical" | "warning";
+} | null;

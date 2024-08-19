@@ -4,14 +4,12 @@ import {
   FetcherWithComponents,
   useFetcher,
   useLoaderData,
-  useNavigate,
 } from "@remix-run/react";
 import { Box, Layout, Page, EmptyState, Banner } from "@shopify/polaris";
 import { Suspense, useCallback, useEffect, useState } from "react";
 import { Footer } from "~/components/layout/Footer";
 import { MockupList } from "~/components/mockups/MockupList";
 import { LoadingSkeleton } from "~/components/skeleton";
-import { mockup_init_state } from "~/lib/data/mockups";
 import { MockupDocument } from "~/lib/types/mockups";
 import { authenticate } from "~/shopify.server";
 import {
@@ -21,10 +19,7 @@ import {
 } from "./models/mockups.server";
 import { useAppBridge } from "@shopify/app-bridge-react";
 import { SERVER_BASE_URL } from "~/lib/contants";
-import {
-  bulkDeleteMockupCallback,
-  deleteMockupCallback,
-} from "~/services/mockups";
+import { bulkDeleteMockupCallback } from "~/services/mockups";
 import { ResponseProp } from "~/lib/types/shared";
 
 export async function loader({ request }: LoaderFunctionArgs) {

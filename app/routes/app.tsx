@@ -13,28 +13,24 @@ export const links = () => [{ rel: "stylesheet", href: polarisStyles }];
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const admin = await authenticate.admin(request);
+  const { session, billing } = admin;
 
-  const billingCheck = await admin.billing.require({
+  const billingCheck = await billing.require({
     plans: [USAGE_PLAN],
     isTest: true,
-    onFailure: async () => admin.billing.request({ plan: USAGE_PLAN }),
+    onFailure: async () => billing.request({ plan: USAGE_PLAN }),
   });
 
   const subscription = billingCheck.appSubscriptions[0];
-  console.log(`Shop is on ${subscription.name} (id ${subscription.id})`);
 
-  if (billingCheck.hasActivePayment) {
-    console.log({ hasActivePayment: true });
+  if (!billingCheck.hasActivePayment || !subscription) {
+    await fetch(
+      `${SERVER_BASE_URL}/store/${session.shop}/install/${session.accessToken}`,
+      {
+        method: "POST",
+      },
+    );
   }
-
-  const response = await fetch(
-    `${SERVER_BASE_URL}/store/${admin.session.shop}/install/${admin.session.accessToken}`,
-    {
-      method: "POST",
-    },
-  );
-
-  // console.log(response);
 
   return json({ apiKey: process.env.SHOPIFY_API_KEY || "" });
 };

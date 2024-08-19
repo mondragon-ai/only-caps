@@ -90,7 +90,7 @@ export default function AnalyticsPage() {
       <Suspense fallback={<LoadingSkeleton />}>
         <Await resolve={data}>
           {(loadedData) => {
-            const analytics = handleAnalytics(data.analytics as any[]);
+            const analytics = handleAnalytics(loadedData.analytics as any[]);
 
             const {
               top_sellers,

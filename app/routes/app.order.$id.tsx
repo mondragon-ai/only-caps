@@ -1,94 +1,53 @@
-import { Banner, BlockStack, Layout, Page } from "@shopify/polaris";
-import { Footer } from "~/components/layout/Footer";
-import { DeleteIcon } from "@shopify/polaris-icons";
-import { Order } from "~/components/orders/Order";
-import { Price } from "~/components/orders/Price";
-import { Customer } from "~/components/orders/Customer";
-import { OrderDetail } from "~/components/orders/OrderDetail";
-import { mock_order } from "~/lib/data/orders";
-import {
-  ActionFunctionArgs,
-  json,
-  LoaderFunctionArgs,
-  redirect,
-} from "@remix-run/node";
-import { authenticate } from "~/shopify.server";
 import {
   Await,
+  FetcherWithComponents,
   useFetcher,
   useLoaderData,
-  useNavigate,
 } from "@remix-run/react";
+import { Banner, BlockStack, Layout, Page } from "@shopify/polaris";
 import { Suspense, useCallback, useEffect, useState } from "react";
-import { LoadingSkeleton } from "~/components/skeleton";
-import { OrderDocument } from "~/lib/types/orders";
+import { ErrorStateProps, ResponseProp } from "~/lib/types/shared";
+import { OrderDetail } from "~/components/orders/OrderDetail";
 import { formatDateLong } from "~/lib/formatters/numbers";
 import { useAppBridge } from "@shopify/app-bridge-react";
-import { deleteOrder } from "./models/orders.server";
 import { deleteOrderCallback } from "~/services/orders";
-import { SERVER_BASE_URL } from "~/lib/contants";
-import { ResponseProp } from "~/lib/types/shared";
+import { LoadingSkeleton } from "~/components/skeleton";
+import { Customer } from "~/components/orders/Customer";
+import { orderLoader } from "./models/orders.server";
+import { orderAction } from "./models/orders.server";
+import { Footer } from "~/components/layout/Footer";
+import { DeleteIcon } from "@shopify/polaris-icons";
+import { OrderDocument } from "~/lib/types/orders";
+import { Order } from "~/components/orders/Order";
+import { Price } from "~/components/orders/Price";
 
-export async function loader({ request, params }: LoaderFunctionArgs) {
-  const admin = await authenticate.admin(request);
-
-  const response = await fetch(
-    `${SERVER_BASE_URL}/store/${admin.session.shop}/orders?`,
-  );
-
-  const data = (await response.json()) as {
-    text: string;
-    orders: OrderDocument[];
-  };
-
-  return json({
-    shop: admin.session.shop,
-    params: params,
-    order: data.orders[0] || null,
-    id: params.id,
-  });
-}
+export const loader = orderLoader;
+export const action = orderAction;
 
 export default function OrdersPage() {
-  const navigate = useNavigate();
   const shopify = useAppBridge();
-  const data = useLoaderData<typeof loader>();
-  const fetcher = useFetcher<typeof action>();
+  const data = useLoaderData<typeof orderLoader>();
+  const fetcher = useFetcher<
+    typeof orderAction
+  >() as FetcherWithComponents<ResponseProp>;
   const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<{
-    title: string;
-    message: string;
-    type: "critical" | "warning";
-  } | null>(null);
+  const [error, setError] = useState<ErrorStateProps>(null);
 
-  const mockup_response = fetcher.data;
+  const response = fetcher.data;
 
   const isLoading =
     ["loading", "submitting"].includes(fetcher.state) &&
     fetcher.formMethod === "POST";
 
   const handleDelete = useCallback(async () => {
-    await deleteOrderCallback(fetcher as any, setLoading);
-  }, [data, fetcher, navigate, setLoading, setError]);
+    await deleteOrderCallback(fetcher, setLoading);
+  }, [fetcher]);
 
   useEffect(() => {
-    if (mockup_response) {
-      if (mockup_response?.error) {
-        setError({
-          title:
-            mockup_response.type == "DELETE"
-              ? "Deleting Mockup"
-              : "Unknown Error",
-          message: mockup_response.error,
-          type: "critical",
-        });
-        setLoading(false);
-      } else {
-        shopify.toast.show("Order Deleted");
-        setLoading(false);
-      }
+    if (response) {
+      handleMockupResponse(response, shopify, setError, setLoading);
     }
-  }, [shopify, mockup_response, data]);
+  }, [shopify, response]);
 
   return (
     <Suspense fallback={<LoadingSkeleton />}>
@@ -151,48 +110,26 @@ export default function OrdersPage() {
 }
 
 /**
- * Action function to handle mockup creation.
- *
- * @param {any} args - The action function arguments.
- * @returns {Promise<Response>} The response containing the mockup data.
+ * Handle the response from the order API.
+ * @param {ResponseProp} response - The response from the API.
+ * @param {any} shopify - The Shopify app bridge instance.
+ * @param {Function} setError - The function to set the error state.
+ * @param {Function} setLoading - The function to set the loading state.
  */
-export async function action({ request, params }: ActionFunctionArgs) {
-  const { session } = await authenticate.admin(request);
-  const { shop } = session;
-
-  // Parsing the mockup data from the formData
-  const formData = await request.formData();
-  const type = formData.get("action");
-
-  if (!params.id) {
-    return json(
-      {
-        shop,
-        result: null,
-        error: "ID Not Found",
-        status: 400,
-        type: "DELETE",
-      } as ResponseProp,
-      { status: 400 },
-    );
+function handleMockupResponse(
+  response: ResponseProp,
+  shopify: any,
+  setError: Function,
+  setLoading: Function,
+) {
+  if (response.error) {
+    setError({
+      title: response.type === "DELETE" ? "Deleting Order" : "Unknown Error",
+      message: response.error,
+      type: "critical",
+    });
+  } else {
+    shopify.toast.show("Order Deleted");
   }
-
-  let response: ResponseProp;
-  switch (type) {
-    case "delete":
-      response = await deleteOrder(shop, params.id, false);
-      return redirect("/app/orders", 303);
-
-    default:
-      return json(
-        {
-          shop,
-          result: null,
-          error: "Server Error",
-          status: 400,
-          type: "DELETE",
-        } as ResponseProp,
-        { status: 400 },
-      );
-  }
+  setLoading(false);
 }
