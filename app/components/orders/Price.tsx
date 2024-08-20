@@ -12,7 +12,10 @@ import { formatToMoney } from "~/lib/formatters/numbers";
 import { OrderDocument, PODLineItemsProps } from "~/lib/types/orders";
 
 const calculateSubtotal = (lineItems: PODLineItemsProps[]) => {
-  return lineItems.reduce((prev, li) => prev + Number(li.cost), 0);
+  return lineItems.reduce(
+    (prev, li) => prev + Number(li.cost) * Number(li.quantity),
+    0,
+  );
 };
 
 const renderPriceRow = (title: string, description: string, amount: number) => (

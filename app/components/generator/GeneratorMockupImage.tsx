@@ -90,6 +90,8 @@ const UploadImage = ({
           const MAX_HEIGHT = 120;
           let { width, height } = img;
 
+          console.log({ width, height, first: width > height });
+          console.log({ height, MAX_HEIGHT, second: height > MAX_HEIGHT });
           if (width > height) {
             if (width > MAX_WIDTH) {
               height = Math.round((height * MAX_WIDTH) / width);
@@ -101,6 +103,7 @@ const UploadImage = ({
               height = MAX_HEIGHT;
             }
           }
+          console.log({ width, height, last: "LAST" });
 
           const canvas = document.createElement("canvas");
           canvas.width = width;

@@ -39,8 +39,6 @@ export const deleteOrder = async (
 
     const data = await response.json();
 
-    console.log({ data });
-
     return {
       shop,
       result: data,

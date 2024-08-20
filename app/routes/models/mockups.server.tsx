@@ -7,6 +7,7 @@ import {
 } from "@remix-run/node";
 import { SERVER_BASE_URL } from "~/lib/contants";
 import { MockupDocument } from "~/lib/types/mockups";
+import { Address, OrderDocument } from "~/lib/types/orders";
 import { ResponseProp } from "~/lib/types/shared";
 import { authenticate } from "~/shopify.server";
 
@@ -124,13 +125,20 @@ export async function mockupLoader({ request, params }: LoaderFunctionArgs) {
     const shopResponse = await admin.graphql(`
       query {
         shop {
-          name
+          contactEmail
+          ianaTimezone
           currencyCode
           billingAddress {
             address1
             city
+            province
             provinceCode
             zip
+            country
+            countryCodeV2
+            name
+            firstName
+            lastName
           }
         }
       }
@@ -155,6 +163,10 @@ export async function mockupLoader({ request, params }: LoaderFunctionArgs) {
       shop: session.shop,
       mockups: mockupData,
       id,
+      customer: {
+        email: String(shopData.data?.shop.contactEmail || ""),
+        name: String(shopData.data?.shop.name || ""),
+      },
       address: shopData.data?.shop.billingAddress,
     });
   } catch (error) {
@@ -162,6 +174,12 @@ export async function mockupLoader({ request, params }: LoaderFunctionArgs) {
     throw new Response("Failed to load mockup details", { status: 500 });
   }
 }
+
+type FormProps = {
+  color: string;
+  address: Address;
+  email: string;
+};
 
 /**
  *  * Action function to handle mockup operations (delete, create, wholesale).
@@ -197,14 +215,19 @@ export async function mockupAction({ request, params }: ActionFunctionArgs) {
           status: 201,
         } as ResponseProp);
       case "wholesale":
-        response = await purchaseWholesale(shop, payload);
-        return json({
+        response = await purchaseWholesale(
           shop,
-          result: null,
-          error: null,
-          type: "WHOLESALE",
-          status: 200,
-        } as ResponseProp);
+          payload as unknown as {
+            form: FormProps;
+            quantity: number;
+            product_id: string | undefined;
+          },
+        );
+        if (response.error) {
+          return json(response as ResponseProp);
+        } else {
+          return redirect("/app/orders", 302);
+        }
       default:
         return json(
           {
@@ -293,36 +316,72 @@ export const deleteMockup = async (
 
 export const purchaseWholesale = async (
   shop: string,
-  payload: any,
-): Promise<ResponseProp> => {
+  payload: {
+    form: FormProps;
+    quantity: number;
+    product_id: string | undefined;
+  },
+): Promise<ResponseProp | any> => {
   try {
-    // const response = await fetch('YOUR_API_ENDPOINT', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify(payload),
-    // });
-
-    if (payload) {
-      const data = payload;
-      return { shop, result: data, error: null, status: 200, type: "" };
-    } else {
+    if (!payload || !payload.product_id) {
       return {
         shop,
         result: null,
-        error: `Error: ${"Likley due to incompatable image format. Try again soon."}`,
-        status: 400,
-        type: "",
+        error: `Error: ${"Invalid payload or product not created"}`,
+        status: 409,
+        type: "wholesale",
       };
     }
+
+    const purchase_payload = {
+      product_id: payload.product_id,
+      quantity: payload.quantity,
+      color: payload.form.color,
+      customer: {
+        email: payload.form.email,
+        address: {
+          address1: payload.form.address.address1,
+          city: payload.form.address.city,
+          zip: payload.form.address.zip,
+          country: "United States",
+          country_code: "US",
+          first_name: payload.form.address.first_name,
+          last_name: payload.form.address.last_name,
+          name: `${payload.form.address.first_name} ${payload.form.address.last_name}`,
+          province: payload.form.address.province,
+          province_code: payload.form.address.province_code,
+        },
+      },
+    };
+
+    const response = await fetch(`${SERVER_BASE_URL}/store/${shop}/orders`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(purchase_payload),
+    });
+
+    const data = (await response.json()) as {
+      text: string;
+      error: null | string | boolean;
+      data: OrderDocument;
+    };
+    return {
+      shop,
+      result: data,
+      error: response.ok ? null : "Failed to create wholesale",
+      status: response.status,
+      type: "wholesale",
+    };
   } catch (error) {
+    console.error("Error making purchase:", error);
     return {
       shop,
       result: null,
-      error: `Server Error: Try again in a minute.`,
+      error: "Server error: Unable to making purchase",
       status: 500,
-      type: "",
+      type: "wholesale",
     };
   }
 };

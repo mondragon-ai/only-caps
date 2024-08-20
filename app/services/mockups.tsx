@@ -190,6 +190,12 @@ export const createProductMockupCallback = async (
   }
 };
 
+type FormProps = {
+  color: string;
+  address: any;
+  email: string;
+};
+
 /**
  * * Handles the purchase of a wholesale mockup.
  * @param {any} payload - The payload containing mockup and purchase details.
@@ -200,10 +206,9 @@ export const createProductMockupCallback = async (
  */
 export const purchaseWholesaleCallback = async (
   payload: {
-    address: Address;
+    form: FormProps;
     quantity: number;
-    color: string;
-    mockup_id: string | undefined;
+    product_id: string | undefined;
   },
   fetcher: FetcherWithComponents<ResponseProp>,
   setLoading: React.Dispatch<React.SetStateAction<boolean>>,
@@ -212,10 +217,14 @@ export const purchaseWholesaleCallback = async (
   setLoading(true);
 
   try {
-    validateWholesalePayload(payload, setError, setLoading);
+    const isValid = validateWholesalePayload(payload, setError, setLoading);
 
-    const formData = prepareFormData(payload, "wholesale");
-    fetcher.submit(formData, { method: "POST" });
+    if (!isValid) {
+      return;
+    } else {
+      const formData = prepareFormData(payload, "wholesale");
+      fetcher.submit(formData, { method: "POST" });
+    }
   } catch (error) {
     console.error("Error processing wholesale purchase:", error);
     setError({
@@ -234,27 +243,31 @@ export const purchaseWholesaleCallback = async (
  * @throws {Error} - Throws an error if validation fails.
  */
 const validateWholesalePayload = (
-  payload: any,
+  payload: {
+    form: FormProps;
+    quantity: number;
+    product_id: string | undefined;
+  },
   setError: React.Dispatch<React.SetStateAction<ErrorState | null>>,
   setLoading: React.Dispatch<React.SetStateAction<boolean>>,
 ) => {
-  if (!payload.mockup_id) {
+  if (!payload.product_id) {
     setError({
       title: "Wholesale Not Purchased",
       message: "Purchase could not be created.",
       type: "critical",
     });
     setLoading(false);
-    return;
+    return false;
   }
-  if (!payload.color || payload.color == "") {
+  if (!payload.form.color || payload.form.color == "") {
     setError({
       title: "Color Needed",
       message: "Please select a color.",
       type: "critical",
     });
     setLoading(false);
-    return;
+    return false;
   }
   if (!payload.quantity || payload.quantity == 0) {
     setError({
@@ -263,44 +276,69 @@ const validateWholesalePayload = (
       type: "critical",
     });
     setLoading(false);
-    return;
+    return false;
   }
-  if (!payload.address.address1 || payload.address.address1 == "") {
+  if (!payload.form.address.address1 || payload.form.address.address1 == "") {
     setError({
       title: "Address Required",
       message: "Street name is required.",
       type: "critical",
     });
     setLoading(false);
-    return;
+    return false;
   }
-  if (!payload.address.city || payload.address.city == "") {
+  if (!payload.form.address.city || payload.form.address.city == "") {
     setError({
       title: "Address Required",
       message: "City name is required.",
       type: "critical",
     });
     setLoading(false);
-    return;
+    return false;
   }
-  if (!payload.address.provinceCode || payload.address.provinceCode == "") {
+  if (
+    !payload.form.address.province_code ||
+    payload.form.address.province_code == ""
+  ) {
     setError({
       title: "Address Required",
       message: "State Code is required.",
       type: "critical",
     });
     setLoading(false);
-    return;
+    return false;
   }
-  if (!payload.address.zip || payload.address.zip == "") {
+  if (!payload.form.address.zip || payload.form.address.zip == "") {
     setError({
       title: "Address Required",
-      message: "Zip name is required.",
+      message: "Zip code is required.",
       type: "critical",
     });
     setLoading(false);
-    return;
+    return false;
   }
+  if (
+    !payload.form.address.first_name ||
+    payload.form.address.first_name == ""
+  ) {
+    setError({
+      title: "First Name Required",
+      message: "First Name is required.",
+      type: "critical",
+    });
+    setLoading(false);
+    return false;
+  }
+  if (!payload.form.email || payload.form.email == "") {
+    setError({
+      title: "Email Required",
+      message: "A contact email is required.",
+      type: "critical",
+    });
+    setLoading(false);
+    return false;
+  }
+  return true;
 };
 
 // ! ================================================================

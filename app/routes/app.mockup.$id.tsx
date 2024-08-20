@@ -32,6 +32,12 @@ export const action = mockupAction;
 
 export type FetcherProp = FetcherWithComponents<ResponseProp>;
 
+type FormProps = {
+  color: string;
+  address: any;
+  email: string;
+};
+
 export default function MockupPage() {
   const shopify = useAppBridge();
   const data = useLoaderData<typeof loader>();
@@ -58,14 +64,14 @@ export default function MockupPage() {
     );
   }, [data, fetcher, navigate, setLoading, setError]);
 
-  const address = data.address;
+  const { address, customer } = data;
   const handleWholesale = useCallback(
-    async (quantity: number, address: Address, color: string) => {
+    async (quantity: number, form: FormProps) => {
+      const mockup = data.mockups.mockups[0];
       const payload = {
-        address,
+        form,
         quantity,
-        color,
-        mockup_id: data.id,
+        product_id: `${mockup ? mockup.product_id : ""}`,
       };
       purchaseWholesaleCallback(payload, fetcher, setLoading, setError);
     },
@@ -150,7 +156,8 @@ export default function MockupPage() {
                     <WholeSale
                       mockup={mockup}
                       handleWholesale={handleWholesale}
-                      address={address}
+                      address={address as any}
+                      customer={customer}
                     />
                   </BlockStack>
                 </Layout.Section>

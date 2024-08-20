@@ -88,7 +88,7 @@ export const OrderList = ({ orders, handleDelete }: OrderListProps) => {
           <IndexTable.Cell>{statusBadge}</IndexTable.Cell>
           <IndexTable.Cell>
             <Text as="span" alignment="end" numeric>
-              {`$${formatToMoney(merchant_order.line_items.reduce((prev, curr) => prev + Number(curr.price), 0))}`}
+              {`$${formatToMoney(merchant_order.line_items.reduce((prev, curr) => prev + Number(curr.price) * Number(curr.quantity), 0))}`}
             </Text>
           </IndexTable.Cell>
           <IndexTable.Cell>{deliveryBadge}</IndexTable.Cell>

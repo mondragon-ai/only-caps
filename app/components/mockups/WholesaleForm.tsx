@@ -4,20 +4,23 @@ import {
   Text,
   Icon,
   TextField,
+  Select,
 } from "@shopify/polaris";
 import { Address } from "./WholeSale";
 import { MockupDocument } from "~/lib/types/mockups";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { formatToMoney } from "~/lib/formatters/numbers";
 import { CheckIcon } from "@shopify/polaris-icons";
-import { HatData } from "~/lib/data/mockups";
 import styles from "./Mockups.module.css";
 import { calculateDiscount } from "~/lib/util/mockups";
+import { states, states_obj } from "~/lib/data/wholesale";
 
 type FormProps = {
   color: string;
-  address: Address;
+  address: any;
+  email: string;
 };
+
 export const AddressForm = ({
   quantity,
   form,
@@ -28,6 +31,18 @@ export const AddressForm = ({
   setForm: React.Dispatch<React.SetStateAction<FormProps>>;
 }) => {
   const discount = calculateDiscount(quantity);
+
+  const handleSelectChange = useCallback((value: string, id: string) => {
+    // setSelected(value)
+    setForm((prev) => ({
+      ...prev,
+      address: {
+        ...prev.address,
+        province_code: value,
+        province: states_obj[value as string],
+      },
+    }));
+  }, []);
 
   return (
     <div>
@@ -54,6 +69,7 @@ export const AddressForm = ({
         <Text as="p" variant="bodyXs" tone="disabled">
           City
         </Text>
+
         <TextField
           placeholder={"Denver"}
           value={form.address.city || ""}
@@ -76,9 +92,16 @@ export const AddressForm = ({
             <Text as="p" variant="bodyXs" tone="disabled">
               State
             </Text>
-            <TextField
+
+            <Select
+              label=""
+              options={states}
+              onChange={handleSelectChange}
+              value={form.address.province_code || ""}
+            />
+            {/* <TextField
               placeholder={"CA"}
-              value={form.address.provinceCode || ""}
+              value={form.address.province || ""}
               onChange={(v) =>
                 setForm((prev) => ({
                   ...prev,
@@ -88,7 +111,7 @@ export const AddressForm = ({
               label=""
               type="text"
               autoComplete="off"
-            />
+            /> */}
           </BlockStack>
           <BlockStack gap="100">
             <Text as="p" variant="bodyXs" tone="disabled">
@@ -109,6 +132,65 @@ export const AddressForm = ({
             />
           </BlockStack>
         </InlineGrid>
+
+        <InlineGrid
+          columns={["twoThirds", "twoThirds"]}
+          alignItems="end"
+          gap="200"
+        >
+          <BlockStack gap="100">
+            <Text as="p" variant="bodyXs" tone="disabled">
+              First Name
+            </Text>
+            <TextField
+              placeholder={"Bigly"}
+              value={form.address.first_name || ""}
+              onChange={(v) =>
+                setForm((prev) => ({
+                  ...prev,
+                  address: { ...prev.address, first_name: v },
+                }))
+              }
+              label=""
+              type="text"
+              autoComplete="off"
+            />
+          </BlockStack>
+          <BlockStack gap="100">
+            <Text as="p" variant="bodyXs" tone="disabled">
+              Last Name
+            </Text>
+            <TextField
+              placeholder={"Bear"}
+              value={form.address.last_name || ""}
+              onChange={(v) =>
+                setForm((prev) => ({
+                  ...prev,
+                  address: { ...prev.address, last_name: v },
+                }))
+              }
+              label=""
+              type="text"
+              autoComplete="off"
+            />
+          </BlockStack>
+        </InlineGrid>
+        <Text as="p" variant="bodyXs" tone="disabled">
+          Contact Email
+        </Text>
+        <TextField
+          placeholder={"BigBear@gobigly.com"}
+          value={form.email || ""}
+          onChange={(v) =>
+            setForm((prev) => ({
+              ...prev,
+              email: v,
+            }))
+          }
+          label=""
+          type="text"
+          autoComplete="off"
+        />
         <Text as="p" variant="bodyXs" tone="magic">
           Discounted Price: {`$${formatToMoney(discount)}`}. Total Quantity:{" "}
           {`${quantity}`}
@@ -125,15 +207,12 @@ interface ColorsProps {
 }
 
 export const GeneratorColors = ({ mockup, setForm, form }: ColorsProps) => {
-  const handleColorChange = useCallback(
-    (color: string) => {
-      setForm((prevForm) => ({
-        ...prevForm,
-        colors: color,
-      }));
-    },
-    [mockup],
-  );
+  const handleColorChange = (color: string) => {
+    setForm((prevForm) => ({
+      ...prevForm,
+      color: color,
+    }));
+  };
 
   return (
     <BlockStack gap="500">
@@ -161,19 +240,21 @@ export const renderSingleColorSwatch = (
   form: FormProps,
   color: string,
   handleColorChange: (color: string) => void,
-) => (
-  <div
-    className={styles.color}
-    key={color}
-    onClick={() => handleColorChange(color)}
-  >
-    <div style={{ background: color }} className={styles.singleColorSwatch}>
-      {form.color.includes(color) ? (
-        <Icon source={CheckIcon} tone="subdued" />
-      ) : null}
+) => {
+  return (
+    <div
+      className={styles.color}
+      key={color}
+      onClick={() => handleColorChange(color)}
+    >
+      <div style={{ background: color }} className={styles.singleColorSwatch}>
+        {form.color.includes(color) ? (
+          <Icon source={CheckIcon} tone="subdued" />
+        ) : null}
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 export const renderDualColorSwatch = (
   form: FormProps,
