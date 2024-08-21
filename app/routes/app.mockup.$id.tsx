@@ -218,7 +218,7 @@ function handleMockupResponse(
     });
   } else {
     shopify.toast.show(
-      response.type === "PURCHASE"
+      response.type === "CREATE"
         ? "Product Created"
         : response.type === "WHOLESALE"
           ? "Wholesale Purchased"

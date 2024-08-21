@@ -87,9 +87,16 @@
   height: 36px;
   width: 50%;
   border-radius: 0;
+}
+
+.dualColorHalf:first-child {
+  height: 36px;
+  width: 50%;
+  border-radius: 0;
   border-top-left-radius: 18px;
   border-bottom-left-radius: 18px;
 }
+
 .dualColorHalf:last-child {
   border-top-right-radius: 18px;
   border-bottom-right-radius: 18px;

@@ -1,8 +1,9 @@
-import { BlockStack, Card, InlineGrid, Text } from "@shopify/polaris";
+import { Badge, BlockStack, Card, InlineGrid, Text } from "@shopify/polaris";
 import styles from "./Mockups.module.css";
 import { HatData } from "~/lib/data/mockups";
 import { MockupTypes } from "~/lib/types/mockups";
 import { useNavigate } from "@remix-run/react";
+import { capitalizeEachWord } from "~/lib/formatters/text";
 
 export const CatalogCard = ({
   type = "foam_trucker",
@@ -46,6 +47,9 @@ export const CatalogCard = ({
         className={styles.catalogCardWrapper}
         onClick={() => navigate(`/app/generator/${type}`)}
       >
+        <div style={{ position: "absolute", top: 10, left: 10, zIndex: 100 }}>
+          <Badge tone="success">{capitalizeEachWord(hat.type)}</Badge>
+        </div>
         <img src={hat.image} alt={hat.name} height={200} width={200} />
         <div className={styles.cardContent}>
           <InlineGrid

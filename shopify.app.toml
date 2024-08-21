@@ -3,7 +3,7 @@
 client_id = "e062b2afbda40feef1c957b971c7b292"
 name = "Only Caps"
 handle = "only-caps"
-application_url = "https://recreation-nut-str-exclude.trycloudflare.com"
+application_url = "https://hardly-insurance-pee-intl.trycloudflare.com"
 embedded = true
 
 [build]
@@ -17,9 +17,9 @@ scopes = "read_assigned_fulfillment_orders,read_merchant_managed_fulfillment_ord
 
 [auth]
 redirect_urls = [
-  "https://recreation-nut-str-exclude.trycloudflare.com/auth/callback",
-  "https://recreation-nut-str-exclude.trycloudflare.com/auth/shopify/callback",
-  "https://recreation-nut-str-exclude.trycloudflare.com/api/auth/callback"
+  "https://hardly-insurance-pee-intl.trycloudflare.com/auth/callback",
+  "https://hardly-insurance-pee-intl.trycloudflare.com/auth/shopify/callback",
+  "https://hardly-insurance-pee-intl.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]

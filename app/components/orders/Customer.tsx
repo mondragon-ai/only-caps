@@ -33,7 +33,7 @@ const RenderCustomerInfo = ({ order }: { order: OrderDocument }) => (
     </Text>
     <div className={styles.info}>
       <Text as="p" variant="bodyMd" tone="disabled">
-        {order.shopify_order_payload.shipping_address.first_name}
+        {`${order.shopify_order_payload.shipping_address.first_name} ${order.shopify_order_payload.shipping_address.last_name}`}
       </Text>
       <Text as="p" variant="bodyMd" tone="disabled">
         External ID:

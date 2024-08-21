@@ -51,9 +51,9 @@ export const Order = ({ order }: { order: OrderDocument }) => {
         <Box borderColor="border" borderWidth="025" borderRadius="100">
           <ResourceList
             resourceName={{ singular: "Line Item", plural: "Line Items" }}
-            items={order.merchant_order.line_items}
+            items={order.pod_line_items}
             renderItem={(items, id, i) =>
-              renderLineItem(items, order.pod_line_items, i)
+              renderLineItem(items, order.merchant_order.line_items, i)
             }
           />
         </Box>
@@ -63,25 +63,26 @@ export const Order = ({ order }: { order: OrderDocument }) => {
 };
 
 const renderLineItem = (
-  item: LineItem,
-  pod_li: PODLineItemsProps[],
+  pod_li: PODLineItemsProps,
+  item: LineItem[],
   i: number,
 ) => {
-  const j = Math.abs(i - (pod_li.length - 1));
-  const { title, product_id, sku, variant_title, price, quantity } = item;
+  const line_item =
+    item.filter((li) => {
+      console.log(li);
+      return li.variant_id === pod_li.merchant_variants_id;
+    })[0] || item[0];
+  console.log(line_item);
+  const { sku, title, variant_title, quantity, price } = line_item;
+  const { variant_id, image, cost } = pod_li;
+
   const media = (
-    <Thumbnail
-      source={
-        pod_li[j] && pod_li[j].image ? pod_li[j].image : PRODUCT_PLACEHODLER
-      }
-      alt={`${sku}`}
-    />
+    <Thumbnail source={image || PRODUCT_PLACEHODLER} alt={`${sku}`} />
   );
-  // const vars = variants.map((v) => v).join(" / ");
 
   return (
     <ResourceItem
-      id={String(product_id)}
+      id={String(variant_id)}
       url={"#"}
       media={media}
       accessibilityLabel={`View details for ${title}`}
@@ -100,7 +101,7 @@ const renderLineItem = (
         </div>
         <div>
           <Text variant="bodyMd" fontWeight="bold" as="h3">
-            {`$${formatToMoney(Number(pod_li[j] && pod_li[j].cost))}`}
+            {`$${formatToMoney(Number(cost))}`}
           </Text>
         </div>
         <div>

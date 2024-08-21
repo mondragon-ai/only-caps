@@ -43,6 +43,7 @@ export const TopAnalytics = ({
           <BlockStack gap="600">
             {Object.entries(top_sellers)
               .sort(([, a], [, b]) => b - a)
+              .slice(0, 5)
               .map(([ts, amount], i) => {
                 return (
                   <TopSeller

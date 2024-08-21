@@ -53,14 +53,7 @@ export const HatData: HatDataType = {
   },
   flat_bill: {
     type: "flat_bill",
-    colors: [
-      "Black",
-      "Khaki/Brown",
-      "Grey",
-      "#8A8D92/Black",
-      "#37424E/Black",
-      "#37424E/Black",
-    ],
+    colors: ["Black", "Khaki/Brown", "Grey", "#8A8D92/Black", "#37424E/Black"],
     sample:
       "https://cdn.shopify.com/s/files/1/0783/4802/6165/files/1133_7_panel_blk_hat.png?v=1724262385",
     delivery: "🇺🇸 Estimated Delivery 7 - 10 days",
@@ -281,7 +274,6 @@ export const MockupTypeList = [
   "low_profile",
   "foam_trucker",
   "flat_bill",
-  "structured",
 ];
 
 export const mockup_list: any[] = [

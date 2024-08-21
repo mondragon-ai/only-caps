@@ -16,6 +16,7 @@ import {
 } from "recharts";
 import { COLORS } from "~/lib/data/analytics";
 import { formatNumber } from "~/lib/formatters/numbers";
+import { capitalizeEachWord } from "~/lib/formatters/text";
 import { DataProps, TopSellerProps } from "~/lib/types/analytics";
 
 type CustomToolTipPrps = {
@@ -155,7 +156,7 @@ const renderActiveShape = (props: any) => {
   return (
     <g>
       <text x={cx} y={cy} dy={8} textAnchor="middle" fill={fill}>
-        {payload.name}
+        {capitalizeEachWord(payload.name)}
       </text>
       <text x={cx} y={cy + 13} dy={10} textAnchor="middle" fill={fill}>
         {`${(percent * 100).toFixed(2)}%`}
