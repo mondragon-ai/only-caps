@@ -12,10 +12,10 @@ export const FeaturedProducts = () => {
           Featured Products
         </Text>
         <InlineGrid gap="400" columns={{ xs: 1, sm: 2, md: 3, lg: 4, xl: 4 }}>
-          <ProductCard type="foam_trucker" bestSeller />
-          <ProductCard type="mid_profile" />
+          <ProductCard type="low_profile" bestSeller />
+          <ProductCard type="retro_trucker" />
           <ProductCard type="flat_bill" />
-          <ProductCard type="snapback" bestSeller />
+          <ProductCard type="high_profile" bestSeller />
         </InlineGrid>
       </BlockStack>
     </Card>

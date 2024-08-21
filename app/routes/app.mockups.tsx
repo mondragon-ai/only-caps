@@ -13,6 +13,7 @@ import {
   FetcherWithComponents,
   useFetcher,
   useLoaderData,
+  useNavigate,
 } from "@remix-run/react";
 
 export const loader = mockupsLoader;
@@ -22,6 +23,7 @@ export type FetcherProp = FetcherWithComponents<ResponseProp>;
 
 export default function MockupsPage() {
   const shopify = useAppBridge();
+  const navigate = useNavigate();
   const data = useLoaderData<typeof loader>();
   const fetcher = useFetcher<typeof action>() as FetcherProp;
   const [loading, setLoading] = useState<boolean>(false);
@@ -52,7 +54,15 @@ export default function MockupsPage() {
   }, [shopify, response]);
 
   return (
-    <Page title="Your Mockups" subtitle="Mockups Generated With OnlyCaps">
+    <Page
+      title="Your Mockups"
+      subtitle="Mockups Generated With OnlyCaps"
+      primaryAction={{
+        content: "Create Mockup",
+        disabled: false,
+        onAction: () => navigate("/app/catalog"),
+      }}
+    >
       <Suspense fallback={<LoadingSkeleton />}>
         <Await resolve={data}>
           {(loadedData) => {

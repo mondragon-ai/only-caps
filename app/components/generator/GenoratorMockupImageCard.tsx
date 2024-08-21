@@ -21,7 +21,7 @@ export const GeneratorMockupImageCard = ({
           className={styles.mainImg}
           height="500"
           width="500"
-          style={{ position: "absolute", top: "50px" }}
+          style={{ position: "absolute", top: 0 }}
         />
         <DraggableResizableImage mockup={mockup} setMockup={setMockup} />
       </div>
@@ -36,6 +36,12 @@ const DraggableResizableImage = ({
   mockup: MockupDocument;
   setMockup: React.Dispatch<React.SetStateAction<GeneratorStateProps>>;
 }) => {
+  const padding_top =
+    mockup.type == "high_profile"
+      ? "0px"
+      : mockup.type == "flat_bill"
+        ? "20px"
+        : "-50px";
   const handleDragStop = useCallback(
     (e: any, d: DraggableData) => {
       setMockup((prevMockup) => ({
@@ -74,7 +80,7 @@ const DraggableResizableImage = ({
   );
 
   return (
-    <div className={styles.mockupWrapper}>
+    <div className={styles.mockupWrapper} style={{ top: padding_top }}>
       <Rnd
         bounds="parent"
         size={{

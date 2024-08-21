@@ -240,8 +240,13 @@
   position: relative;
   height: 200px;
   width: 400px;
+  min-height: 200px;
+  min-width: 400px;
+  max-height: 200px;
+  max-width: 400px;
   border: 1px dotted red;
   border-radius: 10px;
+  top: -50px;
 }
 
 .mockupImage {
