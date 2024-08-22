@@ -31,11 +31,12 @@ export const CatalogCard = ({
         </div>
       );
     }
+    console.log({ type, color });
     return (
       <div className={styles.colorCatalog} key={color}>
         <div
           className={styles.singleColorSwatchCatalog}
-          style={{ background: color }}
+          style={{ background: color == "Royal" ? "#3F66D9" : color }}
         ></div>
       </div>
     );

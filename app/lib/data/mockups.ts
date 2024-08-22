@@ -16,6 +16,10 @@ export const HatData: HatDataType = {
     delivery: "🇺🇸 Estimated Delivery 7 - 10 days",
     price: "$15.99 - $16.99",
     cost: 15.99,
+    quarter_turns: {
+      ["Black"]:
+        "https://cdn.shopify.com/s/files/1/0783/4802/6165/files/6025_black.webp?v=1724342047",
+    },
   },
   retro_trucker: {
     title: "Retro Trucker Hat",
@@ -50,6 +54,24 @@ export const HatData: HatDataType = {
     material: "50% Cotton, 50% Nylon",
     image:
       "https://cdn.shopify.com/s/files/1/0783/4802/6165/files/6030.png?v=1724247501",
+    quarter_turns: {
+      ["Black"]:
+        "https://cdn.shopify.com/s/files/1/0783/4802/6165/files/6030-black.webp?v=1724342463",
+      ["White"]:
+        "https://cdn.shopify.com/s/files/1/0783/4802/6165/files/6030-white.webp?v=1724342463",
+      ["Olive"]:
+        "https://cdn.shopify.com/s/files/1/0783/4802/6165/files/6030-olive.webp?v=1724342463",
+      ["Red"]:
+        "https://cdn.shopify.com/s/files/1/0783/4802/6165/files/6030-red.webp?v=1724342462",
+      ["Royal"]:
+        "https://cdn.shopify.com/s/files/1/0783/4802/6165/files/6030-royal.webp?v=1724342463",
+      "Grey/Black":
+        "https://cdn.shopify.com/s/files/1/0783/4802/6165/files/6030-grey_black.webp?v=1724342462",
+      "Black/White":
+        "https://cdn.shopify.com/s/files/1/0783/4802/6165/files/6030-black_white.webp?v=1724342462",
+      "Khaki/Brown":
+        "https://cdn.shopify.com/s/files/1/0783/4802/6165/files/6030-khaki_brown.webp?v=1724342463",
+    },
   },
   flat_bill: {
     type: "flat_bill",
@@ -75,6 +97,16 @@ export const HatData: HatDataType = {
     image:
       "https://cdn.shopify.com/s/files/1/0783/4802/6165/files/1133.png?v=1724247501",
     title: "High Profile Trucker",
+    quarter_turns: {
+      ["Black"]:
+        "https://cdn.shopify.com/s/files/1/0783/4802/6165/files/205-black.webp?v=1724275084",
+      "Khaki/Brown":
+        "https://cdn.shopify.com/s/files/1/0783/4802/6165/files/1133-khaki_khaki_brown.webp?v=1724342040",
+      "#8A8D92/Black":
+        "https://cdn.shopify.com/s/files/1/0783/4802/6165/files/1133-hgrey_black_black.webp?v=1724342040",
+      "#37424E/Black":
+        "https://cdn.shopify.com/s/files/1/0783/4802/6165/files/1133-charcoal_white_black.webp?v=1724342039",
+    },
   },
   high_profile: {
     type: "high_profile",
@@ -112,6 +144,26 @@ export const HatData: HatDataType = {
     image:
       "https://cdn.shopify.com/s/files/1/0783/4802/6165/files/6032.png?v=1724247501",
     title: "Structured Rope Hat",
+    quarter_turns: {
+      ["Black"]:
+        "https://cdn.shopify.com/s/files/1/0783/4802/6165/files/6032-black.webp?v=1724342467",
+      "Gray/#37424E":
+        "https://cdn.shopify.com/s/files/1/0783/4802/6165/files/6032-grey_charcoal.webp?v=1724342467",
+      ["#575B45"]:
+        "https://cdn.shopify.com/s/files/1/0783/4802/6165/files/6032-loden.webp?v=1724342467",
+      "White/Red":
+        "https://cdn.shopify.com/s/files/1/0783/4802/6165/files/6032-whire_red.webp?v=1724342467",
+      "#F6AA79/Maroon":
+        "https://cdn.shopify.com/s/files/1/0783/4802/6165/files/6032-peach_maroon.webp?v=1724342467",
+      "Navy/White":
+        "https://cdn.shopify.com/s/files/1/0783/4802/6165/files/6032-navy_white.webp?v=1724342467",
+      "#2B6B3F/White":
+        "https://cdn.shopify.com/s/files/1/0783/4802/6165/files/6032-forest_white.webp?v=1724342467",
+      "Red/Black":
+        "https://cdn.shopify.com/s/files/1/0783/4802/6165/files/6032-red_black.webp?v=1724342467",
+      "#82C8E4/Black":
+        "https://cdn.shopify.com/s/files/1/0783/4802/6165/files/6032-sky_black.webp?v=1724342467",
+    },
   },
   low_profile: {
     title: "Classic Dad Hat",
@@ -136,6 +188,10 @@ export const HatData: HatDataType = {
     material: "Cotton",
     image:
       "https://cdn.shopify.com/s/files/1/0783/4802/6165/files/205.png?v=1724247501",
+    quarter_turns: {
+      ["Black"]:
+        "https://cdn.shopify.com/s/files/1/0783/4802/6165/files/205-black.webp?v=1724275084",
+    },
   },
   mid_profile: {
     name: "5 Panel Mid Profile Structured Polyester Cap",
@@ -170,6 +226,22 @@ export const HatData: HatDataType = {
     image:
       "https://cdn.shopify.com/s/files/1/0783/4802/6165/files/6038.png?v=1724247501",
     title: "Mid Profile Trucker",
+    quarter_turns: {
+      ["Black"]:
+        "https://cdn.shopify.com/s/files/1/0783/4802/6165/files/6038-black.webp?v=1724342787",
+      ["Navy"]:
+        "https://cdn.shopify.com/s/files/1/0783/4802/6165/files/6038-navy.webp?v=1724342787",
+      ["Khaki"]:
+        "https://cdn.shopify.com/s/files/1/0783/4802/6165/files/6038-khaki.webp?v=1724342787",
+      ["Red"]:
+        "https://cdn.shopify.com/s/files/1/0783/4802/6165/files/6038-red.webp?v=1724342787",
+      ["White"]:
+        "https://cdn.shopify.com/s/files/1/0783/4802/6165/files/6038-white.webp?v=1724342786",
+      "#37424E":
+        "https://cdn.shopify.com/s/files/1/0783/4802/6165/files/6038-charcoal.webp?v=1724342787",
+      // "#2B6B3F",
+      // "#8A8D92",
+    },
   },
   structured: {
     name: "Bigly Performance Hats",
@@ -191,6 +263,10 @@ export const HatData: HatDataType = {
     delivery: "🇺🇸 Estimated Delivery 7 - 10 days",
     price: "$30.00 - $35.00",
     cost: 16.99,
+    quarter_turns: {
+      ["Black"]:
+        "https://cdn.shopify.com/s/files/1/0783/4802/6165/files/205-black.webp?v=1724275084",
+    },
   },
   dad: {
     name: "",
@@ -212,6 +288,10 @@ export const HatData: HatDataType = {
     delivery: "🇺🇸 Estimated Delivery 7 - 10 days",
     price: "$30.00 - $35.00",
     cost: 16.99,
+    quarter_turns: {
+      ["Black"]:
+        "https://cdn.shopify.com/s/files/1/0783/4802/6165/files/205-black.webp?v=1724275084",
+    },
   },
   trucker: {
     name: "",
@@ -228,6 +308,10 @@ export const HatData: HatDataType = {
     delivery: "🇺🇸 Estimated Delivery 7 - 10 days",
     price: "$30.00 - $35.00",
     cost: 16.99,
+    quarter_turns: {
+      ["Black"]:
+        "https://cdn.shopify.com/s/files/1/0783/4802/6165/files/205-black.webp?v=1724275084",
+    },
   },
   snapback: {
     name: "",
@@ -244,6 +328,10 @@ export const HatData: HatDataType = {
     delivery: "🇺🇸 Estimated Delivery 7 - 10 days",
     price: "$30.00 - $35.00",
     cost: 16.99,
+    quarter_turns: {
+      ["Black"]:
+        "https://cdn.shopify.com/s/files/1/0783/4802/6165/files/205-black.webp?v=1724275084",
+    },
   },
   relaxed: {
     name: "",
@@ -265,6 +353,10 @@ export const HatData: HatDataType = {
     delivery: "🇺🇸 Estimated Delivery 7 - 10 days",
     price: "$30.00 - $35.00",
     cost: 16.99,
+    quarter_turns: {
+      ["Black"]:
+        "https://cdn.shopify.com/s/files/1/0783/4802/6165/files/205-black.webp?v=1724275084",
+    },
   },
 };
 
@@ -274,6 +366,7 @@ export const MockupTypeList = [
   "low_profile",
   "foam_trucker",
   "flat_bill",
+  "retro_trucker",
 ];
 
 export const mockup_list: any[] = [

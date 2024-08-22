@@ -94,6 +94,9 @@ export type HatDetail = {
   price: string;
   title: string;
   cost: number;
+  quarter_turns: {
+    [key: string]: string;
+  };
 };
 
 export type HatDataType = {

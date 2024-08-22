@@ -33,10 +33,33 @@ export const GeneratorColors = ({ mockup, setMockup }: ColorsProps) => {
         </div>
         <div className={styles.colorGrid}>
           {HatData[mockup.type].colors &&
-            HatData[mockup.type].colors.map((color) =>
-              color.includes("/")
-                ? renderDualColorSwatch(mockup, color, handleColorChange)
-                : renderSingleColorSwatch(mockup, color, handleColorChange),
+            HatData[mockup.type].colors.map(
+              (color) => {
+                if (!HatData[mockup.type].quarter_turns[color]) {
+                  return null;
+                }
+                return (
+                  <div
+                    className={styles.color}
+                    key={color}
+                    onClick={() => handleColorChange(color)}
+                  >
+                    {mockup.colors.includes(color) ? (
+                      <div style={{ position: "absolute" }}>
+                        <Icon source={CheckIcon} tone="subdued" />
+                      </div>
+                    ) : null}
+                    <img
+                      style={{ height: "25px", width: "25px" }}
+                      src={HatData[mockup.type].quarter_turns[color]}
+                      alt={color}
+                    />
+                  </div>
+                );
+              },
+              // color.includes("/")
+              //   ? renderDualColorSwatch(mockup, color, handleColorChange)
+              //   : renderSingleColorSwatch(mockup, color, handleColorChange),
             )}
         </div>
       </BlockStack>
