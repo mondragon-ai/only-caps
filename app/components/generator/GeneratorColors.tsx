@@ -40,6 +40,14 @@ export const GeneratorColors = ({ mockup, setMockup }: ColorsProps) => {
                 }
                 return (
                   <div
+                    style={{
+                      border: mockup.colors.includes(color)
+                        ? "1.5px solid black"
+                        : "",
+                      boxShadow: mockup.colors.includes(color)
+                        ? "0px 0px 3px 1px #b0b0b0"
+                        : "",
+                    }}
                     className={styles.color}
                     key={color}
                     onClick={() => handleColorChange(color)}

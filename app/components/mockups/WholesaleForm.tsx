@@ -232,7 +232,17 @@ export const GeneratorColors = ({ mockup, setForm, form }: ColorsProps) => {
               return null;
             }
             return (
-              <div className={styles.color} key={color}>
+              <div
+                style={{
+                  border: form.color == color ? "1.5px solid black" : "",
+                  boxShadow: form.color.includes(color)
+                    ? "0px 0px 3px 1px #b0b0b0"
+                    : "",
+                }}
+                onClick={() => handleColorChange(color)}
+                className={styles.color}
+                key={color}
+              >
                 <img
                   style={{ height: "25px", width: "25px" }}
                   src={HatData[mockup.type].quarter_turns[color]}

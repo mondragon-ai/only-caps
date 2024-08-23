@@ -33,6 +33,7 @@ type WholeSaleProps = {
     name: string;
     email: string;
   };
+  isLoading: boolean;
 };
 
 type FormProps = {
@@ -46,6 +47,7 @@ export const WholeSale = ({
   handleWholesale,
   address,
   customer,
+  isLoading,
 }: WholeSaleProps) => {
   const [isConfirmed, setConfirm] = useState<boolean>(false);
   const [quantity, setQuantity] = useState(25);
@@ -105,6 +107,8 @@ export const WholeSale = ({
             <BlockStack gap="100">
               <GeneratorColors mockup={mockup} form={form} setForm={setForm} />
               <Button
+                disabled={isLoading}
+                loading={isLoading}
                 tone="success"
                 onClick={() => handleWholesale(quantity, form)}
               >

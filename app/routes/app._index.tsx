@@ -33,12 +33,12 @@ interface MerchantLoaderData {
 }
 
 export default function Index() {
-  const data = useLoaderData<MerchantLoaderData>();
+  // const data = useLoaderData<MerchantLoaderData>();
   const navigate = useNavigate();
 
   return (
     <Page
-      title={`Welcome Back, ${capitalizeEachWord(String(data.shop || "").split(".")[0])}`}
+      title={`Welcome Back, ${capitalizeEachWord(String("").split(".")[0])}`}
       subtitle="Dashboard"
       primaryAction={{
         content: "Create Mockup",
@@ -47,29 +47,25 @@ export default function Index() {
       }}
     >
       <Suspense fallback={<LoadingSkeleton />}>
-        <Await resolve={data}>
+        <Await resolve={[]}>
           {(loadedData) => {
-            const analytics = handleAnalytics(loadedData.analytics as any[]);
-            const { awaiting, fulfilled } = calculateOrderHighlights(
-              loadedData.analytics as any[],
-            );
+            // const analytics = handleAnalytics(loadedData.analytics as any[]);
+            // const { awaiting, fulfilled } = calculateOrderHighlights(
+            //   loadedData.analytics as any[],
+            // );
 
             return (
               <Layout>
                 <Layout.Section>
                   <OrderSummary
                     orders={false}
-                    awaiting={awaiting}
-                    fulfilled={fulfilled}
+                    awaiting={0}
+                    fulfilled={0}
                     failed={0}
                   />
                 </Layout.Section>
                 <Layout.Section>
-                  <HighlightStats
-                    sold={analytics.total_items}
-                    revenue={analytics.total_revenue}
-                    analytics={false}
-                  />
+                  <HighlightStats sold={0} revenue={0} analytics={false} />
                 </Layout.Section>
                 <Layout.Section>
                   <HowTo />

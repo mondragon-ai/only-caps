@@ -3,7 +3,7 @@
 client_id = "e062b2afbda40feef1c957b971c7b292"
 name = "Only Caps"
 handle = "only-caps"
-application_url = "https://submission-dolls-pole-ferrari.trycloudflare.com"
+application_url = "https://hopkins-satisfy-building-compiler.trycloudflare.com"
 embedded = true
 
 [build]
@@ -17,9 +17,9 @@ scopes = "read_assigned_fulfillment_orders,read_merchant_managed_fulfillment_ord
 
 [auth]
 redirect_urls = [
-  "https://submission-dolls-pole-ferrari.trycloudflare.com/auth/callback",
-  "https://submission-dolls-pole-ferrari.trycloudflare.com/auth/shopify/callback",
-  "https://submission-dolls-pole-ferrari.trycloudflare.com/api/auth/callback"
+  "https://hopkins-satisfy-building-compiler.trycloudflare.com/auth/callback",
+  "https://hopkins-satisfy-building-compiler.trycloudflare.com/auth/shopify/callback",
+  "https://hopkins-satisfy-building-compiler.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]

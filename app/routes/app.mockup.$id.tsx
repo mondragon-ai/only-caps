@@ -46,6 +46,7 @@ export default function MockupPage() {
   const [loading, setLoading] = useState<boolean>(false);
   const [complete, setComplete] = useState<boolean>(false);
   const [error, setError] = useState<ErrorStateProps>(null);
+  const [image, setImage] = useState<string>("");
 
   const isLoading =
     ["loading", "submitting"].includes(fetcher.state) &&
@@ -152,8 +153,9 @@ export default function MockupPage() {
                 </Layout.Section>
                 <Layout.Section>
                   <BlockStack gap={"500"}>
-                    <MockupImageCard mockup={mockup} />
+                    <MockupImageCard mockup={mockup} image={image} />
                     <WholeSale
+                      isLoading={isLoading}
                       mockup={mockup}
                       handleWholesale={handleWholesale}
                       address={address as any}
@@ -164,7 +166,7 @@ export default function MockupPage() {
 
                 <Layout.Section variant="oneThird">
                   <BlockStack gap={"500"}>
-                    <Colors mockup={mockup} />
+                    <Colors mockup={mockup} setImage={setImage} image={image} />
                     <MockupImage mockup={mockup} />
                     <Dimensions mockup={mockup} />
                     <MockupDetail mockup={mockup} />

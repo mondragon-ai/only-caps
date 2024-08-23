@@ -5,6 +5,8 @@ import { HatData } from "~/lib/data/mockups";
 
 interface ColorsProps {
   mockup: MockupDocument;
+  setImage: React.Dispatch<React.SetStateAction<string>>;
+  image: string;
 }
 
 export const renderSingleColorSwatch = (color: string) => (
@@ -34,7 +36,7 @@ export const renderDualColorSwatch = (color: string) => {
   );
 };
 
-export const Colors = ({ mockup }: ColorsProps) => {
+export const Colors = ({ mockup, setImage, image }: ColorsProps) => {
   return (
     <Card>
       <BlockStack gap="500">
@@ -50,7 +52,17 @@ export const Colors = ({ mockup }: ColorsProps) => {
                 return null;
               }
               return (
-                <div className={styles.color} key={color}>
+                <div
+                  style={{
+                    border: image == color ? "1.5px solid black" : "",
+                    boxShadow: image.includes(color)
+                      ? "0px 0px 3px 1px #b0b0b0"
+                      : "",
+                  }}
+                  className={styles.color}
+                  key={color}
+                  onClick={() => setImage(color)}
+                >
                   <img
                     style={{ height: "25px", width: "25px" }}
                     src={HatData[mockup.type].quarter_turns[color]}

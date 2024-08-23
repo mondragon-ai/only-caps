@@ -122,7 +122,7 @@ export const HatData: HatDataType = {
       "#82C8E4/Black",
     ],
     sample:
-      "https://cdn.shopify.com/s/files/1/0783/4802/6165/files/6032_5panel_rope_hat_blk.png?v=1724262135",
+      "https://cdn.shopify.com/s/files/1/0783/4802/6165/files/6032_37424E_greycharcoal.png?v=1724420914",
     delivery: "🇺🇸 Estimated Delivery 7 - 10 days",
     price: "$19.99 - $20.99",
     cost: 19.99,
@@ -142,7 +142,7 @@ export const HatData: HatDataType = {
       "The Classic Rope Cap is a soft-structured 5 panel cap featuring a flip-up buckram, braid at the base of the crown and a retro flat bill style. It has an integrated cotton sweatband, ventilation eyelets and is finished with a plastic snap closure for a perfect fit.",
     material: "Cotton/Poly Blend",
     image:
-      "https://cdn.shopify.com/s/files/1/0783/4802/6165/files/6032.png?v=1724247501",
+      "https://cdn.shopify.com/s/files/1/0783/4802/6165/files/6032-navy_white.webp?v=1724342467",
     title: "Structured Rope Hat",
     quarter_turns: {
       ["Black"]:
@@ -168,7 +168,7 @@ export const HatData: HatDataType = {
   low_profile: {
     title: "Classic Dad Hat",
     sample:
-      "https://cdn.shopify.com/s/files/1/0783/4802/6165/files/205-BLK_dad_hat.png?v=1724261761",
+      "https://cdn.shopify.com/s/files/1/0783/4802/6165/files/205_black.png?v=1724439942",
     delivery: "🇺🇸 Estimated Delivery 7 - 10 days",
     price: "$17.99 - $18.99",
     cost: 17.99,
@@ -187,7 +187,7 @@ export const HatData: HatDataType = {
       "The Relaxed Washed Cotton Cap is a low profile, 6-panel relaxed cap with stitched eyelets for added style. It's finished off with a pre-curved bill and a sliding buckle closure to ensure the perfect fit.",
     material: "Cotton",
     image:
-      "https://cdn.shopify.com/s/files/1/0783/4802/6165/files/205.png?v=1724247501",
+      "https://cdn.shopify.com/s/files/1/0783/4802/6165/files/205-black.webp?v=1724275084",
     quarter_turns: {
       ["Black"]:
         "https://cdn.shopify.com/s/files/1/0783/4802/6165/files/205-black.webp?v=1724275084",
@@ -197,7 +197,7 @@ export const HatData: HatDataType = {
     name: "5 Panel Mid Profile Structured Polyester Cap",
     type: "mid_profile",
     sample:
-      "https://cdn.shopify.com/s/files/1/0783/4802/6165/files/6038_v2_adjust.png?v=1724261462",
+      "https://cdn.shopify.com/s/files/1/0783/4802/6165/files/6038_white.png?v=1724440701",
     delivery: "🇺🇸 Estimated Delivery 7 - 10 days",
     price: "$17.99 - $18.99",
     cost: 17.99,
