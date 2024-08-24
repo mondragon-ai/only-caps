@@ -3,7 +3,7 @@
 client_id = "e062b2afbda40feef1c957b971c7b292"
 name = "Only Caps"
 handle = "only-caps"
-application_url = "https://competitive-switching-turn-patrol.trycloudflare.com/"
+application_url = "https://only-caps-prod-7ec944292734.herokuapp.com/"
 embedded = true
 
 [build]
@@ -17,9 +17,9 @@ scopes = "read_assigned_fulfillment_orders,read_merchant_managed_fulfillment_ord
 
 [auth]
 redirect_urls = [
-  "https://competitive-switching-turn-patrol.trycloudflare.com/auth/callback",
-  "https://competitive-switching-turn-patrol.trycloudflare.com/auth/shopify/callback",
-  "https://competitive-switching-turn-patrol.trycloudflare.com/api/auth/callback"
+  "https://only-caps-prod-7ec944292734.herokuapp.com/auth/callback",
+  "https://only-caps-prod-7ec944292734.herokuapp.com/auth/shopify/callback",
+  "https://only-caps-prod-7ec944292734.herokuapp.com/api/auth/callback"
 ]
 
 [webhooks]
@@ -39,7 +39,7 @@ api_version = "2024-07"
 
   [[webhooks.subscriptions]]
   topics = [ "app_subscriptions/update", "app/uninstalled" ]
-  uri = "https://adjustments-incorporated-even-heated.trycloudflare.com/webhooks"
+  uri = "https://only-caps-prod-7ec944292734.herokuapp.com/webhooks"
 
 [pos]
 embedded = false
