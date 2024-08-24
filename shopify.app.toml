@@ -3,7 +3,7 @@
 client_id = "e062b2afbda40feef1c957b971c7b292"
 name = "Only Caps"
 handle = "only-caps"
-application_url = "https://hopkins-satisfy-building-compiler.trycloudflare.com"
+application_url = "https://competitive-switching-turn-patrol.trycloudflare.com/"
 embedded = true
 
 [build]
@@ -17,17 +17,29 @@ scopes = "read_assigned_fulfillment_orders,read_merchant_managed_fulfillment_ord
 
 [auth]
 redirect_urls = [
-  "https://hopkins-satisfy-building-compiler.trycloudflare.com/auth/callback",
-  "https://hopkins-satisfy-building-compiler.trycloudflare.com/auth/shopify/callback",
-  "https://hopkins-satisfy-building-compiler.trycloudflare.com/api/auth/callback"
+  "https://competitive-switching-turn-patrol.trycloudflare.com/auth/callback",
+  "https://competitive-switching-turn-patrol.trycloudflare.com/auth/shopify/callback",
+  "https://competitive-switching-turn-patrol.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]
 api_version = "2024-07"
 
   [[webhooks.subscriptions]]
+  uri = "https://us-central1-only-caps.cloudfunctions.net/gdpr/redact/customer"
+  compliance_topics = [ "customers/redact" ]
+
+  [[webhooks.subscriptions]]
+  uri = "https://us-central1-only-caps.cloudfunctions.net/gdpr/redact/store"
+  compliance_topics = [ "shop/redact" ]
+
+  [[webhooks.subscriptions]]
+  uri = "https://us-central1-only-caps.cloudfunctions.net/gdpr/request/customer"
+  compliance_topics = [ "customers/data_request" ]
+
+  [[webhooks.subscriptions]]
   topics = [ "app_subscriptions/update", "app/uninstalled" ]
-  uri = "/webhooks"
+  uri = "https://adjustments-incorporated-even-heated.trycloudflare.com/webhooks"
 
 [pos]
 embedded = false
