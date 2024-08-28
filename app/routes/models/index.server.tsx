@@ -27,7 +27,6 @@ export async function indexLoader({
       text: string;
       analytics: AnalyticsProps[];
     };
-
     return {
       shop: admin.session.shop,
       analytics: data.analytics,

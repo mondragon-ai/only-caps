@@ -23,14 +23,15 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
   const subscription = billingCheck.appSubscriptions[0];
 
-  if (!billingCheck.hasActivePayment || !subscription) {
-    await fetch(
-      `${SERVER_BASE_URL}/store/${session.shop}/install/${session.accessToken}`,
-      {
-        method: "POST",
-      },
-    );
-  }
+  // if (!billingCheck.hasActivePayment || !subscription) {
+  // }
+
+  await fetch(
+    `${SERVER_BASE_URL}/store/${session.shop}/install/${session.accessToken}`,
+    {
+      method: "POST",
+    },
+  );
 
   return json({ apiKey: process.env.SHOPIFY_API_KEY || "" });
 };

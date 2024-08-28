@@ -40,6 +40,13 @@ export async function analyticsLoader({ request }: LoaderFunctionArgs) {
       throw new Error("Failed to fetch analytics data");
     }
 
+    if (response.status == 201) {
+      return defer({
+        shop: session.shop,
+        analytics: [],
+      });
+    }
+
     const data = (await response.json()) as {
       text: string;
       analytics: AnalyticsProps[];

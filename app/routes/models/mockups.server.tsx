@@ -34,7 +34,10 @@ export async function mockupsLoader({ request }: LoaderFunctionArgs): Promise<
     );
 
     if (!response.ok) {
-      throw new Error("Failed to fetch mockups");
+      return json({
+        shop: admin.session.shop,
+        mockups: [],
+      });
     }
 
     const data = (await response.json()) as { mockups: MockupDocument[] };
@@ -151,7 +154,16 @@ export async function mockupLoader({ request, params }: LoaderFunctionArgs) {
     );
 
     if (!mockupResponse.ok) {
-      throw new Error("Failed to fetch mockup data");
+      return json({
+        shop: session.shop,
+        mockups: [],
+        id,
+        customer: {
+          email: String(shopData.data?.shop.contactEmail || ""),
+          name: String(shopData.data?.shop.name || ""),
+        },
+        address: shopData.data?.shop.billingAddress,
+      });
     }
 
     const mockupData = (await mockupResponse.json()) as {

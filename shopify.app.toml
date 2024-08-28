@@ -39,7 +39,7 @@ api_version = "2024-07"
 
   [[webhooks.subscriptions]]
   topics = [ "app_subscriptions/update", "app/uninstalled" ]
-  uri = "https://only-caps-prod-7ec944292734.herokuapp.com/webhooks"
+  uri = "/webhooks"
 
 [pos]
 embedded = false

@@ -95,8 +95,12 @@ export async function ordersLoader({ request }: LoaderFunctionArgs) {
       `${SERVER_BASE_URL}/store/${admin.session.shop}/orders`,
     );
 
+    console.log({ response });
     if (!response.ok) {
-      throw new Error("Failed to fetch orders");
+      return json({
+        shop: admin.session.shop,
+        orders: [],
+      });
     }
 
     const data = (await response.json()) as {
