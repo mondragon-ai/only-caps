@@ -44,13 +44,13 @@ export const GeneratorMockupImage = ({
           <Text as="h4" variant="headingMd">
             Add Your Design
           </Text>
-          <Button
+          {/* <Button
             icon={toUpload ? WandIcon : UploadIcon}
             size="micro"
             onClick={() => setToUpload(!toUpload)}
           >
             {toUpload ? "Generate Image" : "Upload Image"}
-          </Button>
+          </Button> */}
         </InlineGrid>
 
         {mockup.design_url ? (
