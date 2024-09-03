@@ -31,7 +31,6 @@ export const CatalogCard = ({
         </div>
       );
     }
-    console.log({ type, color });
     return (
       <div className={styles.colorCatalog} key={color}>
         <div

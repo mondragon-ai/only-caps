@@ -92,6 +92,7 @@ export async function ordersLoader({ request }: LoaderFunctionArgs) {
 
   try {
     const response = await fetch(
+      //admin.session.shop
       `${SERVER_BASE_URL}/store/${admin.session.shop}/orders`,
     );
 
@@ -198,6 +199,7 @@ export async function orderLoader({ request, params }: LoaderFunctionArgs) {
 
   try {
     const response = await fetch(
+      //admin.session.shop
       `${SERVER_BASE_URL}/store/${admin.session.shop}/orders?id=${params.id}`,
     );
 

@@ -77,9 +77,15 @@ export const WholeSale = ({
           Wholesale Options
         </Text>
         <Text as="p" variant="bodyMd" tone="subdued">
-          Calculate wholesale price options for bulk orders and receive a
-          discount. This option is perfect for big events or those wanting to
-          receive a special deal
+          Calculate wholesale pricing for bulk orders and receive exclusive
+          discounts. This feature is ideal for large events or merchants looking
+          to stock items in-store at a reduced cost.
+        </Text>
+
+        <Text as="p" variant="bodyMd" tone="subdued">
+          Use this tool to purchase newly generated mockup items in bulk, taking
+          advantage of the wholesale discount for in-store stock or other
+          business needs.
         </Text>
         {!isConfirmed ? (
           <InlineGrid

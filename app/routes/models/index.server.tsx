@@ -19,8 +19,11 @@ export async function indexLoader({
       `${SERVER_BASE_URL}/store/${admin.session.shop}/analytics?time_frame=thirty_days&timezone=America/New_York`,
     );
 
-    if (!response.ok) {
-      throw new Error("Failed to fetch analytics data");
+    if (response.status == 201) {
+      return {
+        shop: admin.session.shop,
+        analytics: [],
+      };
     }
 
     const data = (await response.json()) as {

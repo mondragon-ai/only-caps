@@ -33,7 +33,7 @@ interface MerchantLoaderData {
 }
 
 export default function Index() {
-  // const data = useLoaderData<MerchantLoaderData>();
+  const data = useLoaderData<MerchantLoaderData>();
   const navigate = useNavigate();
 
   return (
@@ -47,25 +47,29 @@ export default function Index() {
       }}
     >
       <Suspense fallback={<LoadingSkeleton />}>
-        <Await resolve={[]}>
+        <Await resolve={data}>
           {(loadedData) => {
-            // const analytics = handleAnalytics(loadedData.analytics as any[]);
-            // const { awaiting, fulfilled } = calculateOrderHighlights(
-            //   loadedData.analytics as any[],
-            // );
+            const analytics = handleAnalytics(loadedData.analytics as any[]);
+            const { awaiting, fulfilled } = calculateOrderHighlights(
+              loadedData.analytics as any[],
+            );
 
             return (
               <Layout>
                 <Layout.Section>
                   <OrderSummary
                     orders={false}
-                    awaiting={0}
-                    fulfilled={0}
+                    awaiting={awaiting}
+                    fulfilled={fulfilled}
                     failed={0}
                   />
                 </Layout.Section>
                 <Layout.Section>
-                  <HighlightStats sold={0} revenue={0} analytics={false} />
+                  <HighlightStats
+                    sold={analytics.total_items}
+                    revenue={analytics.total_revenue}
+                    analytics={false}
+                  />
                 </Layout.Section>
                 <Layout.Section>
                   <HowTo />
@@ -76,9 +80,7 @@ export default function Index() {
                 <Layout.Section>
                   <ProFroma />
                 </Layout.Section>
-                <Layout.Section>
-                  <VideoCard />
-                </Layout.Section>
+                <Layout.Section>{/* <VideoCard /> */}</Layout.Section>
                 <Layout.Section>
                   <RecommendedApps />
                 </Layout.Section>

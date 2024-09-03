@@ -30,6 +30,7 @@ export async function mockupsLoader({ request }: LoaderFunctionArgs): Promise<
 
   try {
     const response = await fetch(
+      //admin.session.shop
       `${SERVER_BASE_URL}/store/${admin.session.shop}/mockups`,
     );
 
@@ -149,6 +150,7 @@ export async function mockupLoader({ request, params }: LoaderFunctionArgs) {
 
     const shopData = await shopResponse.json();
 
+    //admin.session.shop
     const mockupResponse = await fetch(
       `${SERVER_BASE_URL}/store/${session.shop}/mockups?id=${id}`,
     );
@@ -156,7 +158,10 @@ export async function mockupLoader({ request, params }: LoaderFunctionArgs) {
     if (!mockupResponse.ok) {
       return json({
         shop: session.shop,
-        mockups: [],
+        mockups: {
+          text: "",
+          mockups: [] as MockupDocument[],
+        },
         id,
         customer: {
           email: String(shopData.data?.shop.contactEmail || ""),

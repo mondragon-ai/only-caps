@@ -16,19 +16,43 @@ import { formatToMoney } from "~/lib/formatters/numbers";
 import { LineItem, OrderDocument, PODLineItemsProps } from "~/lib/types/orders";
 import { PRODUCT_PLACEHODLER } from "~/lib/contants";
 
+const renderBadge = (status: string, delivery: string) => {
+  const statusBadge =
+    status === "ACTIVE" ? (
+      <Badge tone="success" progress="complete">
+        Complete
+      </Badge>
+    ) : (
+      <Badge tone="magic" progress="partiallyComplete">
+        Processing
+      </Badge>
+    );
+
+  const deliveryBadge =
+    delivery !== "" ? (
+      <Badge tone="success" progress="complete">
+        Delivered
+      </Badge>
+    ) : (
+      <Badge tone="critical" progress="incomplete">
+        No Tracking
+      </Badge>
+    );
+
+  return { statusBadge, deliveryBadge };
+};
+
 export const Order = ({ order }: { order: OrderDocument }) => {
+  const { statusBadge, deliveryBadge } = renderBadge(
+    order.fulfillment_status,
+    order.tracking_number,
+  );
   return (
     <Card padding="400">
       <BlockStack gap="300">
         <div className={styles.orderBadges}>
-          <div style={{ marginRight: "0.5rem" }}>
-            <Badge tone={"success"} icon={OrderFulfilledIcon}>
-              Fulilled
-            </Badge>
-          </div>
-          <Badge tone={"success"} icon={ShippingLabelIcon}>
-            Delivered
-          </Badge>
+          <div style={{ marginRight: "0.5rem" }}>{statusBadge}</div>
+          {deliveryBadge}
         </div>
         <Text as="h4" variant="headingMd">
           Order

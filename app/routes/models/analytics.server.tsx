@@ -36,10 +36,6 @@ export async function analyticsLoader({ request }: LoaderFunctionArgs) {
       `${SERVER_BASE_URL}/store/${session.shop}/analytics?time_frame=${timeFrame}&timezone=America/New_York`,
     );
 
-    if (!response.ok) {
-      throw new Error("Failed to fetch analytics data");
-    }
-
     if (response.status == 201) {
       return defer({
         shop: session.shop,
