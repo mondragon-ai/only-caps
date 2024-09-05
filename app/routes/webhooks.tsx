@@ -15,12 +15,12 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   // The topics handled here should be declared in the shopify.app.toml.
   // More info: https://shopify.dev/docs/apps/build/cli-for-apps/app-configuration
   switch (webhook.topic) {
-    case "APP_UNINSTALLED":
+    case "APP_UNINSTALLED": {
       if (webhook.session) {
         await db.session.deleteMany({ where: { shop: webhook.shop } });
       }
-
-      break;
+      throw new Response("App Uninstlled", { status: 200 });
+    }
     case "APP_SUBSCRIPTIONS_UPDATE": {
       if (webhook.session) {
         console.log(webhook.webhookId);
@@ -45,24 +45,27 @@ export const action = async ({ request }: ActionFunctionArgs) => {
         console.log({ response });
       }
 
-      break;
+      throw new Response("Subscription Updated", { status: 200 });
     }
     case "FULFILLMENT_ORDERS_CANCELLATION_REQUEST_SUBMITTED": {
-      console.log(webhook.webhookId);
-      console.log(webhook.session);
-      const payload = webhook.payload as FulfillmentOrderDataProps;
-      console.log(payload);
-      const response = await fetch(
-        `${SERVER_BASE_URL}/fulfillment/${webhook.session.shop}/cancel`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
+      if (webhook.session) {
+        console.log(webhook.webhookId);
+        console.log(webhook.session);
+        const payload = webhook.payload as FulfillmentOrderDataProps;
+        console.log(payload);
+        const response = await fetch(
+          `${SERVER_BASE_URL}/fulfillment/${webhook.session.shop}/cancel`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ payload }),
           },
-          body: JSON.stringify(payload),
-        },
-      );
-      console.log({ response });
+        );
+        console.log({ response });
+        throw new Response("Cancelled Fulfillment", { status: 200 });
+      }
     }
     case "CUSTOMERS_DATA_REQUEST":
     case "CUSTOMERS_REDACT":
