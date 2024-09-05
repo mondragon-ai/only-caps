@@ -3,7 +3,7 @@
 client_id = "e062b2afbda40feef1c957b971c7b292"
 name = "Only Caps"
 handle = "only-caps"
-application_url = "https://dance-phase-prozac-drawing.trycloudflare.com"
+application_url = "https://exists-civilian-breast-wma.trycloudflare.com"
 embedded = true
 
 [build]
@@ -17,9 +17,9 @@ scopes = "read_assigned_fulfillment_orders,read_locations,read_merchant_managed_
 
 [auth]
 redirect_urls = [
-  "https://dance-phase-prozac-drawing.trycloudflare.com/auth/callback",
-  "https://dance-phase-prozac-drawing.trycloudflare.com/auth/shopify/callback",
-  "https://dance-phase-prozac-drawing.trycloudflare.com/api/auth/callback"
+  "https://exists-civilian-breast-wma.trycloudflare.com/auth/callback",
+  "https://exists-civilian-breast-wma.trycloudflare.com/auth/shopify/callback",
+  "https://exists-civilian-breast-wma.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]

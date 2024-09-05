@@ -32,21 +32,36 @@ export const useOrderData = (orderId: string) => {
     const fetchData = async () => {
       try {
         const productData = await fetchOrderData(orderId);
-        const fulfillment_orders =
-          productData.data.order.fulfillmentOrders.nodes.filter(
-            (ful) => ful.assignedLocation.name === "OnlyCaps Fulfilmment",
+
+        // Check if productData and its nested properties exist
+        const fulfillmentOrders =
+          productData?.data?.order?.fulfillmentOrders?.nodes;
+
+        if (!fulfillmentOrders || fulfillmentOrders.length === 0) {
+          setError("Fulfillment for this location unavailable");
+        } else {
+          // Filter for OnlyCaps Fulfillment
+          const onlyCapsFulfillment = fulfillmentOrders.filter(
+            (ful) => ful.assignedLocation?.name === "OnlyCaps Fulfillment",
           );
-        if (!fulfillment_orders[0]) {
-          throw new Error("OnlyCaps Fulfillment order doesn't exist.");
+
+          if (onlyCapsFulfillment.length === 0) {
+            setError("Fulfillment for this location unavailable");
+          } else {
+            const lastFulfillment =
+              onlyCapsFulfillment[onlyCapsFulfillment.length - 1];
+
+            setFulfillment({
+              id: lastFulfillment?.id || "",
+              status: lastFulfillment?.status || "UNSUBMITTED",
+              request_status: lastFulfillment?.requestStatus || "UNSUBMITTED",
+            });
+          }
         }
-        setFulfillment({
-          id: fulfillment_orders[fulfillment_orders.length - 1].id,
-          status: fulfillment_orders[fulfillment_orders.length - 1].status,
-          request_status:
-            fulfillment_orders[fulfillment_orders.length - 1].requestStatus,
-        });
       } catch (err) {
-        setError(err.message);
+        setError(
+          err.message || "An error occurred while fetching fulfillment data",
+        );
       } finally {
         setLoading(false);
       }

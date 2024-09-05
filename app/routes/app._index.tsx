@@ -38,7 +38,7 @@ export default function Index() {
 
   return (
     <Page
-      title={`Welcome Back, ${capitalizeEachWord(String("").split(".")[0])}`}
+      title={`Welcome Back, ${capitalizeEachWord(String(data.shop).split(".")[0])}`}
       subtitle="Dashboard"
       primaryAction={{
         content: "Create Mockup",

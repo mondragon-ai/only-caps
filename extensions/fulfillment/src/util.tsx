@@ -12,26 +12,26 @@ export const fetchOrderData = async (
 ): Promise<OrderResponseType> => {
   const getOrderData = {
     query: `
-        query order($id: ID!) {
-          order(id: $id) {
-            id
-            name
-            fulfillmentOrders(first: 10) {
-              nodes {
-                id
-                status
-                requestStatus
-                assignedLocation {
-                  name
-                  location {
-                    id
-                  }
+      query order($id: ID!) {
+        order(id: $id) {
+          id
+          name
+          fulfillmentOrders(first: 10) {
+            nodes {
+              id
+              status
+              requestStatus
+              assignedLocation {
+                name
+                location {
+                  id
                 }
               }
             }
           }
         }
-      `,
+      }
+    `,
     variables: { id: orderId },
   };
 
@@ -43,55 +43,87 @@ export const fetchOrderData = async (
   return res;
 };
 
-export const requestFulfillment = (fulfillmentId: string) => {
-  const requestOrder = {
+/**
+ * Request fulfilment from Shopify GraphQL API
+ * @param {string} fulfillmentId - The ID of the order to fetch.
+ * @returns {Promise<OrderResponseType>} - The fetched order data.
+ * @throws Will throw an error if the network request fails or if the response is not ok.
+ */
+export const requestFulfillment = async (fulfillmentId: string) => {
+  const requestFulfillment = {
     query: `
-        mutation fulfillmentOrderSubmitFulfillmentRequest($id: ID!) {
-          fulfillmentOrderSubmitFulfillmentRequest(id: $id) {
-            originalFulfillmentOrder {
-              id
-              status
-              requestStatus
-            }
-            submittedFulfillmentOrder {
-              id
-              status
-              requestStatus
-            }
-            unsubmittedFulfillmentOrder {
-              id
-              status
-              requestStatus
-            }
-            userErrors {
-              field
-              message
-            }
+      mutation fulfillmentOrderSubmitFulfillmentRequest($id: ID!) {
+        fulfillmentOrderSubmitFulfillmentRequest(id: $id) {
+          originalFulfillmentOrder {
+            id
+            status
+            requestStatus
+          }
+          submittedFulfillmentOrder {
+            id
+            status
+            requestStatus
+          }
+          unsubmittedFulfillmentOrder {
+            id
+            status
+            requestStatus
+          }
+          userErrors {
+            field
+            message
           }
         }
-      `,
+      }
+    `,
     variables: {
       id: fulfillmentId,
     },
   };
 
-  const res = fetch("shopify:admin/api/graphql.json", {
-    method: "POST",
-    body: JSON.stringify(requestOrder),
-  });
+  const res = (await makeGraphQLQuery(
+    requestFulfillment.query,
+    requestFulfillment.variables,
+  )) as OrderResponseType;
 
-  console.log(res);
+  return res;
+};
 
-  return (
-    <Button
-      onPress={() => {
-        console.log("....Requesting");
-        close();
-      }}
-    >
-      Request Fulfillment
-    </Button>
-  );
+/**
+ * Accept fulfilment request from Shopify GraphQL API
+ * @param {string} fulfillmentId - The ID of the order to fetch.
+ * @returns {Promise<OrderResponseType>} - The fetched order data.
+ * @throws Will throw an error if the network request fails or if the response is not ok.
+ */
+export const acceptRequestFulfillment = async (fulfillmentId: string) => {
+  const acceptFulfillment = {
+    query: `
+      mutation fulfillmentOrderAcceptFulfillmentRequest($id: ID!, $message: String) {
+        fulfillmentOrderAcceptFulfillmentRequest(id: $id, message: $message) {
+          fulfillmentOrder {
+            id
+            status
+            requestStatus
+          }
+          userErrors {
+            field
+            message
+          }
+        }
+      }
+    `,
+    variables: {
+      id: fulfillmentId,
+      message: "Cancelled",
+    },
+  };
+
+  const res = (await makeGraphQLQuery(
+    acceptFulfillment.query,
+    acceptFulfillment.variables,
+  )) as OrderResponseType;
+
+  return res;
 };
 
 async function makeGraphQLQuery(query: string, variables: any) {
