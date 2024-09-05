@@ -3,7 +3,7 @@
 client_id = "e062b2afbda40feef1c957b971c7b292"
 name = "Only Caps"
 handle = "only-caps"
-application_url = "https://only-caps-prod-7ec944292734.herokuapp.com/"
+application_url = "https://only-caps-prod-7ec944292734.herokuapp.com"
 embedded = true
 
 [build]
