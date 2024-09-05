@@ -11,7 +11,6 @@ import {
   Thumbnail,
 } from "@shopify/polaris";
 import styles from "./Orders.module.css";
-import { OrderFulfilledIcon, ShippingLabelIcon } from "@shopify/polaris-icons";
 import { formatToMoney } from "~/lib/formatters/numbers";
 import { LineItem, OrderDocument, PODLineItemsProps } from "~/lib/types/orders";
 import { PRODUCT_PLACEHODLER } from "~/lib/contants";
@@ -21,6 +20,10 @@ const renderBadge = (status: string, delivery: string) => {
     status === "ACTIVE" ? (
       <Badge tone="success" progress="complete">
         Complete
+      </Badge>
+    ) : status === "CANCELLED" ? (
+      <Badge tone="critical" progress="incomplete">
+        Cancelled
       </Badge>
     ) : (
       <Badge tone="magic" progress="partiallyComplete">

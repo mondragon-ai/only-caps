@@ -31,6 +31,10 @@ export const OrderList = ({ orders, handleDelete }: OrderListProps) => {
         <Badge tone="success" progress="complete">
           Complete
         </Badge>
+      ) : status === "CANCELLED" ? (
+        <Badge tone="critical" progress="incomplete">
+          Cancelled
+        </Badge>
       ) : (
         <Badge tone="magic" progress="partiallyComplete">
           Processing
