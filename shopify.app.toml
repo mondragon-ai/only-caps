@@ -38,7 +38,7 @@ api_version = "2024-07"
   compliance_topics = [ "customers/data_request" ]
 
   [[webhooks.subscriptions]]
-  topics = [ "app_subscriptions/update", "app/uninstalled" ]
+  topics = [ "app_subscriptions/update", "app/uninstalled", "fulfillment_orders/cancellation_request_submitted" ]
   uri = "/webhooks"
 
 [pos]

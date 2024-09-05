@@ -43,3 +43,32 @@ export interface ShopifyLineItemProps {
   variant_id: number;
   vendor: string;
 }
+
+interface FulfillmentOrder {
+  id: string;
+  status:
+    | "in_progress"
+    | "unsubmitted"
+    | "submitted"
+    | "cancelled"
+    | "closed"
+    | "open";
+  request_status:
+    | "submitted"
+    | "unsubmitted"
+    | "cancellation_requested"
+    | "cancellation_accepted"
+    | "rejected";
+}
+
+interface FulfillmentOrderMerchantRequest {
+  id: string;
+  message: string;
+}
+
+export interface FulfillmentOrderDataProps {
+  original_fulfillment_order: FulfillmentOrder;
+  submitted_fulfillment_order: FulfillmentOrder;
+  unsubmitted_fulfillment_order: FulfillmentOrder;
+  fulfillment_order_merchant_request: FulfillmentOrderMerchantRequest;
+}

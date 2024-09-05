@@ -2,6 +2,7 @@ import type { ActionFunctionArgs } from "@remix-run/node";
 import { authenticate } from "../shopify.server";
 import db from "../db.server";
 import { SERVER_BASE_URL } from "~/lib/contants";
+import { FulfillmentOrderDataProps } from "~/lib/types/shopify";
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   const webhook = await authenticate.webhook(request);
@@ -45,6 +46,23 @@ export const action = async ({ request }: ActionFunctionArgs) => {
       }
 
       break;
+    }
+    case "FULFILLMENT_ORDERS_CANCELLATION_REQUEST_SUBMITTED": {
+      console.log(webhook.webhookId);
+      console.log(webhook.session);
+      const payload = webhook.payload as FulfillmentOrderDataProps;
+      console.log(payload);
+      const response = await fetch(
+        `${SERVER_BASE_URL}/fulfillment/${webhook.session.shop}/cancel`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        },
+      );
+      console.log({ response });
     }
     case "CUSTOMERS_DATA_REQUEST":
     case "CUSTOMERS_REDACT":
