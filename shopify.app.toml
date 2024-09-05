@@ -3,7 +3,7 @@
 client_id = "e062b2afbda40feef1c957b971c7b292"
 name = "Only Caps"
 handle = "only-caps"
-application_url = "https://only-caps-prod-7ec944292734.herokuapp.com/"
+application_url = "https://dance-phase-prozac-drawing.trycloudflare.com"
 embedded = true
 
 [build]
@@ -13,13 +13,13 @@ include_config_on_deploy = true
 
 [access_scopes]
 # Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
-scopes = "read_assigned_fulfillment_orders,read_merchant_managed_fulfillment_orders,read_orders,read_products,read_third_party_fulfillment_orders,write_assigned_fulfillment_orders,write_fulfillments,write_inventory,write_merchant_managed_fulfillment_orders,write_orders,write_products,write_third_party_fulfillment_orders"
+scopes = "read_assigned_fulfillment_orders,read_locations,read_merchant_managed_fulfillment_orders,read_orders,read_products,read_third_party_fulfillment_orders,write_assigned_fulfillment_orders,write_fulfillments,write_inventory,write_merchant_managed_fulfillment_orders,write_orders,write_products,write_third_party_fulfillment_orders"
 
 [auth]
 redirect_urls = [
-  "https://only-caps-prod-7ec944292734.herokuapp.com/auth/callback",
-  "https://only-caps-prod-7ec944292734.herokuapp.com/auth/shopify/callback",
-  "https://only-caps-prod-7ec944292734.herokuapp.com/api/auth/callback"
+  "https://dance-phase-prozac-drawing.trycloudflare.com/auth/callback",
+  "https://dance-phase-prozac-drawing.trycloudflare.com/auth/shopify/callback",
+  "https://dance-phase-prozac-drawing.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]
