@@ -46,11 +46,11 @@ const shopify = shopifyApp({
   webhooks: {
     APP_SUBSCRIPTIONS_UPDATE: {
       deliveryMethod: DeliveryMethod.Http,
-      callbackUrl: "/webhooks",
+      callbackUrl: "webhooks",
     },
     FULFILLMENT_ORDERS_CANCELLATION_REQUEST_SUBMITTED: {
       deliveryMethod: DeliveryMethod.Http,
-      callbackUrl: "/webhooks",
+      callbackUrl: "webhooks",
     },
   },
   ...(process.env.SHOP_CUSTOM_DOMAIN
