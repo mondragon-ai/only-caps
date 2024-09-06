@@ -75,6 +75,14 @@ export default function OrdersPage() {
                     <p>{error.message}</p>
                   </Banner>
                 )}
+                <Layout.Section>
+                  <Banner tone={"info"}>
+                    <p>
+                      Keep in mind, deleting orders here will NOT affect the
+                      shopify order in the admin pannel
+                    </p>
+                  </Banner>
+                </Layout.Section>
                 {loadedData.orders && loadedData.orders.length > 0 ? (
                   <Layout.Section>
                     <OrderList

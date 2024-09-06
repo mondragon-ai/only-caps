@@ -82,12 +82,14 @@ export default function OrdersPage() {
                     </Banner>
                   )}
                 </Layout.Section>
-                <Banner title={"Deleting"} tone={"info"}>
-                  <p>
-                    Keep in mind, deleting orders here will NOT affect the
-                    shopify order in the admin pannel
-                  </p>
-                </Banner>
+                <Layout.Section>
+                  <Banner tone={"info"}>
+                    <p>
+                      Keep in mind, deleting orders here will NOT affect the
+                      shopify order in the admin pannel
+                    </p>
+                  </Banner>
+                </Layout.Section>
                 <Layout.Section>
                   <BlockStack gap={"500"}>
                     <Order order={order} />
