@@ -10,7 +10,8 @@ import { PrismaSessionStorage } from "@shopify/shopify-app-session-storage-prism
 import { restResources } from "@shopify/shopify-api/rest/admin/2024-07";
 import prisma from "./db.server";
 
-export const USAGE_PLAN = "Pay As You Go";
+export const USAGE_PLAN =
+  "Usage charges apply per hat sold that is generated using the mockup from the app, starting at $35 per hat.";
 
 const shopify = shopifyApp({
   apiKey: process.env.SHOPIFY_API_KEY,
