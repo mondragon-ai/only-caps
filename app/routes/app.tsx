@@ -24,7 +24,8 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
   const billingCheck = await billing.require({
     plans: [USAGE_PLAN],
-    onFailure: async () => billing.request({ plan: USAGE_PLAN }),
+    isTest: false,
+    onFailure: async () => billing.request({ plan: USAGE_PLAN, isTest: false }),
   });
 
   const subscription = billingCheck.appSubscriptions[0];

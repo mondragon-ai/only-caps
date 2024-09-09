@@ -34,7 +34,7 @@ export function generateRandomString(length: number, type: string): string {
 
   return (
     "POD-" +
-    `${randomString}-${generateSKUFortype(type.replaceAll("-", "_") as MockupTypes)}`
+    `${randomString.toLocaleUpperCase()}-${generateSKUFortype(type.replaceAll("-", "_") as MockupTypes)}`
   );
 }
 
