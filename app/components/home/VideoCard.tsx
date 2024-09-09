@@ -2,17 +2,14 @@ import { Box, Button, Card, MediaCard, VideoThumbnail } from "@shopify/polaris";
 import { useState } from "react";
 import styles from "./Home.module.css";
 
-export const VideoCard = () => {
+export const VideoCard = ({ url }: { url: string }) => {
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
 
   return (
     <>
       {isVideoPlaying ? (
         <div className={styles.videoWrapper}>
-          <VideoPlayer
-            onClose={() => setIsVideoPlaying(false)}
-            videoId="GL_6eXIEQx4?si=YXAxIbFAivmqXiXi"
-          />
+          <VideoPlayer onClose={() => setIsVideoPlaying(false)} url={url} />
         </div>
       ) : (
         <MediaCard
@@ -21,11 +18,11 @@ export const VideoCard = () => {
             content: "Watch Now",
             onAction: () => setIsVideoPlaying(true),
           }}
-          description="Welcome to Only Caps, the ultimate POD mockup generator for hats. Easily create and sell custom hats through your Shopify store. Simply download the app, choose a hat style, upload your design, and publish your product. Orders flow seamlessly from your store to us for printing and shipping, with tracking information automatically updated."
+          description="Welcome to Bigly POD, the ultimate POD mockup generator for shirts & hoodies. Easily create and sell custom apparel through your Shopify store. Simply download the app, choose a apparel style, upload your design, and publish your product. Orders flow seamlessly from your store to us for printing and shipping, with tracking information automatically updated."
         >
           <VideoThumbnail
-            videoLength={80}
-            thumbnailUrl="https://cdn.shopify.com/s/files/1/0783/4802/6165/files/Screenshot_2024-07-27_at_11.21.58_AM.png?v=1722090175"
+            videoLength={146}
+            thumbnailUrl="https://cdn.shopify.com/s/files/1/0783/4802/6165/files/Screenshot_2024-09-07_at_11.42.19_PM.png?v=1725763369"
             onClick={() => setIsVideoPlaying(true)}
           />
         </MediaCard>
@@ -35,11 +32,11 @@ export const VideoCard = () => {
 };
 
 interface VideoPlayerProps {
-  videoId: string;
+  url: string;
   onClose: () => void;
 }
 
-export const VideoPlayer = ({ videoId, onClose }: VideoPlayerProps) => {
+export const VideoPlayer = ({ url, onClose }: VideoPlayerProps) => {
   return (
     <Card>
       <Box paddingBlock="400" width="100%">
@@ -47,9 +44,19 @@ export const VideoPlayer = ({ videoId, onClose }: VideoPlayerProps) => {
         <Box paddingBlock="400" width="100%">
           <div className={styles.iFrameCard}>
             <iframe
-              src={`https://www.youtube.com/embed/${videoId}`}
+              src={url}
+              allow="autoplay; fullscreen; picture-in-picture; clipboard-write"
+              style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                width: "100%",
+                height: "100%",
+                border: "none",
+              }}
               className={styles.iframe}
               allowFullScreen
+              title="Initial Video - How To"
             ></iframe>
           </div>
         </Box>

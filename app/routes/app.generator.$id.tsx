@@ -13,7 +13,14 @@ import { generatorAction, generatorLoader } from "./models/generator.server";
 import { GeneratorColors } from "~/components/generator/GeneratorColors";
 import { GeneratorStateProps, MockupTypes } from "~/lib/types/mockups";
 import { convertToMockupRequestBody } from "~/lib/payloads/mockups";
-import { Banner, BlockStack, Layout, Page } from "@shopify/polaris";
+import {
+  Banner,
+  BlockStack,
+  Layout,
+  Page,
+  ProgressBar,
+  Text,
+} from "@shopify/polaris";
 import { MockupInfo } from "~/components/mockups/MockupInfo";
 import { generateRandomString } from "~/lib/util/mockups";
 import { useAppBridge } from "@shopify/app-bridge-react";
@@ -33,12 +40,13 @@ export default function GeneratorPage() {
   const shopify = useAppBridge();
   const location = useLocation();
   const navigate = useNavigate();
+  const [progress, setProgress] = useState(0);
   const slug = location.pathname.split("/").pop() as MockupTypes;
   const [error, setError] = useState<ErrorStateProps>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [mockup, setMockup] = useState<GeneratorStateProps>({
     ...mockup_dummy,
-    base_sku: generateRandomString(5, slug),
+    base_sku: generateRandomString(5, slug as MockupTypes),
     type: slug,
     original_file: null,
     progress: 0,
@@ -56,8 +64,21 @@ export default function GeneratorPage() {
     }
     if (repsonse) {
       handleResponse(repsonse, shopify, setError, setLoading, navigate);
+      setLoading(false);
     }
-  }, [shop, repsonse]);
+    if (loading) {
+      const interval = setInterval(() => {
+        setProgress((prevProgress) => {
+          const nextProgress = prevProgress + 5;
+          return nextProgress > 97 ? 97 : nextProgress;
+        });
+      }, 1200);
+
+      return () => clearInterval(interval);
+    }
+    // Reset progress when not loading
+    setProgress(0);
+  }, [shop, repsonse, loading]);
 
   const handleSubmit = useCallback(async () => {
     if (validateMockup(mockup, setError)) {
@@ -101,6 +122,25 @@ export default function GeneratorPage() {
               onDismiss={() => setError(null)}
             >
               <p>{error.message}</p>
+            </Banner>
+          )}
+          {loading && (
+            <Banner
+              title={"Uploading & Generating - Please don't navigate away"}
+              tone={"info"}
+            >
+              <BlockStack gap={"150"}>
+                <ProgressBar progress={progress} />
+                <Text as="h3" variant="bodyMd" tone="magic-subdued">
+                  {progress <= 20
+                    ? "Uploading Images 📸"
+                    : progress > 20 && progress <= 70
+                      ? "Creating Mockups Images 🎨"
+                      : progress > 70 && progress <= 95
+                        ? "Storing & Creating Assets 💾"
+                        : "Almost There 🥳"}
+                </Text>
+              </BlockStack>
             </Banner>
           )}
         </Layout.Section>

@@ -114,7 +114,7 @@ export const acceptRequestFulfillment = async (fulfillmentId: string) => {
     `,
     variables: {
       id: fulfillmentId,
-      message: "Cancelled",
+      message: "Please fulfill asap",
     },
   };
 

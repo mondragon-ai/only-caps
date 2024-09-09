@@ -1,3 +1,5 @@
+import { MockupTypes } from "../types/mockups";
+
 export const calculatePercentage = (quantity: number) => {
   if (quantity < 25) return 0;
   if (quantity >= 25 && quantity < 50) return 5;
@@ -30,5 +32,38 @@ export function generateRandomString(length: number, type: string): string {
     randomString += characters.charAt(randomIndex);
   }
 
-  return "POD-" + `-${type.toLocaleUpperCase().replaceAll("_", "-")}`;
+  return (
+    "POD-" +
+    `${randomString}-${generateSKUFortype(type.replaceAll("-", "_") as MockupTypes)}`
+  );
 }
+
+export const generateSKUFortype = (type: MockupTypes) => {
+  console.log({ type });
+  switch (type) {
+    case "flat_bill":
+      return "1133";
+    case "high_profile":
+      return "6032";
+    case "foam_trucker":
+      return "6025";
+    case "low_profile":
+      return "205";
+    case "mid_profile":
+      return "6038";
+    case "retro_trucker":
+      return "6030";
+    case "snapback":
+      return "SNAP";
+    case "relaxed":
+      return "RLX";
+    case "dad":
+      return "DAD";
+    case "structured":
+      return "STRC";
+    case "trucker":
+      return "TRCK";
+    default:
+      return "";
+  }
+};
