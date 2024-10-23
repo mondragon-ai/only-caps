@@ -76,8 +76,10 @@ export const getDifferenceInDays = (
   startMillis: number,
   endMillis: number,
 ): string => {
+  if (!endMillis) return "0.0";
+
   const millisecondsInADay = 24 * 60 * 60;
-  const differenceInMillis = Math.abs(endMillis * 100 - startMillis * 100);
+  const differenceInMillis = Math.abs(endMillis - startMillis);
 
   return (differenceInMillis / millisecondsInADay).toFixed(2);
 };
