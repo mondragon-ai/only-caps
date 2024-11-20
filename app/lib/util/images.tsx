@@ -1,6 +1,6 @@
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-import { storage } from "./storage";
 import { GeneratorStateProps, MockupDocument } from "../types/mockups";
+import { storage } from "./storage";
 
 // Upload images to storage bucket
 export const uploadToServer = async (
@@ -12,7 +12,16 @@ export const uploadToServer = async (
     alert("Please choose a file first!");
     throw new Error("File not present");
   } else {
-    const name = `${"" || ""}_${new Date().getTime()}`;
+    const name = `${""}_${new Date().getTime()}`;
+
+    // Define metadata
+    const metadata = {
+      contentType: image.type,
+      customMetadata: {
+        uploadedBy: "bigly-pod",
+        domain: mockup.domain || "unknown",
+      },
+    };
 
     // Call Firebase storage bucket
     const storageRef = ref(
@@ -20,7 +29,7 @@ export const uploadToServer = async (
       `/${mockup.domain || "mockups"}/designs/${name}`,
     );
 
-    const uploadTask = uploadBytesResumable(storageRef, image);
+    const uploadTask = uploadBytesResumable(storageRef, image, metadata);
 
     const url = await new Promise<string>((resolve, reject) => {
       uploadTask.on(
