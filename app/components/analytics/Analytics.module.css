@@ -9,7 +9,13 @@
 }
 
 .chartContainer {
-  height: 250px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin: 20px 0 0 0;
+  position: relative;
+  height: 225px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -40,7 +46,13 @@
 }
 
 .chartContainer {
-  height: 250px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin: 20px 0 0 0;
+  position: relative;
+  height: 225px;
   display: flex;
   justify-content: center;
   align-items: center;

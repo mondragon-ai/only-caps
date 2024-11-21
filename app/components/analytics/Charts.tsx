@@ -24,29 +24,106 @@ type CustomToolTipPrps = {
   value: string;
 };
 
-const CustomTooltip = ({ active, payload, label, isMoney }: any) => {
+const CustomTooltip = ({
+  active,
+  payload,
+  label,
+  suffix,
+  fixed,
+  prefix,
+}: any) => {
   if (active && payload && payload.length) {
     return (
-      <div className="custom-tooltip">
-        <p className="label">{`Date: ${label}`}</p>
-        <p className="intro">{`Value: ${isMoney ? "$" + payload[0].value : payload[0].value}`}</p>
-      </div>
+      <>
+        <style>
+          {`
+                .toolWrapper {
+                    background-color: #fff;
+                    padding: 5px 7px;
+                    background: var(--p-color-bg-surface);
+                    border-radius: var(--p-border-radius-300);
+                    border: 2px solid var(--p-color-bg-surface-tertiary-hover);
+                    border-radius: 6px;
+                    box-shadow: var(--p-shadow-100);
+                }
+                
+                .toolWrapper p {
+                    font-size: 13px;
+                    font-weight: 500;
+                    line-height: 20px;
+                    color: black;
+                    margin-left: 3px;
+                }
+            `}
+        </style>
+        <div className={"toolWrapper"}>
+          <p className="label">
+            {`${label}: `}
+            <span
+              style={{ fontWeight: 550 }}
+            >{`${prefix}${Number(payload[0].value).toFixed(fixed)}${suffix}`}</span>
+          </p>
+        </div>
+      </>
     );
   }
 };
 
+const CustomYAxisTick = (props: any) => {
+  const { x, y, payload, suffix, fixed, prefix } = props;
+
+  return (
+    <text
+      x={x}
+      y={y}
+      dy={0}
+      textAnchor="end"
+      fill="rgb(112, 112, 123)"
+      transform="rotate(0)"
+      fontSize={"11px"}
+    >
+      {`${prefix}${Number(payload.value).toFixed(fixed)}${suffix ? suffix : ""}`}{" "}
+    </text>
+  );
+};
+
+const CustomXAxisTick = (props: any) => {
+  const { x, y, payload } = props;
+
+  return (
+    <text
+      x={x}
+      y={y + 15}
+      dy={0}
+      textAnchor="middle"
+      fill="rgb(112, 112, 123)"
+      transform="rotate(0)"
+      fontSize={"11px"}
+      alignmentBaseline="central"
+    >
+      {`${payload.value}`}
+    </text>
+  );
+};
+
 export const LineChartStats = ({
   data,
-  isMoney,
+  suffix = "",
+  fixed = 1,
+  prefix = "",
 }: {
   data: DataProps[];
-  isMoney?: boolean;
+  suffix?: "%" | "d" | "";
+  prefix?: "" | "$";
+  fixed?: number;
 }) => {
   return (
     <ResponsiveContainer width="100%" height="100%">
       <AreaChart
         data={data}
-        margin={{ top: 5, right: 0, left: -10, bottom: 5 }}
+        // margin={{ top: 5, right: 5, left: -10, bottom: 5 }}
+        // width={"100%"}
+        margin={{ left: 0, right: 0 }}
       >
         <defs>
           <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
@@ -61,21 +138,21 @@ export const LineChartStats = ({
           padding={{ left: 10, right: 10 }}
           axisLine={false}
           tickSize={0}
-          angle={90}
+          tick={<CustomXAxisTick />}
         />
         <YAxis
           axisLine={false}
-          padding={{ top: 0, bottom: 40 }}
+          padding={{ top: 0, bottom: 5 }}
           tickSize={0}
-          tickFormatter={(time) => {
-            if (isMoney) {
-              return `$${formatNumber(time, true)}`;
-            } else {
-              return `${formatNumber(time, true)}`;
-            }
-          }}
+          tick={
+            <CustomYAxisTick suffix={suffix} prefix={prefix} fixed={fixed} />
+          }
         />
-        <Tooltip content={<CustomTooltip isMoney={isMoney} />} />
+        <Tooltip
+          content={
+            <CustomTooltip suffix={suffix} prefix={prefix} fixed={fixed} />
+          }
+        />
         <Area
           type="monotone"
           dataKey="value"
@@ -88,10 +165,34 @@ export const LineChartStats = ({
   );
 };
 
-export const BarChartStats = ({ data }: { data: DataProps[] }) => {
+const RoundedBar = (props: any) => {
+  const { fill, x, y, width, height } = props;
+
+  if (width <= 0 || height <= 0) {
+    return null;
+  }
+
+  return (
+    <rect x={x} y={y} width={width} height={height} fill={fill} rx={6} ry={6} />
+  );
+};
+
+export const BarChartStats = ({
+  data,
+  suffix,
+  fixed = 1,
+  prefix = "",
+  color = "#a1a5f4",
+}: {
+  data: any[];
+  suffix: "%" | "h" | "";
+  prefix?: "" | "$";
+  fixed?: number;
+  color?: string;
+}) => {
   return (
     <ResponsiveContainer width="100%" height="100%">
-      <BarChart data={data} margin={{ top: 5, right: 0, left: -20, bottom: 5 }}>
+      <BarChart data={data} margin={{ top: 5, right: 5, left: -15, bottom: 5 }}>
         <CartesianGrid horizontal={false} vertical={false} />
         <XAxis
           interval="preserveStartEnd"
@@ -99,10 +200,24 @@ export const BarChartStats = ({ data }: { data: DataProps[] }) => {
           padding={{ left: 10, right: 10 }}
           axisLine={false}
           tickSize={0}
+          tick={<CustomXAxisTick />}
         />
-        <YAxis axisLine={false} padding={{ top: 0, bottom: 10 }} tickSize={0} />
-        <Tooltip />
-        <Bar dataKey="value" fill="#0096C7" />
+        <YAxis
+          axisLine={false}
+          padding={{ top: 10, bottom: 0 }}
+          type="number"
+          tickSize={0}
+          tick={
+            <CustomYAxisTick suffix={suffix} prefix={prefix} fixed={fixed} />
+          }
+        />
+        {/* <Tooltip /> */}
+        <Tooltip
+          content={
+            <CustomTooltip suffix={suffix} prefix={prefix} fixed={fixed} />
+          }
+        />
+        <Bar dataKey="value" fill={color} shape={<RoundedBar />} />
       </BarChart>
     </ResponsiveContainer>
   );
@@ -117,7 +232,7 @@ export const PieChartStats = ({ data }: { data: TopSellerProps[] }) => {
 
   return (
     <ResponsiveContainer width="100%" height="100%">
-      <PieChart margin={{ top: 5, right: 0, left: 0, bottom: 5 }}>
+      <PieChart margin={{ top: 25, right: 0, left: 0, bottom: 5 }}>
         <Pie
           data={data}
           cx="50%"

@@ -30,10 +30,10 @@ export const TopAnalytics = ({
         title="Total Revenue"
         mainValue={`$${formatNumber(total_revenue)}`}
       >
-        <LineChartStats data={revenue} isMoney={true} />
+        <LineChartStats data={revenue} prefix="$" fixed={2} />
       </AnalyticsCard>
       <AnalyticsCard title="Items Sold" mainValue={formatNumber(total_items)}>
-        <BarChartStats data={sold} />
+        <BarChartStats data={sold} suffix={""} />
       </AnalyticsCard>
       <Card>
         <BlockStack gap="400">

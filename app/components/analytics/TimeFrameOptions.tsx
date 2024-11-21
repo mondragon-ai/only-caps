@@ -41,7 +41,7 @@ export function TimeFrameOptions() {
 
   const activator = (
     <Button onClick={togglePopoverActive} disclosure icon={CalendarIcon}>
-      Options
+      Choose Timeframe
     </Button>
   );
 

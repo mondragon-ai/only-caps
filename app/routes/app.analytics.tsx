@@ -17,8 +17,9 @@ export default function AnalyticsPage() {
 
   return (
     <Page
-      title={`Analytics`}
       subtitle={"View the performance of your designs"}
+      fullWidth
+      title="Analytics"
       secondaryActions={<TimeFrameOptions />}
     >
       <Suspense fallback={<LoadingSkeleton />}>

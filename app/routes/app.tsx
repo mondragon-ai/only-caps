@@ -22,16 +22,17 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   const admin = await authenticate.admin(request);
   const { session, billing } = admin;
 
+  // const billingCheck = await billing.require({
+  //   plans: [USAGE_PLAN],
+  //   isTest: false,
+  //   onFailure: async () => billing.request({ plan: USAGE_PLAN, isTest: false }),
+  // });
+
   const billingCheck = await billing.require({
     plans: [USAGE_PLAN],
-    isTest: false,
-    onFailure: async () => billing.request({ plan: USAGE_PLAN, isTest: false }),
+    isTest: true,
+    onFailure: async () => billing.request({ plan: USAGE_PLAN, isTest: true }),
   });
-
-  const subscription = billingCheck.appSubscriptions[0];
-
-  // if (!billingCheck.hasActivePayment || !subscription) {
-  // }
 
   await fetch(
     `${SERVER_BASE_URL}/store/${session.shop}/install/${session.accessToken}`,
