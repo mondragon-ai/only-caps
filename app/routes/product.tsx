@@ -63,9 +63,6 @@ export let action: ActionFunction = async ({ request }) => {
 
   const variantResponseJson = await variantResponse.json();
 
-  console.log(variantResponseJson);
-  console.log(responseJson);
-
   return json({
     product: responseJson!.data!.productCreate!.product,
     variant: variantResponseJson!.data!.productVariantUpdate!.productVariant,

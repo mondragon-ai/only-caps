@@ -17,8 +17,6 @@ function App() {
   const { i18n, close, data } = useApi(TARGET);
   const { fulfillment, loading, error } = useOrderData(data.selected[0].id);
 
-  console.log({ fulfillment, loading, error });
-
   // if (loading) return <Text>Loading...</Text>;
   // if (error) return <Text>Error: {error}</Text>;
 

@@ -87,3 +87,103 @@ export const bulkDeleteOrdersCallback = async (
     setLoading(false);
   }
 };
+
+// ! MODIFY ORDER
+
+type Address = {
+  address1: string;
+  city: string;
+  country: string;
+  zip: string;
+};
+
+/**
+ * Handles the Order Address Change.
+ * @param {FetcherWithComponents<ResponseProp>} fetcher - The fetcher to submit the request.
+ * @param {Address} address - The fetcher to submit the request.
+ * @param {React.Dispatch<React.SetStateAction<boolean>>} setLoading - Function to set the loading state.
+ */
+export const changeAddress = async (
+  fetcher: FetcherWithComponents<ResponseProp>,
+  address: Address,
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>,
+): Promise<void> => {
+  setLoading(true);
+
+  try {
+    const formData = new FormData();
+    formData.append("action", "address");
+    formData.append(JSON.stringify(address), "payload");
+    fetcher.submit(formData, { method: "POST" });
+  } catch (error) {
+    console.error("Error deleting orders:", error);
+  } finally {
+    setLoading(false);
+  }
+};
+
+/**
+ * Handles the Order Request to exchange item.
+ * @param {FetcherWithComponents<ResponseProp>} fetcher - The fetcher to submit the request.
+ * @param {React.Dispatch<React.SetStateAction<boolean>>} setLoading - Function to set the loading state.
+ */
+export const requestExchange = async (
+  fetcher: FetcherWithComponents<ResponseProp>,
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>,
+): Promise<void> => {
+  setLoading(true);
+
+  try {
+    const formData = new FormData();
+    formData.append("action", "exchange");
+    fetcher.submit(formData, { method: "POST" });
+  } catch (error) {
+    console.error("Error exchanging items:", error);
+  } finally {
+    setLoading(false);
+  }
+};
+
+/**
+ * Handles the Order Request for refund.
+ * @param {FetcherWithComponents<ResponseProp>} fetcher - The fetcher to submit the request.
+ * @param {React.Dispatch<React.SetStateAction<boolean>>} setLoading - Function to set the loading state.
+ */
+export const requestRefund = async (
+  fetcher: FetcherWithComponents<ResponseProp>,
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>,
+): Promise<void> => {
+  setLoading(true);
+
+  try {
+    const formData = new FormData();
+    formData.append("action", "refund");
+    fetcher.submit(formData, { method: "POST" });
+  } catch (error) {
+    console.error("Error refunding orders:", error);
+  } finally {
+    setLoading(false);
+  }
+};
+
+/**
+ * Handles the Order cancelation.
+ * @param {FetcherWithComponents<ResponseProp>} fetcher - The fetcher to submit the request.
+ * @param {React.Dispatch<React.SetStateAction<boolean>>} setLoading - Function to set the loading state.
+ */
+export const requestCancel = async (
+  fetcher: FetcherWithComponents<ResponseProp>,
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>,
+): Promise<void> => {
+  setLoading(true);
+
+  try {
+    const formData = new FormData();
+    formData.append("action", "cancel");
+    fetcher.submit(formData, { method: "POST" });
+  } catch (error) {
+    console.error("Error cancelling order:", error);
+  } finally {
+    setLoading(false);
+  }
+};

@@ -96,7 +96,6 @@ export async function ordersLoader({ request }: LoaderFunctionArgs) {
       `${SERVER_BASE_URL}/store/${admin.session.shop}/orders`,
     );
 
-    console.log({ response });
     if (!response.ok) {
       return json({
         shop: admin.session.shop,
@@ -124,7 +123,7 @@ export async function ordersLoader({ request }: LoaderFunctionArgs) {
  * @param {ActionFunctionArgs} args - The action function arguments.
  * @returns {Promise<Response>} The JSON response with operation result.
  */
-export async function ordersAction({ request }: ActionFunctionArgs) {
+export async function ordersAction({ request, params }: ActionFunctionArgs) {
   const { session } = await authenticate.admin(request);
   const { shop } = session;
 
@@ -139,7 +138,7 @@ export async function ordersAction({ request }: ActionFunctionArgs) {
   try {
     let response;
     switch (type) {
-      case "delete":
+      case "delete": {
         response = await deleteOrder(shop, payload!.id, true);
         return json({
           shop,
@@ -147,7 +146,8 @@ export async function ordersAction({ request }: ActionFunctionArgs) {
           error: null,
           type: "DELETE",
         } as ResponseProp);
-      case "next":
+      }
+      case "next": {
         response = await nextOrderList(shop, "");
         return json({
           shop,
@@ -155,7 +155,8 @@ export async function ordersAction({ request }: ActionFunctionArgs) {
           error: null,
           type: "NEXT",
         } as ResponseProp);
-      case "previous":
+      }
+      case "previous": {
         response = await previousOrderList(shop, "");
         return json({
           shop,
@@ -164,6 +165,7 @@ export async function ordersAction({ request }: ActionFunctionArgs) {
           status: 400,
           type: "DELETE",
         } as ResponseProp);
+      }
       default:
         return json(
           {
@@ -252,21 +254,61 @@ export async function orderAction({ request, params }: ActionFunctionArgs) {
   try {
     let response: ResponseProp;
 
-    if (type === "delete") {
-      response = await deleteOrder(shop, params.id, false);
-      return redirect("/app/orders", 303);
-    }
+    switch (type) {
+      case "delete": {
+        response = await deleteOrder(shop, params.id, false);
+        return redirect("/app/orders", 303);
+      }
 
-    return json(
-      {
-        shop,
-        result: null,
-        error: "Invalid Action",
-        status: 400,
-        type: "DELETE",
-      } as ResponseProp,
-      { status: 400 },
-    );
+      case "address": {
+        const address = formData.get("payload");
+        console.log({ address, id: params.id });
+        return json({
+          shop,
+          result: null,
+          error: null,
+          type: "address",
+        } as ResponseProp);
+      }
+      case "exchange": {
+        console.log({ type: "EXCHANGE", id: params.id });
+        return json({
+          shop,
+          result: null,
+          error: null,
+          type: "exchange",
+        } as ResponseProp);
+      }
+      case "refund": {
+        console.log({ type: "refund", id: params.id });
+        return json({
+          shop,
+          result: null,
+          error: null,
+          type: "refund",
+        } as ResponseProp);
+      }
+      case "cancel": {
+        console.log({ type: "cancel", id: params.id });
+        return json({
+          shop,
+          result: null,
+          error: null,
+          type: "cancel",
+        } as ResponseProp);
+      }
+      default:
+        return json(
+          {
+            shop,
+            result: null,
+            error: "Server Error",
+            status: 500,
+            type: "DELETE",
+          } as ResponseProp,
+          { status: 500 },
+        );
+    }
   } catch (error) {
     console.error("Error handling action:", error);
     return json(
