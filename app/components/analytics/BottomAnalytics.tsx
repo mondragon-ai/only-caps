@@ -34,7 +34,7 @@ export const BottomAnalytics = ({
         )}
         subValue="days"
       >
-        <LineChartStats data={fulfillment} prefix="" fixed={0} suffix="d" />
+        <LineChartStats data={fulfillment} prefix="" fixed={1} suffix="d" />
       </AnalyticsCard>
       <AnalyticsCard title="Type of Hats Sold">
         <PieChartStats data={types} />
