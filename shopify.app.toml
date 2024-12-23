@@ -26,20 +26,24 @@ redirect_urls = [
 api_version = "2024-07"
 
   [[webhooks.subscriptions]]
-  uri = "https://us-central1-only-caps.cloudfunctions.net/gdpr/redact/customer"
-  compliance_topics = [ "customers/redact" ]
-
-  [[webhooks.subscriptions]]
-  uri = "https://us-central1-only-caps.cloudfunctions.net/gdpr/redact/store"
-  compliance_topics = [ "shop/redact" ]
-
-  [[webhooks.subscriptions]]
-  uri = "https://us-central1-only-caps.cloudfunctions.net/gdpr/request/customer"
+  uri = "https://us-central1-pod-bigly.cloudfunctions.net/gdpr/customer/request"
   compliance_topics = [ "customers/data_request" ]
 
   [[webhooks.subscriptions]]
-  topics = [ "app_subscriptions/update", "app/uninstalled", "fulfillment_orders/cancellation_request_submitted" ]
-  uri = "/webhooks"
+  uri = "https://us-central1-pod-bigly.cloudfunctions.net/gdpr/store/customer/redact"
+  compliance_topics = [ "customers/redact" ]
 
+  [[webhooks.subscriptions]]
+  uri = "https://us-central1-pod-bigly.cloudfunctions.net/gdpr/store/redact"
+  compliance_topics = [ "shop/redact" ]
+
+  [[webhooks.subscriptions]]
+  topics = [
+  "app_subscriptions/update",
+  "app/uninstalled",
+  "fulfillment_orders/cancellation_request_submitted"
+]
+  uri = "/webhooks"
+  
 [pos]
 embedded = false
